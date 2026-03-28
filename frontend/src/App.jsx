@@ -49,6 +49,8 @@ export default function App() {
             Don't have an account?{' '}
             <button className="link-btn" onClick={() => setIsRegister(true)}>Sign Up</button>
           </p>
+          <div className="guest-divider">── or ──</div>
+          <button className="guest-btn">Continue as Guest →</button>
         </div>
 
         {/* ── Register Form ── */}
@@ -87,17 +89,19 @@ export default function App() {
             Already have an account?{' '}
             <button className="link-btn" onClick={() => setIsRegister(false)}>Sign In</button>
           </p>
+          <div className="guest-divider">── or ──</div>
+          <button className="guest-btn">Continue as Guest →</button>
         </div>
 
         {/* ── Sliding Teal Panel ── */}
         <div className="overlay">
           <div className="overlay-content login-content">
-            <h3>WELCOME<br />BACK!</h3>
+            <h3>Welcome Back</h3>
             <p>Sign in to continue your journey</p>
           </div>
           <div className="overlay-content register-content">
-            <h3>WELCOME!</h3>
-            <p>Create an account to start your journey</p>
+            <h3>Join the Grid</h3>
+            <p>Create your account and start planning your ultimate race weekend</p>
           </div>
         </div>
 
