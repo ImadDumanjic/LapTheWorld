@@ -1,0 +1,322 @@
+/* ─────────────────────────────────────────
+   Page background
+───────────────────────────────────────── */
+.auth-bg {
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0d1117;
+  padding: 20px;
+}
+
+/* ─────────────────────────────────────────
+   Card
+───────────────────────────────────────── */
+.auth-card {
+  position: relative;
+  width: 1080px;
+  height: 560px;
+  max-width: 100%;
+  border-radius: 0;
+  overflow: hidden;
+  background: #0d1117;
+  box-shadow:
+    0 0 0 1px #00c9b1,
+    0 0 15px 3px rgba(0, 201, 177, 0.6),
+    0 0 35px 8px rgba(0, 201, 177, 0.3),
+    0 0 70px 15px rgba(0, 201, 177, 0.1);
+}
+
+/* ─────────────────────────────────────────
+   Form panels — both absolutely placed,
+   each occupying one half of the card
+───────────────────────────────────────── */
+.form-panel {
+  position: absolute;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 52px 44px;
+  z-index: 5;
+}
+
+/* Login — left half, visible by default */
+.login-panel {
+  left: 0;
+  opacity: 1;
+  pointer-events: all;
+  transition: opacity 0.25s ease-in-out 0.3s;
+}
+
+/* Register — right half, hidden by default, shifted right */
+.register-panel {
+  right: 0;
+  opacity: 0;
+  pointer-events: none;
+  padding-left: 72px;
+  padding-right: 36px;
+  transition: opacity 0.25s ease-in-out;
+}
+
+/* When register mode is active */
+.register-mode .login-panel {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease-in-out;
+}
+
+.register-mode .register-panel {
+  opacity: 1;
+  pointer-events: all;
+  transition: opacity 0.25s ease-in-out 0.3s;
+}
+
+/* ─────────────────────────────────────────
+   Form typography & inputs
+───────────────────────────────────────── */
+.form-panel h2 {
+  color: #fff;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 30px;
+}
+
+.input-group {
+  position: relative;
+  width: 100%;
+  margin-bottom: 22px;
+}
+
+.input-group input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1.5px solid rgba(255, 255, 255, 0.18);
+  padding: 9px 10px 9px 32px;
+  color: #fff;
+  font-size: 14px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.25s;
+}
+
+.input-group input::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.input-group input:focus {
+  border-bottom-color: #00b4d8;
+}
+
+.input-icon {
+  position: absolute;
+  left: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  color: rgba(255, 255, 255, 0.38);
+  display: flex;
+  align-items: center;
+}
+
+.input-icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Side-by-side first / last name */
+.name-row {
+  display: flex;
+  gap: 14px;
+  width: 100%;
+}
+
+.name-row .input-group {
+  flex: 1;
+}
+
+/* ─────────────────────────────────────────
+   Button
+───────────────────────────────────────── */
+.btn-auth {
+  width: 100%;
+  padding: 12px;
+  margin-top: 6px;
+  border: none;
+  border-radius: 50px;
+  background: linear-gradient(135deg, #00c9b1, #00b4d8);
+  color: #0d1117;
+  font-size: 13px;
+  font-weight: 800;
+  font-family: inherit;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: box-shadow 0.3s, transform 0.18s;
+}
+
+.btn-auth:hover {
+  box-shadow: 0 0 26px rgba(0, 180, 216, 0.55);
+  transform: translateY(-2px);
+}
+
+.btn-auth:active {
+  transform: translateY(0);
+}
+
+/* ─────────────────────────────────────────
+   Switch text / link
+───────────────────────────────────────── */
+.switch-text {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 13px;
+  margin-top: 20px;
+  text-align: center;
+}
+
+.link-btn {
+  background: none;
+  border: none;
+  color: #00b4d8;
+  cursor: pointer;
+  font-size: 13px;
+  font-family: inherit;
+  padding: 0;
+  transition: color 0.2s;
+}
+
+.link-btn:hover {
+  color: #00c9b1;
+  text-decoration: underline;
+}
+
+/* ─────────────────────────────────────────
+   Teal overlay — always width: 100%, no translateX.
+   clip-path alone controls which side is visible.
+   Login:    polygon(55% 0, 100% 0, 100% 100%, 40% 100%)
+   Register: polygon(0 0, 60% 0, 45% 100%, 0 100%)
+───────────────────────────────────────── */
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(155deg, #00b4cc 0%, #0087a8 35%, #004d72 70%, #002d4a 100%);
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* Login mode default: teal on right */
+  transform: translateX(0);
+  clip-path: polygon(55% 0, 100% 0, 100% 100%, 40% 100%);
+  transition: clip-path 0.6s ease-in-out;
+}
+
+/* Register mode: teal on left */
+.register-mode .overlay {
+  clip-path: polygon(0 0, 65% 0, 15% 100%, 0 100%);
+}
+
+/* ─────────────────────────────────────────
+   Overlay text content
+───────────────────────────────────────── */
+.overlay-content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px;
+  color: #fff;
+  transition: opacity 0.2s ease-in-out;
+  pointer-events: none;
+}
+
+/* Login mode: panel is on the right — content stays near the right edge */
+.login-content {
+  opacity: 1;
+  padding-left: 40%;
+}
+
+/* Register mode: panel is on the left — nudge content away from the diagonal right edge */
+.register-content {
+  opacity: 0;
+  padding-right: 30%;
+}
+
+/* Flip on register mode */
+.register-mode .login-content  { opacity: 0; }
+.register-mode .register-content { opacity: 1; }
+
+.overlay-content h3 {
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  line-height: 1.15;
+  margin-bottom: 14px;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.2);
+}
+
+.overlay-content p {
+  font-size: 13px;
+  opacity: 0.82;
+  max-width: 180px;
+  line-height: 1.6;
+}
+
+/* ─────────────────────────────────────────
+   Responsive — mobile: stack, no overlay
+───────────────────────────────────────── */
+@media (max-width: 640px) {
+  .auth-card {
+    height: auto;
+    border-radius: 0;
+  }
+
+  .form-panel {
+    position: relative;
+    width: 100%;
+    padding: 52px 28px 44px;
+    top: auto;
+    left: auto;
+    right: auto;
+  }
+
+  .login-panel {
+    display: flex;
+    opacity: 1;
+    pointer-events: all;
+    transition: none;
+  }
+
+  .register-panel {
+    display: none;
+  }
+
+  .register-mode .login-panel {
+    display: none;
+  }
+
+  .register-mode .register-panel {
+    display: flex;
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .overlay {
+    display: none;
+  }
+}
