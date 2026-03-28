@@ -50,6 +50,7 @@
   left: 0;
   opacity: 1;
   pointer-events: all;
+  padding-left: 100px;
   transition: opacity 0.25s ease-in-out 0.3s;
 }
 
@@ -218,7 +219,7 @@
 
   /* Login mode default: teal on right */
   transform: translateX(0);
-  clip-path: polygon(55% 0, 100% 0, 100% 100%, 40% 100%);
+  clip-path: polygon(85% 0, 100% 0, 100% 100%, 40% 100%);
   transition: clip-path 0.6s ease-in-out;
 }
 
