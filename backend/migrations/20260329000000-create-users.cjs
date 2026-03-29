@@ -7,58 +7,42 @@ module.exports = {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
         primaryKey: true,
-      },
-
-      role: {
-        type: Sequelize.ENUM('admin', 'user'),
         allowNull: false,
-        defaultValue: 'user',
       },
-
-      firstName: {
+      username: {
         type: Sequelize.STRING,
         allowNull: false,
+        unique: true,
       },
-
-      lastName: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-
       email: {
         type: Sequelize.STRING,
         allowNull: false,
         unique: true,
       },
-
       password: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-
-      isActive: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: true,
+      firstName: {
+        type: Sequelize.STRING,
+        allowNull: true,
       },
-
+      lastName: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
       createdAt: {
-        allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW,
+        allowNull: false,
       },
-
       updatedAt: {
-        allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW,
+        allowNull: false,
       },
     });
   },
 
-  async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('users');
-    await queryInterface.sequelize.query(
-      'DROP TYPE IF EXISTS "enum_users_role";'
-    );
+  async down(queryInterface) {
+    await queryInterface.dropTable('Users');
   },
 };
