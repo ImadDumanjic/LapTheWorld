@@ -17,7 +17,8 @@ export async function register({ username, email, password, firstName, lastName 
     email,
     password: hashedPassword,
     firstName,
-    lastName
+    lastName,
+    role: 'User'
   })
 
   const token = jwt.sign(
@@ -31,7 +32,8 @@ export async function register({ username, email, password, firstName, lastName 
     user: {
       id: user.id,
       username: user.username,
-      email: user.email
+      email: user.email,
+      role: user.role
     }
   }
 }
@@ -60,7 +62,8 @@ export async function login({ email, password }) {
     user: {
       id: user.id,
       username: user.username,
-      email: user.email
+      email: user.email,
+      role: user.role
     }
   }
 }

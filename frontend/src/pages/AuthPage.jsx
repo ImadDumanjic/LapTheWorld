@@ -9,7 +9,7 @@ export default function AuthPage() {
 
   return (
     <div className="min-h-svh flex items-center justify-center bg-[#0F2027] p-5">
-      <Toaster position="top-center" toastOptions={{ style: { background: '#1a3340', color: '#fff' } }} />
+      <Toaster position="top-right" toastOptions={{ style: { background: '#1a3340', color: '#fff' } }} />
       <div
         className="relative w-[1080px] max-w-full h-[560px] max-sm:h-auto overflow-hidden bg-[#0F2027]"
         style={{

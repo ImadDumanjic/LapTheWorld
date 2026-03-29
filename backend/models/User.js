@@ -12,6 +12,11 @@ const User = sequelize.define('User', {
   password:  { type: DataTypes.STRING, allowNull: false },
   firstName: { type: DataTypes.STRING },
   lastName:  { type: DataTypes.STRING },
+  role: {
+    type: DataTypes.ENUM('Admin', 'User'),
+    allowNull: false,
+    defaultValue: 'User',
+  },
 }, { timestamps: true, tableName: 'users' })
 
 export default User

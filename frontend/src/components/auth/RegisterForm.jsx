@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-hot-toast'
 import InputField from '../ui/InputField'
 import Button from '../ui/Button'
@@ -30,6 +31,7 @@ export default function RegisterForm({ onSwitch, isRegister }) {
     username: '', email: '', password: '', firstName: '', lastName: '',
   })
   const { register, loading } = useAuth()
+  const navigate = useNavigate()
 
   const set = (field) => (e) => setForm((prev) => ({ ...prev, [field]: e.target.value }))
 
@@ -38,7 +40,8 @@ export default function RegisterForm({ onSwitch, isRegister }) {
     try {
       await register(form)
       setForm({ username: '', email: '', password: '', firstName: '', lastName: '' })
-      toast.success('Account created!')
+      toast.success('Account created! Please sign in.')
+      onSwitch()
     } catch (err) {
       toast.error(err.message || 'Registration failed')
     }
@@ -82,6 +85,7 @@ export default function RegisterForm({ onSwitch, isRegister }) {
       <button
         type="button"
         className="bg-transparent border-0 text-[#5b8fa8] opacity-70 text-[13px] font-[inherit] cursor-pointer p-0 mt-[17px] ml-[7px] transition-opacity duration-200 hover:opacity-100"
+        onClick={() => navigate('/landing')}
       >
         Continue as Guest →
       </button>

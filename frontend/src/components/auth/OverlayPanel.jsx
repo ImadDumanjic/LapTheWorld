@@ -13,10 +13,10 @@ export default function OverlayPanel({ isRegister }) {
           isRegister ? 'opacity-0' : 'opacity-100'
         }`}
       >
-        <h3 className="text-[30px] font-extrabold tracking-[4px] uppercase leading-[1.15] mb-[14px] [text-shadow:0_2px_16px_rgba(0,0,0,0.2)] whitespace-nowrap">
+        <h3 className="text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-[4px] uppercase leading-[1.15] mb-[14px] [text-shadow:0_2px_16px_rgba(0,0,0,0.2)]">
           Welcome Back
         </h3>
-        <p className="text-[13px] opacity-[0.82] max-w-[185px] leading-[1.6]">
+        <p className="text-xs md:text-sm lg:text-base opacity-[0.82] max-w-[185px] leading-[1.6]">
           Sign in to continue your journey
         </p>
       </div>
@@ -26,10 +26,10 @@ export default function OverlayPanel({ isRegister }) {
           isRegister ? 'opacity-100' : 'opacity-0'
         }`}
       >
-        <h3 className="text-[30px] font-extrabold tracking-[4px] uppercase leading-[1.15] mb-[14px] [text-shadow:0_2px_16px_rgba(0,0,0,0.2)] whitespace-nowrap">
+        <h3 className="text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-[4px] uppercase leading-[1.15] mb-[14px] [text-shadow:0_2px_16px_rgba(0,0,0,0.2)]">
           Join the Grid
         </h3>
-        <p className="text-[13px] opacity-[0.82] max-w-[185px] leading-[1.6]">
+        <p className="text-xs md:text-sm lg:text-base opacity-[0.82] max-w-[185px] leading-[1.6]">
           Create your account and start planning your ultimate race weekend
         </p>
       </div>

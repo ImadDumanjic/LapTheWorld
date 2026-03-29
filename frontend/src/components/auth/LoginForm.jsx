@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-hot-toast'
 import InputField from '../ui/InputField'
 import Button from '../ui/Button'
@@ -22,6 +23,7 @@ export default function LoginForm({ onSwitch, isRegister }) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const { login, loading } = useAuth()
+  const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -30,6 +32,7 @@ export default function LoginForm({ onSwitch, isRegister }) {
       setEmail('')
       setPassword('')
       toast.success('Welcome back!')
+      navigate('/landing')
     } catch (err) {
       toast.error(err.message || 'Login failed')
     }
@@ -81,6 +84,7 @@ export default function LoginForm({ onSwitch, isRegister }) {
       <button
         type="button"
         className="bg-transparent border-0 text-[#5b8fa8] opacity-70 text-[13px] font-[inherit] cursor-pointer p-0 mt-[17px] ml-[7px] transition-opacity duration-200 hover:opacity-100"
+        onClick={() => navigate('/landing')}
       >
         Continue as Guest →
       </button>
