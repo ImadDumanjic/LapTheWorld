@@ -38,18 +38,52 @@ export async function register({ username, email, password, firstName, lastName 
   }
 }
 
+const MAX_FAILED_ATTEMPTS = parseInt(process.env.MAX_FAILED_ATTEMPTS, 10);
+const LOCK_DURATION_MS = parseInt(process.env.LOCK_DURATION_MS, 10);
+
 export async function login({ email, password }) {
   const user = await User.findOne({ where: { email } })
 
   if (!user) {
-    throw new Error('Invalid credentials')
+    const err = new Error('Invalid credentials')
+    err.status = 401
+    throw err
+  }
+
+  const now = new Date()
+
+  if (user.lockUntil && user.lockUntil > now) {
+    const err = new Error('Too many failed login attempts. Please wait 15 minutes before trying again.')
+    err.status = 429
+    throw err
+  }
+
+  if (user.lockUntil && user.lockUntil <= now) {
+    await user.update({ failedLoginAttempts: 0, lockUntil: null })
   }
 
   const isPasswordValid = await comparePassword(password, user.password)
 
   if (!isPasswordValid) {
-    throw new Error('Invalid credentials')
+    const attempts = (user.lockUntil && user.lockUntil <= now ? 0 : user.failedLoginAttempts) + 1
+
+    if (attempts >= MAX_FAILED_ATTEMPTS) {
+      await user.update({
+        failedLoginAttempts: attempts,
+        lockUntil: new Date(Date.now() + LOCK_DURATION_MS),
+      })
+      const err = new Error('Too many failed login attempts. Please wait 15 minutes before trying again.')
+      err.status = 429
+      throw err
+    }
+
+    await user.update({ failedLoginAttempts: attempts })
+    const err = new Error('Invalid credentials')
+    err.status = 401
+    throw err
   }
+
+  await user.update({ failedLoginAttempts: 0, lockUntil: null })
 
   const token = jwt.sign(
     { id: user.id },

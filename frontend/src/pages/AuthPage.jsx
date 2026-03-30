@@ -16,7 +16,7 @@ export default function AuthPage() {
           boxShadow: '0 0 0 3px #2C5364, 0 0 15px 3px rgba(44,83,100,0.6), 0 0 35px 8px rgba(44,83,100,0.3), 0 0 70px 15px rgba(44,83,100,0.1)',
         }}
       >
-        <LoginForm    onSwitch={() => setIsRegister(true)}  isRegister={isRegister} />
+        <LoginForm onSwitch={() => setIsRegister(true)}  isRegister={isRegister} />
         <RegisterForm onSwitch={() => setIsRegister(false)} isRegister={isRegister} />
         <OverlayPanel isRegister={isRegister} />
       </div>

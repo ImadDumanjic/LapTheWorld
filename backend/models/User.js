@@ -17,6 +17,17 @@ const User = sequelize.define('User', {
     allowNull: false,
     defaultValue: 'User',
   },
+
+  failedLoginAttempts: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    defaultValue: 0,
+  },
+  lockUntil: {
+    type: DataTypes.DATE,
+    allowNull: true,
+    defaultValue: null,
+  },
 }, { timestamps: true, tableName: 'users' })
 
 export default User
