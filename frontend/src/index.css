@@ -2,6 +2,12 @@
 
 body {
   font-family: 'Funnel Display', system-ui, 'Segoe UI', Roboto, sans-serif;
+  scrollbar-width: none; 
+  -ms-overflow-style: none;
+}
+
+body::-webkit-scrollbar {
+  display: none; 
 }
 
 input:-webkit-autofill,

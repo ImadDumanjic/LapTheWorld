@@ -64,6 +64,15 @@ export default function LoginForm({ onSwitch, isRegister }) {
         icon={<LockIcon />}
         value={password}
         onChange={(e) => setPassword(e.target.value)}
+        action={
+          <button
+            type="button"
+            className="bg-transparent border-0 text-[#5b8fa8] opacity-60 text-[11px] font-[inherit] cursor-pointer p-0 pr-[2px] whitespace-nowrap transition-opacity duration-200 hover:opacity-100 hover:underline"
+            onClick={() => navigate('/forgot-password')}
+          >
+            Forgot password?
+          </button>
+        }
       />
 
       <Button type="submit" disabled={loading}>
