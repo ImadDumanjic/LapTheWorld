@@ -11,14 +11,22 @@ function LetterColumn({ letters, side }) {
       style={{
         [positionKey]: positionValue,
         transform: 'translateY(-50%)',
-        maskImage: 'linear-gradient(to bottom, transparent 0%, white 18%, white 82%, transparent 100%)',
-        WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, white 18%, white 82%, transparent 100%)',
+        maskImage: 'linear-gradient(to bottom, rgba(255,255,255,0.35) 0%, white 22%, white 78%, rgba(255,255,255,0.35) 100%)',
+        WebkitMaskImage: 'linear-gradient(to bottom, rgba(255,255,255,0.35) 0%, white 22%, white 78%, rgba(255,255,255,0.35) 100%)',
       }}
     >
       {letters.map((letter, i) =>
         letter === null
           ? <span key={i} className="h-4 block" />
-          : <span key={i} className="text-white/45 text-[40px] font-black uppercase tracking-[0.28em] leading-none select-none">{letter}</span>
+          : (
+            <span
+              key={i}
+              className="text-white text-[40px] font-black uppercase tracking-[0.28em] leading-none select-none"
+              style={{ textShadow: '0 0 8px rgba(255,255,255,0.12)' }}
+            >
+              {letter}
+            </span>
+          )
       )}
     </div>
   )

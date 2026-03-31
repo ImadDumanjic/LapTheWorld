@@ -1,6 +1,6 @@
 import blog from '../../assets/Blog.png'
 import constructorStandings from '../../assets/ConstructorStandings.png'
-import driversStandings from '../../assets/DriversStandings.jpg'
+import driversStandings from '../../assets/DriverStandings.png'
 import liveTiming from '../../assets/LiveTiming.png'
 import travelGuide from '../../assets/TravelGuideGrandPrix.png'
 
@@ -91,14 +91,14 @@ export default function GallerySection() {
 
           {/* Left column */}
           <div className="flex flex-col gap-3 flex-1">
-            <ImageCard {...c1} className="h-[195px]" />
-            <ImageCard {...c2} className="h-[370px]" />
+            <ImageCard {...c1} className="h-[215px]" />
+            <ImageCard {...c2} className="h-[390px]" />
           </div>
 
           {/* Right column */}
           <div className="flex flex-col gap-3 flex-1">
-            <ImageCard {...c3} className="h-[370px]" />
-            <ImageCard {...c4} className="h-[195px]" />
+            <ImageCard {...c3} className="h-[390px]" />
+            <ImageCard {...c4} className="h-[215px]" />
           </div>
 
         </div>
