@@ -7,12 +7,10 @@ function LetterColumn({ letters, side }) {
 
   return (
     <div
-      className="fixed top-1/2 z-10 pointer-events-none hidden lg:flex flex-col items-center justify-between h-[48vh]"
+      className="fixed top-1/2 z-10 pointer-events-none hidden lg:flex flex-col items-center justify-between h-[50vh]"
       style={{
         [positionKey]: positionValue,
         transform: 'translateY(-50%)',
-        maskImage: 'linear-gradient(to bottom, rgba(255,255,255,0.35) 0%, white 22%, white 78%, rgba(255,255,255,0.35) 100%)',
-        WebkitMaskImage: 'linear-gradient(to bottom, rgba(255,255,255,0.35) 0%, white 22%, white 78%, rgba(255,255,255,0.35) 100%)',
       }}
     >
       {letters.map((letter, i) =>
@@ -21,7 +19,7 @@ function LetterColumn({ letters, side }) {
           : (
             <span
               key={i}
-              className="text-white text-[40px] font-black uppercase tracking-[0.28em] leading-none select-none"
+              className="text-white text-[42px] font-black uppercase tracking-[0.28em] leading-none select-none"
               style={{ textShadow: '0 0 8px rgba(255,255,255,0.12)' }}
             >
               {letter}

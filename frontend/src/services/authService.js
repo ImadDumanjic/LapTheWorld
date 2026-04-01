@@ -35,3 +35,27 @@ export async function register(data) {
 export function logout() {
   localStorage.removeItem('token')
 }
+
+export async function requestPasswordReset(email) {
+  const res = await fetch(`${BASE_URL}/api/auth/forgot-password`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email }),
+  })
+  if (!res.ok) throw new Error((await res.json()).message || 'Failed to send reset email')
+}
+
+export async function resetPassword(token, newPassword) {
+  const res = await fetch(`${BASE_URL}/api/auth/reset-password`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ token, newPassword }),
+  })
+  const data = await res.json()
+  if (!res.ok) {
+    const err = new Error(data.message || 'Failed to reset password')
+    err.status = res.status
+    throw err
+  }
+  return data
+}
