@@ -1,6 +1,7 @@
+import { Link } from 'react-router-dom'
 import blog from '../../assets/Blog.png'
-import constructorStandings from '../../assets/ConstructorStandings.png'
-import driversStandings from '../../assets/DriverStandings.png'
+import calendar from '../../assets/Calendar.png'
+import standings from '../../assets/Standings.png'
 import liveTiming from '../../assets/LiveTiming.png'
 import travelGuide from '../../assets/TravelGuideGrandPrix.png'
 
@@ -14,17 +15,19 @@ const CARDS = [
   },
   {
     id: 2,
-    image: constructorStandings,
-    title: 'Who Leads the Championship?',
-    subtitle: 'Championship Standings',
+    image: calendar,
+    title: 'One Season. One Journey.',
+    subtitle: 'Global calendar',
     align: 'right',
+    to: '/calendar',
   },
   {
     id: 3,
-    image: driversStandings,
-    title: 'Every Lap. Every Driver. Every Battle.',
-    subtitle: 'Driver Standings',
+    image: standings,
+    title: 'Every Point. Every Team. Every Driver.',
+    subtitle: 'Championship Standings',
     align: 'left',
+    to: '/championship',
   },
   {
     id: 4,
@@ -42,8 +45,8 @@ const CARDS = [
   },
 ]
 
-function ImageCard({ image, title, subtitle, align = 'left', className = '' }) {
-  return (
+function ImageCard({ image, title, subtitle, align = 'left', className = '', to }) {
+  const inner = (
     <div className={`relative overflow-hidden rounded-xl group cursor-pointer ${className}`}>
       {/* Background image — swap src to change the photo */}
       <img
@@ -55,7 +58,7 @@ function ImageCard({ image, title, subtitle, align = 'left', className = '' }) {
       {/* Bottom-only gradient — image stays fully vibrant above it */}
       <div
         className="absolute inset-0"
-        style={{ background: 'linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.75) 40%, rgba(0,0,0,0.2) 65%, transparent 80%)' }}
+        style={{ background: 'linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.8) 20%, rgba(0,0,0,0.3) 40%, transparent 60%)' }}
       />
 
       {/* Label */}
@@ -73,6 +76,8 @@ function ImageCard({ image, title, subtitle, align = 'left', className = '' }) {
       </div>
     </div>
   )
+
+  return to ? <Link to={to}>{inner}</Link> : inner
 }
 
 export default function GallerySection() {
