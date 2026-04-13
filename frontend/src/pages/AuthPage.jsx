@@ -1,11 +1,15 @@
 import { useState } from 'react'
+import { useLocation } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
 import LoginForm from '../components/auth/LoginForm'
 import RegisterForm from '../components/auth/RegisterForm'
 import OverlayPanel from '../components/auth/OverlayPanel'
 
 export default function AuthPage() {
-  const [isRegister, setIsRegister] = useState(false)
+  const location = useLocation()
+  const [isRegister, setIsRegister] = useState(
+    location.state?.showRegister === true
+  )
 
   return (
     <div className="min-h-svh flex items-center justify-center bg-[#0F2027] p-5">

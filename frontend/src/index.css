@@ -1,5 +1,12 @@
 @import "tailwindcss";
 
+@layer utilities {
+  /* Shared page background — used on every full-page route */
+  .bg-page-gradient {
+    background: linear-gradient(180deg, rgba(15, 32, 39, 1) 40%, rgba(44, 83, 100, 1) 100%);
+  }
+}
+
 body {
   font-family: 'Funnel Display', system-ui, 'Segoe UI', Roboto, sans-serif;
   scrollbar-width: none; 

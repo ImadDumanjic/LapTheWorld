@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 
 const NAV_ITEMS = [
-  { label: 'Blog Section',    to: '#' },
+  { label: 'Blog Section',    to: '/blog' },
   { label: 'Standings',       to: '/championship' },
   { label: 'Calendar',        to: '/calendar' },
   { label: 'Live Timing',     to: '#' },

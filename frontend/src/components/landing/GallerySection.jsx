@@ -12,6 +12,7 @@ const CARDS = [
     title: 'Share Your Race Weekend Story',
     subtitle: 'Blog Section',
     align: 'left',
+    to: '/blog',
   },
   {
     id: 2,

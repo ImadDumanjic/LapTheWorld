@@ -216,8 +216,7 @@ export default function CalendarPage() {
 
   return (
     <div
-      className="min-h-svh px-6 pb-14 pt-36 sm:px-12"
-      style={{ background: 'linear-gradient(180deg, rgba(15, 32, 39, 1) 40%, rgba(44, 83, 100, 1) 100%)' }}
+      className="bg-page-gradient min-h-svh px-6 pb-14 pt-36 sm:px-12"
     >
       <div className="max-w-[1200px] mx-auto">
 
