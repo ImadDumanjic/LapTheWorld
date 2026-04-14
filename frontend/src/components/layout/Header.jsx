@@ -7,6 +7,7 @@ const NAV_ITEMS = [
   { label: 'Calendar',        to: '/calendar' },
   { label: 'Live Timing',     to: '#' },
   { label: 'GP Travel Guide', to: '#' },
+  { label: 'Profile',         to: '/profile' },
 ]
 
 // Uses transform-box: fill-box so each bar rotates around its own center

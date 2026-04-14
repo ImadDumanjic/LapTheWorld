@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-hot-toast'
 import InputField from '../ui/InputField'
+import PhoneInputField from '../ui/PhoneInputField'
 import Button from '../ui/Button'
 import { useAuth } from '../../hooks/useAuth'
 
@@ -26,20 +27,22 @@ const LockIcon = () => (
   </svg>
 )
 
+
 export default function RegisterForm({ onSwitch, isRegister }) {
   const [form, setForm] = useState({
-    username: '', email: '', password: '', firstName: '', lastName: '',
+    username: '', email: '', password: '', firstName: '', lastName: '', phone: '',
   })
   const { register, loading } = useAuth()
   const navigate = useNavigate()
 
   const set = (field) => (e) => setForm((prev) => ({ ...prev, [field]: e.target.value }))
+  const setPhone = (value) => setForm((prev) => ({ ...prev, phone: value }))
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
       await register(form)
-      setForm({ username: '', email: '', password: '', firstName: '', lastName: '' })
+      setForm({ username: '', email: '', password: '', firstName: '', lastName: '', phone: '' })
       toast.success('Account created! Please sign in.')
       onSwitch()
     } catch (err) {
@@ -58,13 +61,16 @@ export default function RegisterForm({ onSwitch, isRegister }) {
     >
       <h2 className="text-white text-2xl font-bold tracking-[3px] uppercase mb-[30px]">Register</h2>
 
-      <InputField type="text"     placeholder="Username" autoComplete="username"      icon={<UserIcon />} value={form.username}  onChange={set('username')} />
-      <InputField type="email"    placeholder="Email"    autoComplete="email"         icon={<MailIcon />} value={form.email}     onChange={set('email')} />
-      <InputField type="password" placeholder="Password" autoComplete="new-password"  icon={<LockIcon />} value={form.password}  onChange={set('password')} />
+      <InputField type="email"    placeholder="Email"    autoComplete="email"        icon={<MailIcon />} value={form.email}    onChange={set('email')} />
+      <InputField type="password" placeholder="Password" autoComplete="new-password" icon={<LockIcon />} value={form.password} onChange={set('password')} />
 
       <div className="flex gap-[14px] w-full">
-        <InputField type="text" placeholder="First Name" autoComplete="given-name"   icon={<UserIcon />} value={form.firstName} onChange={set('firstName')} />
-        <InputField type="text" placeholder="Last Name"  autoComplete="family-name"  icon={<UserIcon />} value={form.lastName}  onChange={set('lastName')} />
+        <InputField type="text" placeholder="First Name" autoComplete="given-name"  icon={<UserIcon />}  value={form.firstName} onChange={set('firstName')} />
+        <InputField type="text" placeholder="Last Name"  autoComplete="family-name" icon={<UserIcon />}  value={form.lastName}  onChange={set('lastName')} />
+      </div>
+      <div className="flex gap-[14px] w-full">
+        <InputField type="text" placeholder="Username" autoComplete="username" icon={<UserIcon />} value={form.username} onChange={set('username')} />
+        <PhoneInputField value={form.phone} onChange={setPhone} />
       </div>
 
       <Button type="submit" disabled={loading}>

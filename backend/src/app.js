@@ -4,6 +4,7 @@ import express from 'express'
 import cors from 'cors'
 import authRoutes from './routes/authRoutes.js'
 import blogRoutes from './routes/blogRoutes.js'
+import userRoutes from './routes/userRoutes.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -21,5 +22,6 @@ app.get('/', (req, res) => {
 
 app.use('/api/auth', authRoutes)
 app.use('/api/blogs', blogRoutes)
+app.use('/api/users', userRoutes)
 
 export default app
