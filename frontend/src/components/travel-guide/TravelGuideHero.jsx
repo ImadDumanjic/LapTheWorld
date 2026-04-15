@@ -79,12 +79,12 @@ export default function TravelGuideHero({ guide }) {
             'linear-gradient(to right, rgba(15,32,39,0.97) 0%, rgba(15,32,39,0.88) 20%, rgba(15,32,39,0.65) 42%, rgba(15,32,39,0.22) 65%, transparent 100%)',
         }}
       />
-      {/* Bottom fade into sections */}
+      {/* Bottom fade into sections — slightly deeper for a smoother blend */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            'linear-gradient(to top, rgba(15,32,39,1) 0%, rgba(15,32,39,0.6) 14%, transparent 32%)',
+            'linear-gradient(to top, rgba(15,32,39,1) 0%, rgba(15,32,39,0.75) 18%, rgba(15,32,39,0.15) 38%, transparent 52%)',
         }}
       />
       {/* Top fade */}
@@ -95,6 +95,26 @@ export default function TravelGuideHero({ guide }) {
 
       {/* Sine-wave decoration — full width overlay */}
       <CircuitDecoration />
+
+      {/* Scroll indicator — centered at very bottom */}
+      <div
+        className="absolute bottom-7 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center pointer-events-none select-none"
+        style={{ gap: 8 }}
+      >
+        <span
+          className="font-extrabold uppercase"
+          style={{ fontSize: 9, letterSpacing: '4.5px', color: 'rgba(255,255,255,0.20)' }}
+        >
+          Scroll
+        </span>
+        <div
+          style={{
+            width: 1,
+            height: 46,
+            background: 'linear-gradient(to bottom, rgba(77,208,225,0.50) 0%, rgba(77,208,225,0.10) 55%, transparent 100%)',
+          }}
+        />
+      </div>
 
       {/* Content — pinned to bottom-left */}
       <div className="relative z-10 w-full px-6 sm:px-12 pb-16 sm:pb-20 pt-28">

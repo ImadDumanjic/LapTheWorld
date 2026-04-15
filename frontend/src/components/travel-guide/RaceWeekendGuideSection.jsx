@@ -36,6 +36,51 @@ function ChevronDownIcon() {
   )
 }
 
+// ── Shared card background layers ─────────────────────────────────────────────
+// Large blurred orb pinned to top-right — identical across all three cards
+function CardGlowOrb({ size = 260, blur = 45, offset = 80 }) {
+  return (
+    <>
+      {/* Diffuse blurred orb */}
+      <div
+        className="absolute pointer-events-none"
+        style={{
+          width: size,
+          height: size,
+          borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(44,83,100,0.30) 0%, transparent 65%)',
+          filter: `blur(${blur}px)`,
+          top: -offset,
+          right: -offset,
+        }}
+      />
+      {/* Tighter teal accent spot */}
+      <div
+        className="absolute pointer-events-none"
+        style={{
+          width: size * 0.36,
+          height: size * 0.36,
+          borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(77,208,225,0.11) 0%, transparent 70%)',
+          top: size * 0.06,
+          right: size * 0.13,
+        }}
+      />
+    </>
+  )
+}
+
+// Shared card background style (gradient + dot-grid texture)
+const CARD_BASE_STYLE = {
+  background: [
+    'radial-gradient(circle, rgba(255,255,255,0.022) 1px, transparent 1px)',
+    'linear-gradient(148deg, rgba(12,30,44,1) 0%, rgba(4,10,18,1) 100%)',
+  ].join(', '),
+  backgroundSize: '24px 24px, auto',
+  border: '1px solid rgba(255,255,255,0.07)',
+  borderLeft: '2px solid rgba(44,83,100,0.55)',
+}
+
 // ── Featured card — Before the Race ──────────────────────────────────────────
 function FeaturedCard({ section }) {
   if (!section) return null
@@ -49,25 +94,15 @@ function FeaturedCard({ section }) {
   return (
     <div
       className="relative flex flex-col justify-between rounded-2xl overflow-hidden h-full"
-      style={{
-        background: 'rgba(9, 20, 28, 0.95)',
-        border: '1px solid rgba(255,255,255,0.07)',
-        borderLeft: '2px solid rgba(44,83,100,0.45)',
-        minHeight: 300,
-        padding: '32px 36px',
-      }}
+      style={{ ...CARD_BASE_STYLE, minHeight: 300, padding: '32px 36px' }}
     >
-      {/* Subtle corner glow */}
-      <div
-        className="absolute top-0 right-0 pointer-events-none"
-        style={{ width: 200, height: 200, background: 'radial-gradient(circle at top right, rgba(44,83,100,0.14) 0%, transparent 68%)' }}
-      />
+      <CardGlowOrb size={280} blur={50} offset={90} />
 
       <div className="relative z-10 flex flex-col gap-6 flex-1">
         {/* Small icon */}
         <div
           className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
-          style={{ background: 'rgba(44,83,100,0.2)', border: '1px solid rgba(44,83,100,0.35)', color: 'rgba(100,168,200,0.75)' }}
+          style={{ background: 'rgba(44,83,100,0.22)', border: '1px solid rgba(44,83,100,0.38)', color: 'rgba(100,168,200,0.75)' }}
         >
           <CalendarIcon />
         </div>
@@ -111,20 +146,16 @@ function GuideCard({ section, icon }) {
   return (
     <div
       className="relative flex flex-col justify-between rounded-2xl overflow-hidden flex-1"
-      style={{
-        background: 'rgba(9, 20, 28, 0.95)',
-        border: '1px solid rgba(255,255,255,0.07)',
-        borderLeft: '2px solid rgba(44,83,100,0.35)',
-        padding: '22px 24px',
-        minHeight: 148,
-      }}
+      style={{ ...CARD_BASE_STYLE, padding: '22px 24px', minHeight: 148 }}
     >
-      <div className="flex flex-col gap-3">
+      <CardGlowOrb size={170} blur={32} offset={55} />
+
+      <div className="relative z-10 flex flex-col gap-3">
         {/* Icon + title on same row */}
         <div className="flex items-center gap-3">
           <div
             className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0"
-            style={{ background: 'rgba(44,83,100,0.2)', border: '1px solid rgba(44,83,100,0.35)', color: 'rgba(100,168,200,0.75)' }}
+            style={{ background: 'rgba(44,83,100,0.22)', border: '1px solid rgba(44,83,100,0.38)', color: 'rgba(100,168,200,0.75)' }}
           >
             {icon}
           </div>
@@ -141,7 +172,7 @@ function GuideCard({ section, icon }) {
       </div>
 
       {/* Tips link */}
-      <div className="mt-4">
+      <div className="relative z-10 mt-4">
         <button
           className="flex items-center gap-1.5 text-[10px] font-extrabold uppercase tracking-[2px] cursor-default"
           style={{ color: 'rgba(100,168,200,0.62)' }}
