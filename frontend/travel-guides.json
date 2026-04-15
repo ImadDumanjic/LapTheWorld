@@ -1,0 +1,607 @@
+[
+  {
+    "slug": "canada",
+    "title": "Canadian Grand Prix",
+    "country": "Canada",
+    "city": "Montreal",
+    "circuit": "Circuit Gilles Villeneuve",
+    "coordinates": {
+      "lat": 45.5006,
+      "lng": -73.5228
+    },
+    "circuitInfo": {
+      "laps": 70,
+      "length_km": 4.361,
+      "drs_zones": 3,
+      "first_gp": 1978
+    },
+    "weather": {
+      "location": "Montreal, Canada"
+    },
+    "guideSections": {
+      "beforeRace": {
+        "title": "Before the Race",
+        "description": "Explore Montreal, walk around the island, and get ready for one of the most exciting race weekends in North America.",
+        "tips": [
+          "Explore Old Montreal before race weekend crowds peak",
+          "Walk around Parc Jean-Drapeau and the circuit area",
+          "Book restaurants early as the city gets very busy",
+          "Check metro and shuttle routes to the circuit in advance",
+          "Visit fan zones and official merchandise areas early"
+        ]
+      },
+      "duringRace": {
+        "title": "During the Race",
+        "description": "Enjoy high-speed action, heavy braking zones, and one of the best atmospheres on the calendar.",
+        "tips": [
+          "Watch the hairpin for strong overtaking opportunities",
+          "Keep an eye on the Wall of Champions section",
+          "Arrive early to avoid long entry queues",
+          "Use the official F1 app for timings and updates",
+          "Stay hydrated and prepared for changing weather"
+        ]
+      },
+      "travelAdvice": {
+        "title": "Travel Advice",
+        "description": "Montreal is one of the easiest Grands Prix to navigate, but planning ahead still makes a big difference.",
+        "tips": [
+          "Fly into Montréal–Trudeau International Airport",
+          "Use the metro for the easiest route to the circuit",
+          "Stay in central Montreal for the best overall experience",
+          "Pack a light rain jacket as weather can change quickly",
+          "Avoid driving to the circuit if possible"
+        ]
+      }
+    }
+  },
+  {
+    "slug": "monaco",
+    "title": "Monaco Grand Prix",
+    "country": "Monaco",
+    "city": "Monte Carlo",
+    "circuit": "Circuit de Monaco",
+    "coordinates": {
+      "lat": 43.7347,
+      "lng": 7.4206
+    },
+    "circuitInfo": {
+      "laps": 78,
+      "length_km": 3.337,
+      "drs_zones": 1,
+      "first_gp": 1950
+    },
+    "weather": {
+      "location": "Monaco"
+    },
+    "guideSections": {
+      "beforeRace": {
+        "title": "Before the Race",
+        "description": "Discover Monaco before race day by exploring the streets, harbor, and famous landmarks around the circuit.",
+        "tips": [
+          "Walk the circuit streets before race activity fully ramps up",
+          "Visit Casino Square and the surrounding luxury district",
+          "Explore Port Hercules and the marina area",
+          "Book dining reservations early as Monaco fills up fast",
+          "Scout your viewing and walking routes ahead of race day"
+        ]
+      },
+      "duringRace": {
+        "title": "During the Race",
+        "description": "Take in the glamour, precision, and intensity of Formula 1's most iconic street race.",
+        "tips": [
+          "Arrive early because access routes become crowded quickly",
+          "Watch Sainte Devote and the harbor section for key moments",
+          "Use ear protection for long sessions trackside",
+          "Keep water with you throughout the day",
+          "Follow live timing to better understand strategy changes"
+        ]
+      },
+      "travelAdvice": {
+        "title": "Travel Advice",
+        "description": "Monaco is compact but very crowded during Grand Prix weekend, so smart transport planning is essential.",
+        "tips": [
+          "Fly into Nice Côte d'Azur Airport",
+          "Take the train from Nice to Monaco for the easiest access",
+          "Avoid driving because parking is extremely limited",
+          "Stay in Nice or nearby towns if Monaco prices are too high",
+          "Wear comfortable shoes because there is a lot of walking"
+        ]
+      }
+    }
+  },
+  {
+    "slug": "british",
+    "title": "British Grand Prix",
+    "country": "United Kingdom",
+    "city": "Silverstone",
+    "circuit": "Silverstone Circuit",
+    "coordinates": {
+      "lat": 52.0786,
+      "lng": -1.0169
+    },
+    "circuitInfo": {
+      "laps": 52,
+      "length_km": 5.891,
+      "drs_zones": 2,
+      "first_gp": 1950
+    },
+    "weather": {
+      "location": "Silverstone, UK"
+    },
+    "guideSections": {
+      "beforeRace": {
+        "title": "Before the Race",
+        "description": "Prepare for a classic motorsport weekend at one of Formula 1's fastest and most historic venues.",
+        "tips": [
+          "Visit the Silverstone Museum before race day",
+          "Check weather forecasts constantly because conditions can shift fast",
+          "Plan parking or shuttle transport early",
+          "Bring layers even if the forecast looks mild",
+          "Explore fan zones and support series schedules in advance"
+        ]
+      },
+      "duringRace": {
+        "title": "During the Race",
+        "description": "Enjoy a huge crowd, high-speed corners, and one of the best atmospheres in Formula 1.",
+        "tips": [
+          "Watch Maggots, Becketts, and Chapel for spectacular speed",
+          "Arrive early to beat traffic and long entry queues",
+          "Pack a waterproof layer even on sunny mornings",
+          "Use binoculars or a radio app to follow action around the lap",
+          "Stay warm late in the day as temperatures can drop"
+        ]
+      },
+      "travelAdvice": {
+        "title": "Travel Advice",
+        "description": "Silverstone is not in a major city, so transport and accommodation planning matter more than usual.",
+        "tips": [
+          "Fly into London airports for the easiest international access",
+          "Use official shuttle services if available",
+          "Book accommodation early in nearby towns",
+          "Expect road congestion before and after each session",
+          "Renting a car can help, but arrive very early if you drive"
+        ]
+      }
+    }
+  },
+  {
+    "slug": "belgium",
+    "title": "Belgian Grand Prix",
+    "country": "Belgium",
+    "city": "Spa",
+    "circuit": "Spa-Francorchamps",
+    "coordinates": {
+      "lat": 50.4372,
+      "lng": 5.9714
+    },
+    "circuitInfo": {
+      "laps": 44,
+      "length_km": 7.004,
+      "drs_zones": 2,
+      "first_gp": 1950
+    },
+    "weather": {
+      "location": "Spa, Belgium"
+    },
+    "guideSections": {
+      "beforeRace": {
+        "title": "Before the Race",
+        "description": "Get ready for one of the most loved circuits in the world, surrounded by forests and unpredictable weather.",
+        "tips": [
+          "Explore the Ardennes region before the crowds build",
+          "Pack for sun, wind, and rain all in one weekend",
+          "Review circuit map carefully because Spa is very large",
+          "Choose grandstands or general admission spots ahead of time",
+          "Arrive early if you want to walk to elevated viewing points"
+        ]
+      },
+      "duringRace": {
+        "title": "During the Race",
+        "description": "Expect dramatic elevation, legendary corners, and weather that can change from one sector to another.",
+        "tips": [
+          "Watch Eau Rouge and Raidillon for the most iconic views",
+          "Bring waterproof clothing even if the morning is dry",
+          "Wear proper footwear because terrain can get muddy",
+          "Monitor live timing closely as strategy can change quickly",
+          "Leave extra time for moving around the circuit"
+        ]
+      },
+      "travelAdvice": {
+        "title": "Travel Advice",
+        "description": "Spa is more remote than many Formula 1 venues, so good planning makes the weekend much easier.",
+        "tips": [
+          "Fly into Brussels or nearby regional airports",
+          "Rent a car if you want the most flexibility",
+          "Stay near Spa, Stavelot, or Malmedy if possible",
+          "Pack waterproof shoes and warm layers",
+          "Expect longer travel times than city-based races"
+        ]
+      }
+    }
+  },
+  {
+    "slug": "italy",
+    "title": "Italian Grand Prix",
+    "country": "Italy",
+    "city": "Monza",
+    "circuit": "Autodromo Nazionale Monza",
+    "coordinates": {
+      "lat": 45.6156,
+      "lng": 9.2811
+    },
+    "circuitInfo": {
+      "laps": 53,
+      "length_km": 5.793,
+      "drs_zones": 2,
+      "first_gp": 1950
+    },
+    "weather": {
+      "location": "Monza, Italy"
+    },
+    "guideSections": {
+      "beforeRace": {
+        "title": "Before the Race",
+        "description": "Soak in the atmosphere of Formula 1's Temple of Speed and explore the park and city surroundings.",
+        "tips": [
+          "Visit Monza Park before race sessions begin",
+          "Explore Milan if you are staying nearby",
+          "Plan your entrance gate and walking route early",
+          "Book train tickets and accommodation in advance",
+          "Check fan events around the circuit before the weekend"
+        ]
+      },
+      "duringRace": {
+        "title": "During the Race",
+        "description": "Feel the speed, energy, and passion of one of Formula 1's most historic weekends.",
+        "tips": [
+          "Watch the Rettifilo chicane for overtaking action",
+          "Arrive very early because entry lines can get long",
+          "Bring sun protection as open areas can be very hot",
+          "Stay aware of long walking distances inside the venue",
+          "Enjoy the podium atmosphere if you can stay after the race"
+        ]
+      },
+      "travelAdvice": {
+        "title": "Travel Advice",
+        "description": "Monza is easier to reach than it first appears, especially if you stay in Milan and use public transport.",
+        "tips": [
+          "Fly into Milan airports for best access",
+          "Use trains from Milan to Monza where possible",
+          "Avoid relying fully on driving and parking",
+          "Stay in Milan for more hotel options",
+          "Wear comfortable shoes because the venue involves a lot of walking"
+        ]
+      }
+    }
+  },
+  {
+    "slug": "singapore",
+    "title": "Singapore Grand Prix",
+    "country": "Singapore",
+    "city": "Singapore",
+    "circuit": "Marina Bay Street Circuit",
+    "coordinates": {
+      "lat": 1.2914,
+      "lng": 103.8644
+    },
+    "circuitInfo": {
+      "laps": 62,
+      "length_km": 4.94,
+      "drs_zones": 3,
+      "first_gp": 2008
+    },
+    "weather": {
+      "location": "Singapore"
+    },
+    "guideSections": {
+      "beforeRace": {
+        "title": "Before the Race",
+        "description": "Prepare for a unique night race by exploring Marina Bay and adjusting to the city's heat and humidity.",
+        "tips": [
+          "Spend time around Marina Bay before race crowds build up",
+          "Plan rest and hydration because humidity is intense",
+          "Book nearby hotels early for easy access",
+          "Check gate access and walking routes before heading out",
+          "Explore Gardens by the Bay and surrounding attractions early"
+        ]
+      },
+      "duringRace": {
+        "title": "During the Race",
+        "description": "Experience the lights, heat, and atmosphere of Formula 1's signature night event.",
+        "tips": [
+          "Wear breathable clothing because conditions stay humid late",
+          "Arrive before sunset to avoid heavier entry traffic",
+          "Use public transport as the easiest option",
+          "Watch slower corners for the best close-up action",
+          "Keep a portable charger with you for a long evening"
+        ]
+      },
+      "travelAdvice": {
+        "title": "Travel Advice",
+        "description": "Singapore is one of the easiest Formula 1 cities to navigate, but race-weekend planning still helps a lot.",
+        "tips": [
+          "Fly into Changi Airport for direct city access",
+          "Use MRT and walking routes instead of taxis where possible",
+          "Stay near Marina Bay if budget allows",
+          "Pack light clothing and a small umbrella",
+          "Expect race-related road closures in the city center"
+        ]
+      }
+    }
+  },
+  {
+    "slug": "azerbaijan",
+    "title": "Azerbaijan Grand Prix",
+    "country": "Azerbaijan",
+    "city": "Baku",
+    "circuit": "Baku City Circuit",
+    "coordinates": {
+      "lat": 40.3725,
+      "lng": 49.8533
+    },
+    "circuitInfo": {
+      "laps": 51,
+      "length_km": 6.003,
+      "drs_zones": 2,
+      "first_gp": 2017
+    },
+    "weather": {
+      "location": "Baku, Azerbaijan"
+    },
+    "guideSections": {
+      "beforeRace": {
+        "title": "Before the Race",
+        "description": "Explore Baku's mix of old city charm and modern waterfront before the action begins.",
+        "tips": [
+          "Walk through the Old City before race-day closures intensify",
+          "Visit the Baku Boulevard and waterfront area",
+          "Plan your gate entry and walking route ahead of time",
+          "Book restaurants and hotels near the center early",
+          "Check circuit maps because the venue spreads through the city"
+        ]
+      },
+      "duringRace": {
+        "title": "During the Race",
+        "description": "Enjoy one of Formula 1's fastest street circuits with dramatic braking zones and long flat-out sections.",
+        "tips": [
+          "Watch the castle section for one of the circuit's most unique views",
+          "Follow the long straight for high-speed drama",
+          "Arrive early to move through city security and access points smoothly",
+          "Carry water and sun protection during daytime sessions",
+          "Use live timing to follow incidents and strategy swings"
+        ]
+      },
+      "travelAdvice": {
+        "title": "Travel Advice",
+        "description": "Baku is relatively easy to navigate once you stay close to the city center and plan around closures.",
+        "tips": [
+          "Fly into Heydar Aliyev International Airport",
+          "Stay in central Baku for easiest circuit access",
+          "Walk whenever possible because many areas are close together",
+          "Expect road closures and access controls near the circuit",
+          "Pack both light clothing and a layer for breezier evenings"
+        ]
+      }
+    }
+  },
+  {
+    "slug": "usa",
+    "title": "United States Grand Prix",
+    "country": "USA",
+    "city": "Austin",
+    "circuit": "Circuit of the Americas",
+    "coordinates": {
+      "lat": 30.1328,
+      "lng": -97.6411
+    },
+    "circuitInfo": {
+      "laps": 56,
+      "length_km": 5.513,
+      "drs_zones": 2,
+      "first_gp": 2012
+    },
+    "weather": {
+      "location": "Austin, Texas"
+    },
+    "guideSections": {
+      "beforeRace": {
+        "title": "Before the Race",
+        "description": "Get ready for a big American race weekend with live entertainment, food, and a huge crowd atmosphere.",
+        "tips": [
+          "Explore downtown Austin before race-day traffic begins",
+          "Plan transport to COTA well in advance",
+          "Check support race and concert schedules early",
+          "Book accommodation early because the city gets busy fast",
+          "Pack for sun and heat during daytime sessions"
+        ]
+      },
+      "duringRace": {
+        "title": "During the Race",
+        "description": "Enjoy elevation changes, strong overtaking spots, and a festival-like Formula 1 atmosphere.",
+        "tips": [
+          "Watch Turn 1 for one of the best first-lap views in F1",
+          "Stay hydrated because temperatures can stay high",
+          "Use shaded areas during long session gaps",
+          "Wear comfortable shoes for moving around the circuit",
+          "Arrive early to beat long entry and parking queues"
+        ]
+      },
+      "travelAdvice": {
+        "title": "Travel Advice",
+        "description": "Austin is a great destination city, but reaching the circuit is easier when you plan every step ahead.",
+        "tips": [
+          "Fly into Austin-Bergstrom International Airport",
+          "Use official shuttles if available",
+          "Stay in Austin for the best off-track experience",
+          "Leave early for the circuit to avoid traffic delays",
+          "Bring sunscreen, a hat, and a refillable water bottle"
+        ]
+      }
+    }
+  },
+  {
+    "slug": "brazil",
+    "title": "Brazilian Grand Prix",
+    "country": "Brazil",
+    "city": "Sao Paulo",
+    "circuit": "Interlagos",
+    "coordinates": {
+      "lat": -23.7036,
+      "lng": -46.6997
+    },
+    "circuitInfo": {
+      "laps": 71,
+      "length_km": 4.309,
+      "drs_zones": 2,
+      "first_gp": 1973
+    },
+    "weather": {
+      "location": "Sao Paulo, Brazil"
+    },
+    "guideSections": {
+      "beforeRace": {
+        "title": "Before the Race",
+        "description": "Prepare for a passionate race weekend at one of Formula 1's most intense and beloved circuits.",
+        "tips": [
+          "Plan your route to Interlagos carefully before race morning",
+          "Stay updated on local travel advice and timing",
+          "Book accommodation with transport convenience in mind",
+          "Explore key areas of São Paulo before the weekend gets hectic",
+          "Check grandstand options early because views vary a lot"
+        ]
+      },
+      "duringRace": {
+        "title": "During the Race",
+        "description": "Feel the energy of one of the loudest and most emotional crowds in the sport.",
+        "tips": [
+          "Watch Senna S and the main straight for major moments",
+          "Prepare for changing weather conditions",
+          "Arrive early and follow event security guidance",
+          "Keep essentials with you and travel light",
+          "Use live timing because race strategy can swing quickly here"
+        ]
+      },
+      "travelAdvice": {
+        "title": "Travel Advice",
+        "description": "São Paulo takes planning, but the race experience at Interlagos is unforgettable when organized well.",
+        "tips": [
+          "Fly into São Paulo's major airports depending on your route",
+          "Choose accommodation with trusted transport options",
+          "Leave extra travel time for circuit access",
+          "Pack for both sun and possible rain",
+          "Coordinate transport in advance rather than deciding on the day"
+        ]
+      }
+    }
+  },
+  {
+    "slug": "las-vegas",
+    "title": "Las Vegas Grand Prix",
+    "country": "USA",
+    "city": "Las Vegas",
+    "circuit": "Las Vegas Strip Circuit",
+    "coordinates": {
+      "lat": 36.1147,
+      "lng": -115.1728
+    },
+    "circuitInfo": {
+      "laps": 50,
+      "length_km": 6.201,
+      "drs_zones": 2,
+      "first_gp": 2023
+    },
+    "weather": {
+      "location": "Las Vegas, Nevada"
+    },
+    "guideSections": {
+      "beforeRace": {
+        "title": "Before the Race",
+        "description": "Get ready for a night spectacle on the Strip with a race weekend built around entertainment and atmosphere.",
+        "tips": [
+          "Explore the Strip before race-related closures increase",
+          "Check your access routes and walking plans early",
+          "Book dinner and entertainment reservations well ahead",
+          "Rest during the day because race activities run late",
+          "Plan where you want to watch skyline and track views"
+        ]
+      },
+      "duringRace": {
+        "title": "During the Race",
+        "description": "Experience Formula 1 under the lights in one of the most unique settings on the calendar.",
+        "tips": [
+          "Dress for cooler desert night temperatures",
+          "Arrive early because movement around the Strip can take longer than expected",
+          "Use live timing to follow action beyond your viewing point",
+          "Keep your phone charged for tickets, maps, and updates",
+          "Expect a very different atmosphere from traditional circuits"
+        ]
+      },
+      "travelAdvice": {
+        "title": "Travel Advice",
+        "description": "Las Vegas is easy to reach, but race-weekend access depends heavily on timing and location planning.",
+        "tips": [
+          "Fly into Harry Reid International Airport",
+          "Stay on or near the Strip for the best access",
+          "Walk whenever possible instead of relying on cars",
+          "Pack a light jacket for late-night sessions",
+          "Review road closures and access zones before each day"
+        ]
+      }
+    }
+  },
+  {
+    "slug": "uae",
+    "title": "Abu Dhabi Grand Prix",
+    "country": "UAE",
+    "city": "Abu Dhabi",
+    "circuit": "Yas Marina Circuit",
+    "coordinates": {
+      "lat": 24.4672,
+      "lng": 54.6031
+    },
+    "circuitInfo": {
+      "laps": 58,
+      "length_km": 5.281,
+      "drs_zones": 2,
+      "first_gp": 2009
+    },
+    "weather": {
+      "location": "Abu Dhabi, UAE"
+    },
+    "guideSections": {
+      "beforeRace": {
+        "title": "Before the Race",
+        "description": "Enjoy Yas Island and prepare for a season-ending race weekend with a polished event experience.",
+        "tips": [
+          "Explore Yas Island attractions before race sessions begin",
+          "Plan access routes between hotel, shuttle points, and circuit",
+          "Book restaurants and post-race plans in advance",
+          "Check event schedules for concerts and support series",
+          "Pack light clothing for warm daytime conditions"
+        ]
+      },
+      "duringRace": {
+        "title": "During the Race",
+        "description": "Take in a sunset-to-night race and the atmosphere of Formula 1's traditional season finale.",
+        "tips": [
+          "Arrive before sunset to enjoy the full visual transition",
+          "Watch braking zones for overtaking opportunities",
+          "Stay hydrated even as temperatures cool in the evening",
+          "Use venue maps because Yas Marina has multiple activity areas",
+          "Plan your exit carefully if you stay for post-race events"
+        ]
+      },
+      "travelAdvice": {
+        "title": "Travel Advice",
+        "description": "Abu Dhabi is one of the smoother race weekends to manage when you stay close to Yas Island and plan transport well.",
+        "tips": [
+          "Fly into Abu Dhabi International Airport",
+          "Stay on Yas Island for maximum convenience",
+          "Use official transport and hotel shuttles where possible",
+          "Pack for hot days and milder evenings",
+          "Combine race weekend with nearby attractions if you have extra time"
+        ]
+      }
+    }
+  }
+]
