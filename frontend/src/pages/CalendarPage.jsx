@@ -1,7 +1,39 @@
 import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import useStandings from '../hooks/useStandings'
 import { fetchRaceCalendar } from '../services/calendarService'
 import { getFlagUrl } from '../components/calendar/countryFlags'
+
+// ─── Travel guide slug map ────────────────────────────────────────────────────
+// Keyed by race.raceName (Ergast/Jolpica API value — stable across seasons).
+// Only races that have a matching entry in travel-guides.json are listed here.
+// getTravelGuideSlug returns null for any race not in this map, which causes
+// the card to render as a plain non-navigable div (fail gracefully).
+const RACE_SLUG_MAP = {
+  'Canadian Grand Prix':      'canada',
+  'Monaco Grand Prix':        'monaco',
+  'British Grand Prix':       'british',
+  'Belgian Grand Prix':       'belgium',
+  'Italian Grand Prix':       'italy',
+  'Singapore Grand Prix':     'singapore',
+  'Azerbaijan Grand Prix':    'azerbaijan',
+  'United States Grand Prix': 'usa',
+  'Brazilian Grand Prix':     'brazil',
+  'Las Vegas Grand Prix':     'las-vegas',
+  'Abu Dhabi Grand Prix':     'uae',
+}
+
+function getTravelGuideSlug(race) {
+  return RACE_SLUG_MAP[race.raceName] ?? null
+}
+
+// ─── Card link wrapper ────────────────────────────────────────────────────────
+// Renders a react-router Link when `to` is provided; falls back to a plain
+// fragment so card markup is never duplicated.
+function CardLink({ to, children }) {
+  if (to) return <Link to={to} className="block">{children}</Link>
+  return <>{children}</>
+}
 
 
 function getRaceDateTime(race) {
@@ -60,10 +92,12 @@ function RaceCard({ race, now, isNext }) {
   const locality    = race.Circuit.Location.locality
   const circuitName = race.Circuit.circuitName
   const flagUrl     = getFlagUrl(country)
+  const guideSlug   = getTravelGuideSlug(race)
 
   return (
+    <CardLink to={guideSlug ? `/travel-guide/${guideSlug}` : null}>
     <div
-      className="relative overflow-hidden rounded-xl h-[340px] border border-white/[0.06] group"
+      className={`relative overflow-hidden rounded-xl h-[340px] border border-white/[0.06] group${guideSlug ? ' cursor-pointer' : ''}`}
       style={isNext ? {
         // Reuse the exact same glow treatment as the login form container in AuthPage
         boxShadow: '0 0 0 3px #2C5364, 0 0 15px 3px rgba(44,83,100,0.6), 0 0 35px 8px rgba(44,83,100,0.3), 0 0 70px 15px rgba(44,83,100,0.1)',
@@ -167,9 +201,19 @@ function RaceCard({ race, now, isNext }) {
               <CountdownUnit value={seconds} label="Sec"  accent />
             </div>
           )}
+
+          {guideSlug && (
+            <p
+              className="mt-3 text-[8px] font-extrabold uppercase tracking-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+              style={{ color: 'rgba(100,168,200,0.85)' }}
+            >
+              View Travel Guide →
+            </p>
+          )}
         </div>
       </div>
     </div>
+    </CardLink>
   )
 }
 
