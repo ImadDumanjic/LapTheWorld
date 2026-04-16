@@ -1,3 +1,5 @@
+import { useState } from 'react'
+
 // ── Icons ─────────────────────────────────────────────────────────────────────
 function CalendarIcon() {
   return (
@@ -36,33 +38,117 @@ function ChevronDownIcon() {
   )
 }
 
+// ── CardShell — shared visual foundation for all guide cards ──────────────────
+// Provides: gradient bg, blurred orb, dot texture, inset top-highlight, hover glow.
+// Both FeaturedCard and GuideCard render through this — only padding/minHeight differ.
+function CardShell({ children, className = '', style = {}, onClick }) {
+  return (
+    <div
+      onClick={onClick}
+      className={`group relative rounded-2xl overflow-hidden cursor-pointer ${className}`}
+      style={{
+        background: 'linear-gradient(145deg, rgba(10,26,38,0.98) 0%, rgba(5,14,22,0.99) 100%)',
+        border: '1px solid rgba(255,255,255,0.07)',
+        borderLeft: '2px solid rgba(44,83,100,0.42)',
+        boxShadow: 'inset 0 1px 0 rgba(100,168,200,0.09)',
+        ...style,
+      }}
+    >
+      {/* Blurred orb — top-right corner */}
+      <div
+        className="absolute pointer-events-none"
+        style={{
+          top: -50,
+          right: -50,
+          width: 240,
+          height: 240,
+          borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(44,83,100,0.52) 0%, transparent 70%)',
+          filter: 'blur(52px)',
+        }}
+      />
+
+      {/* Dot grid texture */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.028) 1px, transparent 1px)',
+          backgroundSize: '22px 22px',
+        }}
+      />
+
+      {/* Hover inner border glow */}
+      <div
+        className="absolute inset-0 rounded-2xl pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+        style={{ boxShadow: 'inset 0 0 0 1px rgba(44,83,100,0.3)' }}
+      />
+
+      {children}
+    </div>
+  )
+}
+
+// ── Expandable tips list ───────────────────────────────────────────────────────
+function TipsList({ tips, isOpen }) {
+  return (
+    <div
+      style={{
+        display: 'grid',
+        gridTemplateRows: isOpen ? '1fr' : '0fr',
+        transition: 'grid-template-rows 360ms cubic-bezier(0.4, 0, 0.2, 1)',
+      }}
+    >
+      <div style={{ overflow: 'hidden' }}>
+        <div
+          style={{
+            paddingTop: 20,
+            opacity: isOpen ? 1 : 0,
+            transition: `opacity ${isOpen ? '260ms' : '120ms'} ease`,
+            transitionDelay: isOpen ? '140ms' : '0ms',
+          }}
+        >
+          <div style={{ borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: 16 }}>
+            <ol className="flex flex-col gap-3">
+              {tips.map((tip, i) => (
+                <li key={i} className="flex gap-3 items-start">
+                  <span
+                    className="text-[10px] font-extrabold tabular-nums flex-shrink-0"
+                    style={{ color: 'rgba(44,83,100,0.85)', lineHeight: '1.6', minWidth: 20 }}
+                  >
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                  <span
+                    className="text-[12px] leading-relaxed"
+                    style={{ color: 'rgba(255,255,255,0.52)' }}
+                  >
+                    {tip}
+                  </span>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 // ── Featured card — Before the Race ──────────────────────────────────────────
 function FeaturedCard({ section }) {
+  const [isOpen, setIsOpen] = useState(false)
   if (!section) return null
-  const tipCount = section.tips?.length ?? 0
 
-  // Split "Before the Race" → ["Before", "the Race"]
+  const tips    = section.tips ?? []
   const words   = (section.title ?? '').split(' ')
   const lineOne = words[0] ?? ''
   const lineTwo = words.slice(1).join(' ')
 
   return (
-    <div
-      className="relative flex flex-col justify-between rounded-2xl overflow-hidden h-full"
-      style={{
-        background: 'rgba(9, 20, 28, 0.95)',
-        border: '1px solid rgba(255,255,255,0.07)',
-        borderLeft: '2px solid rgba(44,83,100,0.45)',
-        minHeight: 300,
-        padding: '32px 36px',
-      }}
+    <CardShell
+      onClick={() => setIsOpen(o => !o)}
+      className="flex flex-col justify-between"
+      style={{ minHeight: 300, padding: '32px 36px' }}
     >
-      {/* Subtle corner glow */}
-      <div
-        className="absolute top-0 right-0 pointer-events-none"
-        style={{ width: 200, height: 200, background: 'radial-gradient(circle at top right, rgba(44,83,100,0.14) 0%, transparent 68%)' }}
-      />
-
       <div className="relative z-10 flex flex-col gap-6 flex-1">
         {/* Small icon */}
         <div
@@ -87,39 +173,45 @@ function FeaturedCard({ section }) {
             {section.description}
           </p>
         )}
+
+        {/* Expandable tips */}
+        {tips.length > 0 && <TipsList tips={tips} isOpen={isOpen} />}
       </div>
 
-      {/* Tips link */}
+      {/* Toggle row */}
       <div className="relative z-10 mt-6">
         <button
-          className="flex items-center gap-1.5 text-[10px] font-extrabold uppercase tracking-[2px] cursor-default"
+          onClick={e => { e.stopPropagation(); setIsOpen(o => !o) }}
+          className="flex items-center gap-1.5 text-[10px] font-extrabold uppercase tracking-[2px] focus:outline-none focus:ring-0"
           style={{ color: 'rgba(100,168,200,0.7)' }}
         >
-          {tipCount} tips inside
-          <ChevronDownIcon />
+          {tips.length} tips inside
+          <span
+            className="inline-flex transition-transform duration-300 ease-in-out"
+            style={{ transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}
+          >
+            <ChevronDownIcon />
+          </span>
         </button>
       </div>
-    </div>
+    </CardShell>
   )
 }
 
 // ── Smaller card — During Race / Travel Advice ────────────────────────────────
 function GuideCard({ section, icon }) {
+  const [isOpen, setIsOpen] = useState(false)
   if (!section) return null
-  const tipCount = section.tips?.length ?? 0
+
+  const tips = section.tips ?? []
 
   return (
-    <div
-      className="relative flex flex-col justify-between rounded-2xl overflow-hidden flex-1"
-      style={{
-        background: 'rgba(9, 20, 28, 0.95)',
-        border: '1px solid rgba(255,255,255,0.07)',
-        borderLeft: '2px solid rgba(44,83,100,0.35)',
-        padding: '22px 24px',
-        minHeight: 148,
-      }}
+    <CardShell
+      onClick={() => setIsOpen(o => !o)}
+      className="flex flex-col justify-between"
+      style={{ padding: '22px 24px', minHeight: 148 }}
     >
-      <div className="flex flex-col gap-3">
+      <div className="relative z-10 flex flex-col gap-3">
         {/* Icon + title on same row */}
         <div className="flex items-center gap-3">
           <div
@@ -138,19 +230,28 @@ function GuideCard({ section, icon }) {
             {section.description}
           </p>
         )}
+
+        {/* Expandable tips */}
+        {tips.length > 0 && <TipsList tips={tips} isOpen={isOpen} />}
       </div>
 
-      {/* Tips link */}
-      <div className="mt-4">
+      {/* Toggle row */}
+      <div className="relative z-10 mt-4">
         <button
-          className="flex items-center gap-1.5 text-[10px] font-extrabold uppercase tracking-[2px] cursor-default"
+          onClick={e => { e.stopPropagation(); setIsOpen(o => !o) }}
+          className="flex items-center gap-1.5 text-[10px] font-extrabold uppercase tracking-[2px] focus:outline-none focus:ring-0"
           style={{ color: 'rgba(100,168,200,0.62)' }}
         >
-          {tipCount} tips inside
-          <ChevronDownIcon />
+          {tips.length} tips inside
+          <span
+            className="inline-flex transition-transform duration-300 ease-in-out"
+            style={{ transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}
+          >
+            <ChevronDownIcon />
+          </span>
         </button>
       </div>
-    </div>
+    </CardShell>
   )
 }
 
@@ -180,18 +281,18 @@ export default function RaceWeekendGuideSection({ guide }) {
     <section>
       <SectionTitle title="Your Race Weekend Guide" />
 
-      {/* Layout: featured card (58%) + two stacked cards (42%) */}
-      <div className="flex flex-col lg:flex-row gap-4">
+      {/* Layout: featured card (2/3) + two stacked cards (1/3) */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
         {/* Featured — Before the Race */}
-        <div className="lg:w-[58%]">
+        <div className="lg:col-span-2">
           <FeaturedCard section={beforeRace} />
         </div>
 
         {/* Stacked — During Race + Travel Advice */}
-        <div className="lg:w-[42%] flex flex-col gap-4">
-          <GuideCard section={duringRace}    icon={<FlagIcon />}    />
-          <GuideCard section={travelAdvice}  icon={<CompassIcon />} />
+        <div className="lg:col-span-1 flex flex-col gap-6">
+          <GuideCard section={duringRace}   icon={<FlagIcon />}    />
+          <GuideCard section={travelAdvice} icon={<CompassIcon />} />
         </div>
 
       </div>
