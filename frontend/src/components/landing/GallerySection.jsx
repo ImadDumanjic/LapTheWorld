@@ -43,6 +43,7 @@ const CARDS = [
     title: 'Everything You Need. One Place.',
     subtitle: 'Grand Prix Travel Guide',
     align: 'left',
+    to: '/travel-guide',
   },
 ]
 

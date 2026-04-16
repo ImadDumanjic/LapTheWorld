@@ -6,7 +6,7 @@ const NAV_ITEMS = [
   { label: 'Standings',       to: '/championship' },
   { label: 'Calendar',        to: '/calendar' },
   { label: 'Live Timing',     to: '#' },
-  { label: 'GP Travel Guide', to: '/travel-guide/monaco' },
+  { label: 'GP Travel Guide', to: '/travel-guide' },
   { label: 'Profile',         to: '/profile' },
 ]
 
