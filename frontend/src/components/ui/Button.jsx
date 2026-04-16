@@ -12,4 +12,3 @@ function Button({ children, onClick, type = 'button', disabled = false }) {
 }
 
 export default Button
-export { Button }

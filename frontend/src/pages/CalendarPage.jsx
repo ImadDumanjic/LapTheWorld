@@ -1,39 +1,7 @@
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
 import useStandings from '../hooks/useStandings'
 import { fetchRaceCalendar } from '../services/calendarService'
 import { getFlagUrl } from '../components/calendar/countryFlags'
-
-// Maps API country + locality → travel guide slug.
-// USA has two circuits so locality breaks the tie.
-const USA_LOCALITY_SLUG = {
-  'Austin':    'usa',
-  'Las Vegas': 'las-vegas',
-}
-
-const COUNTRY_SLUG = {
-  'Canada':                'canada',
-  'Monaco':                'monaco',
-  'UK':                    'british',
-  'Great Britain':         'british',
-  'United Kingdom':        'british',
-  'Belgium':               'belgium',
-  'Italy':                 'italy',
-  'Singapore':             'singapore',
-  'Azerbaijan':            'azerbaijan',
-  'Brazil':                'brazil',
-  'UAE':                   'uae',
-  'United Arab Emirates':  'uae',
-}
-
-function getTravelGuideSlug(race) {
-  const country  = race.Circuit.Location.country
-  const locality = race.Circuit.Location.locality
-  if (country === 'United States' || country === 'USA') {
-    return USA_LOCALITY_SLUG[locality] ?? null
-  }
-  return COUNTRY_SLUG[country] ?? null
-}
 
 
 function getRaceDateTime(race) {
@@ -86,23 +54,22 @@ function CountdownUnit({ value, label, accent }) {
 // ─── Race card ────────────────────────────────────────────────────────────────
 
 function RaceCard({ race, now, isNext }) {
-  const navigate = useNavigate()
-  const raceDate  = getRaceDateTime(race)
+  const raceDate = getRaceDateTime(race)
   const { finished, days, hours, minutes, seconds } = getCountdown(raceDate, now)
   const country     = race.Circuit.Location.country
   const locality    = race.Circuit.Location.locality
   const circuitName = race.Circuit.circuitName
   const flagUrl     = getFlagUrl(country)
-  const slug        = getTravelGuideSlug(race)
 
   return (
     <div
-      className={`relative overflow-hidden rounded-xl h-[340px] border border-white/[0.06] group${slug ? ' cursor-pointer' : ''}`}
+      className="relative overflow-hidden rounded-xl h-[340px] border border-white/[0.06] group"
       style={isNext ? {
+        // Reuse the exact same glow treatment as the login form container in AuthPage
         boxShadow: '0 0 0 3px #2C5364, 0 0 15px 3px rgba(44,83,100,0.6), 0 0 35px 8px rgba(44,83,100,0.3), 0 0 70px 15px rgba(44,83,100,0.1)',
       } : undefined}
-      onClick={slug ? () => navigate(`/travel-guide/${slug}`) : undefined}
     >
+
       {/* Flag background */}
       {flagUrl ? (
         <img
@@ -127,6 +94,7 @@ function RaceCard({ race, now, isNext }) {
       {finished && (
         <>
           <div className="absolute inset-0" style={{ background: 'rgba(0,0,0,0.22)' }} />
+          {/* Slim finish-line strip — motorsport-inspired, positioned across the card mid-section */}
           <div
             className="absolute left-0 right-0"
             style={{
@@ -146,70 +114,53 @@ function RaceCard({ race, now, isNext }) {
         </>
       )}
 
-      {/* Teal hover wash — always in DOM so z-index layering is stable */}
-      <div
-        className={`absolute inset-0 z-10 transition-opacity duration-200 pointer-events-none ${slug ? 'opacity-0 group-hover:opacity-100' : 'opacity-0'}`}
-        style={{ background: 'linear-gradient(to top, rgba(44,83,100,0.22) 0%, transparent 55%)' }}
-      />
+      {/* Card content */}
+      <div className="absolute inset-0 flex flex-col justify-between p-4 z-10">
 
-      {/* TOP: round + status badge — pinned to top-left/right */}
-      <div className="absolute top-4 left-4 right-4 flex items-start justify-between z-20">
-        <span className="text-white/35 text-[9px] uppercase tracking-[3px] font-semibold">
-          Round {race.round}
-        </span>
-        {finished && (
-          <span
-            className="text-[8px] uppercase tracking-[1.5px] font-bold px-2 py-0.5 rounded-full"
-            style={{ color: 'rgba(255,255,255,0.4)', border: '1px solid rgba(255,255,255,0.12)' }}
-          >
-            Finished
+        {/* Top row: round + finished badge */}
+        <div className="flex items-start justify-between">
+          <span className="text-white/35 text-[9px] uppercase tracking-[3px] font-semibold">
+            Round {race.round}
           </span>
-        )}
-        {isNext && !finished && (
-          <span
-            className="text-[8px] uppercase tracking-[1.5px] font-bold px-2 py-0.5 rounded-full"
-            style={{ color: 'rgba(255,255,255,0.7)', border: '1px solid rgba(255,255,255,0.2)' }}
-          >
-            Next Race
-          </span>
-        )}
-      </div>
+          {finished && (
+            <span
+              className="text-[8px] uppercase tracking-[1.5px] font-bold px-2 py-0.5 rounded-full"
+              style={{ color: 'rgba(255,255,255,0.4)', border: '1px solid rgba(255,255,255,0.12)' }}
+            >
+              Finished
+            </span>
+          )}
+          {isNext && !finished && (
+            <span
+              className="text-[8px] uppercase tracking-[1.5px] font-bold px-2 py-0.5 rounded-full"
+              style={{ color: 'rgba(255,255,255,0.7)', border: '1px solid rgba(255,255,255,0.2)' }}
+            >
+              Next Race
+            </span>
+          )}
+        </div>
 
-      {/*
-        BOTTOM: pinned to bottom edge so the countdown and CTA are always
-        at the same vertical position regardless of how long the race name is.
-        Text that can vary in length is capped with line-clamp / truncate.
-      */}
-      <div className="absolute bottom-4 left-4 right-4 z-20 text-center">
+        {/* Bottom: race info + countdown — centered */}
+        <div className="text-center">
+          <p className="text-white/45 text-[12px] uppercase tracking-[3px] font-semibold mb-1.5">
+            {country}
+          </p>
+          <h3 className="text-white text-[18px] font-bold leading-snug tracking-wide mb-1">
+            {race.raceName}
+          </h3>
+          <p className="text-white/30 text-[11px] mb-1 leading-relaxed">
+            {locality} · {circuitName}
+          </p>
+          <p className="text-white/40 text-[11px] uppercase tracking-[1px] mb-3">
+            {formatDate(race.date)}
+          </p>
 
-        {/* Country */}
-        <p className="text-white/45 text-[12px] uppercase tracking-[3px] font-semibold mb-1.5">
-          {country}
-        </p>
-
-        {/* Race name — capped at 2 lines so it never shifts the countdown */}
-        <h3 className="text-white text-[18px] font-bold leading-snug tracking-wide mb-1 line-clamp-2">
-          {race.raceName}
-        </h3>
-
-        {/* Location — single line, truncated */}
-        <p className="text-white/30 text-[11px] mb-1 leading-relaxed truncate">
-          {locality} · {circuitName}
-        </p>
-
-        {/* Date */}
-        <p className="text-white/40 text-[11px] uppercase tracking-[1px] mb-3">
-          {formatDate(race.date)}
-        </p>
-
-        {/* Fixed-height zone: countdown or "Race complete" — height matches CountdownUnit */}
-        <div className="h-[56px] flex items-center justify-center">
           {finished ? (
             <p className="text-white/20 text-[9px] uppercase tracking-[2.5px] font-semibold">
               Race complete
             </p>
           ) : (
-            <div className="flex gap-1.5 justify-center w-full">
+            <div className="flex gap-1.5 justify-center">
               <CountdownUnit value={days}    label="Days" />
               <CountdownUnit value={hours}   label="Hrs"  />
               <CountdownUnit value={minutes} label="Min"  />
@@ -217,15 +168,6 @@ function RaceCard({ race, now, isNext }) {
             </div>
           )}
         </div>
-
-        {/*
-          CTA row — always present on every card so layout height is identical.
-          Text is invisible by default; fades in on hover only for cards with a guide.
-        */}
-        <p className={`h-4 flex items-center justify-center text-[8px] font-extrabold uppercase tracking-[2px] transition-colors duration-200 ${slug ? 'text-white/0 group-hover:text-white/40' : 'text-transparent'}`}>
-          {slug ? 'View Travel Guide →' : '·'}
-        </p>
-
       </div>
     </div>
   )
