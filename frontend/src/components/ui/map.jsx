@@ -1,7 +1,6 @@
 import { cn } from "@/lib/utils"
 import "leaflet/dist/leaflet.css"
 import { MapPinIcon, MinusIcon, PlusIcon } from "lucide-react"
-import { useTheme } from "next-themes"
 import React, { Suspense, lazy, useEffect, useRef, useState } from "react"
 import { renderToString } from "react-dom/server"
 import { useMap, useMapEvents } from "react-leaflet"
@@ -57,25 +56,16 @@ function Map({ zoom = 15, maxZoom = 18, className, ...props }) {
 }
 
 // ── MapTileLayer ──────────────────────────────────────────────────────────────
-function MapTileLayer({ url, attribution, darkUrl, darkAttribution, ...props }) {
+function MapTileLayer({ url, attribution, ...props }) {
     const map = useMap()
     if (map.attributionControl) {
         map.attributionControl.setPrefix("")
     }
 
-    const DEFAULT_URL = "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png"
-    const DEFAULT_DARK_URL = "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png"
-
-    const { resolvedTheme } = useTheme()
-    const resolvedUrl =
-        resolvedTheme === "dark"
-            ? (darkUrl ?? url ?? DEFAULT_DARK_URL)
-            : (url ?? DEFAULT_URL)
-    const resolvedAttribution =
-        resolvedTheme === "dark" && darkAttribution
-            ? darkAttribution
-            : (attribution ??
-              '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attributions">CARTO</a>')
+    const DEFAULT_URL = "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png"
+    const resolvedUrl = url ?? DEFAULT_URL
+    const resolvedAttribution = attribution ??
+        '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attributions">CARTO</a>'
 
     return <LeafletTileLayer url={resolvedUrl} attribution={resolvedAttribution} {...props} />
 }
