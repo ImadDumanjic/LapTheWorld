@@ -1,13 +1,45 @@
 import { useState, useEffect, useRef } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { logout } from '../../services/authService'
+
+const BlogIcon = () => (
+  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+  </svg>
+)
+const StandingsIcon = () => (
+  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>
+  </svg>
+)
+const CalendarIcon = () => (
+  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+  </svg>
+)
+const TimingIcon = () => (
+  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+  </svg>
+)
+const TravelIcon = () => (
+  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+  </svg>
+)
+const ProfileIcon = () => (
+  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+  </svg>
+)
 
 const NAV_ITEMS = [
-  { label: 'Blog Section',    to: '/blog' },
-  { label: 'Standings',       to: '/championship' },
-  { label: 'Calendar',        to: '/calendar' },
-  { label: 'Live Timing',     to: '#' },
-  { label: 'GP Travel Guide', to: '/travel-guide' },
-  { label: 'Profile',         to: '/profile' },
+  { label: 'Blog Section',    to: '/blog',         icon: <BlogIcon /> },
+  { label: 'Standings',       to: '/championship', icon: <StandingsIcon /> },
+  { label: 'Calendar',        to: '/calendar',     icon: <CalendarIcon /> },
+  { label: 'Live Timing',     to: '#',             icon: <TimingIcon /> },
+  { label: 'GP Travel Guide', to: '/travel-guide', icon: <TravelIcon /> },
+  { label: 'Profile',         to: '/profile',      icon: <ProfileIcon /> },
 ]
 
 // Uses transform-box: fill-box so each bar rotates around its own center
@@ -57,6 +89,13 @@ export default function Header() {
   const [hoverMenu, setHoverMenu] = useState(false)
   const [visible, setVisible]     = useState(true)
   const lastScrollY               = useRef(0)
+  const navigate                  = useNavigate()
+
+  const handleLogout = () => {
+    setOpen(false)
+    logout()
+    navigate('/auth')
+  }
 
   useEffect(() => {
     const onScroll = () => {
@@ -165,28 +204,62 @@ export default function Header() {
             transition: 'transform 0.25s ease, opacity 0.2s ease',
           }}
         >
-          {NAV_ITEMS.map(({ label, to }, i) => (
+          {NAV_ITEMS.map(({ label, to, icon }) => (
             <Link
               key={label}
               to={to}
               onClick={() => setOpen(false)}
               style={{
-                display: 'block',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 8,
                 padding: '12px 20px',
                 fontSize: 11,
                 letterSpacing: '3px',
                 textTransform: 'uppercase',
                 color: 'rgba(255,255,255,0.65)',
                 textDecoration: 'none',
-                borderBottom: i < NAV_ITEMS.length - 1 ? '1px solid rgba(255,255,255,0.05)' : 'none',
+                borderBottom: '1px solid rgba(255,255,255,0.05)',
                 transition: 'color 0.2s ease, background 0.2s ease',
               }}
               onMouseEnter={e => { e.currentTarget.style.color = '#fff'; e.currentTarget.style.background = 'rgba(255,255,255,0.05)' }}
               onMouseLeave={e => { e.currentTarget.style.color = 'rgba(255,255,255,0.65)'; e.currentTarget.style.background = 'transparent' }}
             >
+              {icon}
               {label}
             </Link>
           ))}
+
+          {/* Logout */}
+          <button
+            onClick={handleLogout}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 8,
+              width: '100%',
+              padding: '12px 20px',
+              fontSize: 11,
+              letterSpacing: '3px',
+              textTransform: 'uppercase',
+              color: 'rgba(220,80,80,0.7)',
+              background: 'transparent',
+              border: 'none',
+              cursor: 'pointer',
+              fontFamily: 'inherit',
+              textAlign: 'left',
+              transition: 'color 0.2s ease, background 0.2s ease',
+            }}
+            onMouseEnter={e => { e.currentTarget.style.color = 'rgba(255,120,120,0.95)'; e.currentTarget.style.background = 'rgba(200,50,50,0.08)' }}
+            onMouseLeave={e => { e.currentTarget.style.color = 'rgba(220,80,80,0.7)'; e.currentTarget.style.background = 'transparent' }}
+          >
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+              <polyline points="16 17 21 12 16 7"/>
+              <line x1="21" y1="12" x2="9" y2="12"/>
+            </svg>
+            Log Out
+          </button>
         </nav>
 
       </div>

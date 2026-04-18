@@ -1,4 +1,5 @@
 import useWeather from '../../hooks/useWeather'
+import { RACE_DATES } from '../../data/calendar'
 
 // ── Shared card title spec — must match CircuitInfoSection token-for-token ────
 const CARD_TITLE = {
@@ -144,11 +145,12 @@ function PlaceholderRow({ isLast }) {
 
 // ── WeatherSection ────────────────────────────────────────────────────────────
 export default function WeatherSection({ guide }) {
-  const { coordinates, weather } = guide
+  const { coordinates, weather, slug } = guide
+  const raceDate = RACE_DATES[slug] ?? null
   const { status, data } = useWeather({
-    location: weather?.location,
     lat: coordinates?.lat,
     lng: coordinates?.lng,
+    raceDate,
   })
 
   return (
@@ -198,21 +200,19 @@ export default function WeatherSection({ guide }) {
         </div>
       )}
 
-      {/* Unavailable / error — ghost rows + label */}
+      {/* Unavailable / error */}
       {(status === 'unavailable' || status === 'error') && (
         <div className="relative z-10">
           <PlaceholderRow />
           <PlaceholderRow />
           <PlaceholderRow isLast />
 
-          {/* Subtle "coming soon" note below the ghost rows */}
           <div className="mt-5 flex items-center gap-2.5">
             <div
               className="w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0"
               style={{
                 background: 'rgba(44,83,100,0.2)',
                 border: '1px solid rgba(44,83,100,0.32)',
-                filter: 'drop-shadow(0 0 6px rgba(44,83,100,0.4))',
               }}
             >
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(100,168,200,0.7)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -226,7 +226,13 @@ export default function WeatherSection({ guide }) {
                 </p>
               )}
               <p className="text-[10px] font-extrabold tracking-[2.5px] uppercase" style={{ color: 'rgba(100,168,200,0.42)' }}>
-                Live forecast coming soon
+                {status === 'error'
+                  ? 'Forecast temporarily unavailable'
+                  : data?.reason === 'past'
+                    ? 'Race weekend has passed'
+                    : data?.reason === 'too-early'
+                      ? `Forecast available from ${data.availableFrom}`
+                      : 'Forecast unavailable'}
               </p>
             </div>
           </div>
