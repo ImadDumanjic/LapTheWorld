@@ -1,5 +1,16 @@
-import travelGuideImage from '../../assets/TravelGuideGrandPrix.png'
+import travelGuideImage   from '../../assets/TravelGuideGrandPrix.png'
+import monacoHero         from '../../assets/MonacoHero.png'
+import canadaHero         from '../../assets/CanadaHero.png'
+import belgiumHero        from '../../assets/BelgiumHero.png'
+import azerbaijanHero     from '../../assets/AzerbaijanHero.png'
 import { getFlagUrl } from '../calendar/countryFlags'
+
+const HERO_IMAGES = {
+  monaco:     monacoHero,
+  canada:     canadaHero,
+  belgium:    belgiumHero,
+  azerbaijan: azerbaijanHero,
+}
 
 // ── Sine-wave circuit decoration ──────────────────────────────────────────────
 function CircuitDecoration() {
@@ -103,7 +114,8 @@ function ScrollIndicator() {
 
 // ── Hero ──────────────────────────────────────────────────────────────────────
 export default function TravelGuideHero({ guide }) {
-  const { title, city, country, circuit } = guide
+  const { title, city, country, circuit, slug } = guide
+  const heroImage = HERO_IMAGES[slug] ?? travelGuideImage
 
   const flagUrl = getFlagUrl(country)
 
@@ -116,7 +128,7 @@ export default function TravelGuideHero({ guide }) {
 
       {/* Background image */}
       <img
-        src={travelGuideImage}
+        src={heroImage}
         alt=""
         aria-hidden="true"
         className="absolute inset-0 w-full h-full object-cover object-center select-none pointer-events-none"

@@ -1,34 +1,22 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { getFlagUrl } from '../components/calendar/countryFlags'
+import { fetchRaceCalendar } from '../services/calendarService'
 
-// ─── 2026 F1 Calendar ─────────────────────────────────────────────────────────
-const RACES_2026 = [
-  { round:  1, name: 'Australian Grand Prix',     country: 'Australia',      city: 'Melbourne',    raceDate: '2026-03-15', slug: 'australia'      },
-  { round:  2, name: 'Chinese Grand Prix',         country: 'China',          city: 'Shanghai',     raceDate: '2026-03-22', slug: 'china'          },
-  { round:  3, name: 'Japanese Grand Prix',        country: 'Japan',          city: 'Suzuka',       raceDate: '2026-04-19', slug: 'japan'          },
-  { round:  4, name: 'Bahrain Grand Prix',         country: 'Bahrain',        city: 'Sakhir',       raceDate: '2026-04-26', slug: 'bahrain'        },
-  { round:  5, name: 'Saudi Arabian Grand Prix',   country: 'Saudi Arabia',   city: 'Jeddah',       raceDate: '2026-05-03', slug: 'saudi-arabia'   },
-  { round:  6, name: 'Miami Grand Prix',           country: 'USA',            city: 'Miami',        raceDate: '2026-05-10', slug: 'miami'          },
-  { round:  7, name: 'Emilia Romagna Grand Prix',  country: 'Italy',          city: 'Imola',        raceDate: '2026-05-24', slug: 'emilia-romagna' },
-  { round:  8, name: 'Monaco Grand Prix',          country: 'Monaco',         city: 'Monte Carlo',  raceDate: '2026-06-07', slug: 'monaco'         },
-  { round:  9, name: 'Spanish Grand Prix',         country: 'Spain',          city: 'Barcelona',    raceDate: '2026-06-21', slug: 'spain'          },
-  { round: 10, name: 'Canadian Grand Prix',        country: 'Canada',         city: 'Montreal',     raceDate: '2026-07-05', slug: 'canada'         },
-  { round: 11, name: 'Austrian Grand Prix',        country: 'Austria',        city: 'Spielberg',    raceDate: '2026-07-12', slug: 'austria'        },
-  { round: 12, name: 'British Grand Prix',         country: 'United Kingdom', city: 'Silverstone',  raceDate: '2026-07-26', slug: 'silverstone'    },
-  { round: 13, name: 'Hungarian Grand Prix',       country: 'Hungary',        city: 'Budapest',     raceDate: '2026-08-02', slug: 'hungary'        },
-  { round: 14, name: 'Belgian Grand Prix',         country: 'Belgium',        city: 'Spa',          raceDate: '2026-08-23', slug: 'belgium'        },
-  { round: 15, name: 'Dutch Grand Prix',           country: 'Netherlands',    city: 'Zandvoort',    raceDate: '2026-08-30', slug: 'netherlands'    },
-  { round: 16, name: 'Italian Grand Prix',         country: 'Italy',          city: 'Monza',        raceDate: '2026-09-06', slug: 'monza'          },
-  { round: 17, name: 'Azerbaijan Grand Prix',      country: 'Azerbaijan',     city: 'Baku',         raceDate: '2026-09-20', slug: 'azerbaijan'     },
-  { round: 18, name: 'Singapore Grand Prix',       country: 'Singapore',      city: 'Singapore',    raceDate: '2026-10-04', slug: 'singapore'      },
-  { round: 19, name: 'United States Grand Prix',   country: 'USA',            city: 'Austin',       raceDate: '2026-10-18', slug: 'usa'            },
-  { round: 20, name: 'Mexican Grand Prix',         country: 'Mexico',         city: 'Mexico City',  raceDate: '2026-10-25', slug: 'mexico'         },
-  { round: 21, name: 'Brazilian Grand Prix',       country: 'Brazil',         city: 'São Paulo',    raceDate: '2026-11-08', slug: 'brazil'         },
-  { round: 22, name: 'Las Vegas Grand Prix',       country: 'USA',            city: 'Las Vegas',    raceDate: '2026-11-22', slug: 'las-vegas'      },
-  { round: 23, name: 'Qatar Grand Prix',           country: 'Qatar',          city: 'Lusail',       raceDate: '2026-11-29', slug: 'qatar'          },
-  { round: 24, name: 'Abu Dhabi Grand Prix',       country: 'UAE',            city: 'Abu Dhabi',    raceDate: '2026-12-06', slug: 'abu-dhabi'      },
-]
+// Races that have a travel guide page — maps API race name → slug
+const TRAVEL_GUIDE_SLUGS = {
+  'Canadian Grand Prix':      'canada',
+  'Monaco Grand Prix':        'monaco',
+  'British Grand Prix':       'british',
+  'Belgian Grand Prix':       'belgium',
+  'Italian Grand Prix':       'italy',
+  'Singapore Grand Prix':     'singapore',
+  'Azerbaijan Grand Prix':    'azerbaijan',
+  'United States Grand Prix': 'usa',
+  'Brazilian Grand Prix':     'brazil',
+  'Las Vegas Grand Prix':     'las-vegas',
+  'Abu Dhabi Grand Prix':     'uae',
+}
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 const pad = (n) => String(n).padStart(2, '0')
@@ -200,15 +188,23 @@ function GridHero() {
   )
 }
 
+// Renders a Link when a travel guide slug exists, otherwise a plain div
+function CardInner({ slug, children }) {
+  return slug
+    ? <Link to={`/travel-guide/${slug}`} className="block p-5 no-underline">{children}</Link>
+    : <div className="p-5">{children}</div>
+}
+
 // ─── Race card ────────────────────────────────────────────────────────────────
 function RaceCard({ race, isNext }) {
   const [hovered, setHovered] = useState(false)
   const flagUrl = getFlagUrl(race.country)
   const dateStr = getWeekendRange(race.raceDate)
+  const hasGuide = Boolean(race.slug)
 
   const boxShadow = isNext
     ? '0 0 0 1px rgba(77,208,225,0.22), 0 0 32px rgba(77,208,225,0.14), 0 8px 32px rgba(0,0,0,0.5)'
-    : hovered
+    : hovered && hasGuide
       ? '0 0 0 1px rgba(77,208,225,0.1), 0 12px 36px rgba(0,0,0,0.55), 0 0 22px rgba(77,208,225,0.06)'
       : '0 4px 18px rgba(0,0,0,0.35)'
 
@@ -222,14 +218,14 @@ function RaceCard({ race, isNext }) {
         borderLeft: `3px solid ${isNext ? '#4DD0E1' : 'rgba(77,208,225,0.42)'}`,
         borderRadius: 12,
         boxShadow,
-        transform: hovered ? 'translateY(-3px)' : 'translateY(0)',
+        transform: hovered && hasGuide ? 'translateY(-3px)' : 'translateY(0)',
+        cursor: hasGuide ? 'pointer' : 'default',
         transition: 'transform 0.28s ease, box-shadow 0.28s ease',
       }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      <Link to={`/travel-guide/${race.slug}`} className="block p-5 no-underline">
-
+      <CardInner p="p-5" slug={race.slug}>
         {/* Top row: round label + Next Race badge */}
         <div className="flex items-center justify-between mb-4">
           <span
@@ -322,7 +318,7 @@ function RaceCard({ race, isNext }) {
           </div>
         </div>
 
-        {/* View Guide — slides in on hover */}
+        {/* View Guide / Coming Soon — slides in on hover */}
         <div
           style={{
             marginTop: 14,
@@ -338,23 +334,67 @@ function RaceCard({ race, isNext }) {
         >
           <span
             className="text-[9px] font-extrabold uppercase tracking-[2.5px]"
-            style={{ color: '#4DD0E1' }}
+            style={{ color: race.slug ? '#4DD0E1' : 'rgba(255,255,255,0.2)' }}
           >
-            View Guide →
+            {race.slug ? 'View Guide →' : 'Guide Coming Soon'}
           </span>
         </div>
-      </Link>
+      </CardInner>
     </div>
+  )
+}
+
+// ─── Skeleton card ────────────────────────────────────────────────────────────
+function SkeletonCard() {
+  return (
+    <div
+      className="rounded-xl animate-pulse"
+      style={{
+        height: 138,
+        background: 'rgba(255,255,255,0.04)',
+        border: '1px solid rgba(255,255,255,0.055)',
+        borderLeft: '3px solid rgba(77,208,225,0.15)',
+      }}
+    />
   )
 }
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 export default function RaceWeekendLandingPage() {
-  const nextRaceIndex = RACES_2026.findIndex((r) => r.slug === 'miami')
+  const [races, setRaces]     = useState([])
+  const [season, setSeason]   = useState('')
+  const [loading, setLoading] = useState(true)
+  const [error, setError]     = useState(null)
 
-  // Odd indices → left column (rounds 1,3,5…), even indices → right column (2,4,6…)
-  const leftRaces  = RACES_2026.filter((_, i) => i % 2 === 0)
-  const rightRaces = RACES_2026.filter((_, i) => i % 2 === 1)
+  useEffect(() => {
+    fetchRaceCalendar()
+      .then(({ season: s, races: apiRaces }) => {
+        const mapped = apiRaces.map(r => ({
+          round:    Number(r.round),
+          name:     r.raceName,
+          country:  r.Circuit.Location.country,
+          city:     r.Circuit.Location.locality,
+          raceDate: r.date,
+          slug:     TRAVEL_GUIDE_SLUGS[r.raceName] ?? null,
+        }))
+        setSeason(s)
+        setRaces(mapped)
+      })
+      .catch(err => setError(err.message))
+      .finally(() => setLoading(false))
+  }, [])
+
+  const now          = Date.now()
+  const nextRaceIndex = races.findIndex(
+    r => new Date(`${r.raceDate}T14:00:00Z`).getTime() > now
+  )
+
+  const leftRaces  = races.filter((_, i) => i % 2 === 0)
+  const rightRaces = races.filter((_, i) => i % 2 === 1)
+
+  // Skeleton columns while loading
+  const skeletonLeft  = Array.from({ length: 12 })
+  const skeletonRight = Array.from({ length: 12 })
 
   return (
     <div className="bg-page-gradient min-h-svh">
@@ -370,21 +410,24 @@ export default function RaceWeekendLandingPage() {
               className="text-[8px] font-extrabold uppercase tracking-[4px] mb-2"
               style={{ color: 'rgba(77,208,225,0.45)' }}
             >
-              2026 Season · {RACES_2026.length} Rounds
+              {loading
+                ? 'Loading season data…'
+                : error
+                  ? 'F1 Calendar'
+                  : `${season} Season · ${races.length} Rounds`}
             </p>
-            <div
-              style={{
-                width: 36,
-                height: 1,
-                background: 'rgba(77,208,225,0.28)',
-              }}
-            />
+            <div style={{ width: 36, height: 1, background: 'rgba(77,208,225,0.28)' }} />
           </div>
+
+          {/* Error state */}
+          {error && !loading && (
+            <p className="text-[13px] text-center py-16" style={{ color: 'rgba(255,255,255,0.3)' }}>
+              Could not load race calendar. Please try again later.
+            </p>
+          )}
 
           {/* ── Desktop: two-column staggered grid ── */}
           <div className="hidden md:block relative">
-
-            {/* Dashed center line */}
             <div
               className="absolute top-0 bottom-0 pointer-events-none"
               style={{
@@ -396,39 +439,33 @@ export default function RaceWeekendLandingPage() {
             />
 
             <div className="flex gap-5">
-              {/* Left column — pole positions */}
               <div className="flex-1 flex flex-col gap-5">
-                {leftRaces.map((race, i) => (
-                  <RaceCard
-                    key={race.round}
-                    race={race}
-                    isNext={i * 2 === nextRaceIndex}
-                  />
-                ))}
+                {loading
+                  ? skeletonLeft.map((_, i) => <SkeletonCard key={i} />)
+                  : leftRaces.map((race, i) => (
+                      <RaceCard key={race.round} race={race} isNext={i * 2 === nextRaceIndex} />
+                    ))
+                }
               </div>
-
-              {/* Right column — offset downward to simulate starting grid */}
               <div className="flex-1 flex flex-col gap-5 mt-[88px]">
-                {rightRaces.map((race, i) => (
-                  <RaceCard
-                    key={race.round}
-                    race={race}
-                    isNext={i * 2 + 1 === nextRaceIndex}
-                  />
-                ))}
+                {loading
+                  ? skeletonRight.map((_, i) => <SkeletonCard key={i} />)
+                  : rightRaces.map((race, i) => (
+                      <RaceCard key={race.round} race={race} isNext={i * 2 + 1 === nextRaceIndex} />
+                    ))
+                }
               </div>
             </div>
           </div>
 
           {/* ── Mobile: single column ── */}
           <div className="flex flex-col gap-4 md:hidden">
-            {RACES_2026.map((race, i) => (
-              <RaceCard
-                key={race.round}
-                race={race}
-                isNext={i === nextRaceIndex}
-              />
-            ))}
+            {loading
+              ? skeletonLeft.concat(skeletonRight).map((_, i) => <SkeletonCard key={i} />)
+              : races.map((race, i) => (
+                  <RaceCard key={race.round} race={race} isNext={i === nextRaceIndex} />
+                ))
+            }
           </div>
 
         </div>
