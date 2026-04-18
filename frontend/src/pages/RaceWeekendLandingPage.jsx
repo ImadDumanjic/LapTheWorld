@@ -350,12 +350,7 @@ function RaceCard({ race, isNext }) {
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 export default function RaceWeekendLandingPage() {
-  const now = Date.now()
-
-  // Index of the first race that hasn't started yet (for the Next Race badge only)
-  const nextRaceIndex = RACES_2026.findIndex(
-    (r) => new Date(`${r.raceDate}T14:00:00Z`).getTime() > now
-  )
+  const nextRaceIndex = RACES_2026.findIndex((r) => r.slug === 'miami')
 
   // Odd indices → left column (rounds 1,3,5…), even indices → right column (2,4,6…)
   const leftRaces  = RACES_2026.filter((_, i) => i % 2 === 0)
