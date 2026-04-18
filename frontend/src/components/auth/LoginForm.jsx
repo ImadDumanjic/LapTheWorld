@@ -20,9 +20,19 @@ const LockIcon = () => (
   </svg>
 )
 
+const EyeIcon = ({ show }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="15" height="15">
+    {show
+      ? <><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></>
+      : <><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></>
+    }
+  </svg>
+)
+
 export default function LoginForm({ onSwitch, isRegister }) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [showPw, setShowPw] = useState(false)
   const [showForgotModal, setShowForgotModal] = useState(false)
   const { login, loading } = useAuth()
   const navigate = useNavigate()
@@ -61,20 +71,32 @@ export default function LoginForm({ onSwitch, isRegister }) {
           onChange={(e) => setEmail(e.target.value)}
         />
         <InputField
-          type="password"
+          type={showPw ? 'text' : 'password'}
           placeholder="Password"
           autoComplete="current-password"
           icon={<LockIcon />}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          rightPad="pr-[132px]"
           action={
-            <button
-              type="button"
-              className="bg-transparent border-0 text-[#5b8fa8] opacity-60 text-[11px] font-[inherit] cursor-pointer p-0 pr-[2px] whitespace-nowrap transition-opacity duration-200 hover:opacity-100 hover:underline"
-              onClick={() => setShowForgotModal(true)}
-            >
-              Forgot password?
-            </button>
+            <span className="flex items-center gap-2 pr-[2px]">
+              <button
+                type="button"
+                className="bg-transparent border-0 text-white/35 cursor-pointer p-0 flex items-center transition-colors duration-200 hover:text-white/70"
+                onClick={() => setShowPw(v => !v)}
+                tabIndex={-1}
+                aria-label={showPw ? 'Hide password' : 'Show password'}
+              >
+                <EyeIcon show={showPw} />
+              </button>
+              <button
+                type="button"
+                className="bg-transparent border-0 text-[#5b8fa8] opacity-60 text-[11px] font-[inherit] cursor-pointer p-0 whitespace-nowrap transition-opacity duration-200 hover:opacity-100 hover:underline"
+                onClick={() => setShowForgotModal(true)}
+              >
+                Forgot password?
+              </button>
+            </span>
           }
         />
 

@@ -39,6 +39,16 @@ const User = sequelize.define('User', {
     allowNull: true,
     defaultValue: null,
   },
+  passwordChangedAt: {
+    type: DataTypes.DATE,
+    allowNull: true,
+    defaultValue: null,
+  },
+  passwordChangeCount: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    defaultValue: 0,
+  },
 }, { timestamps: true, tableName: 'users' })
 
 export default User

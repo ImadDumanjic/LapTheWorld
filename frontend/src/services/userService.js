@@ -43,3 +43,23 @@ export async function deleteAccount(id) {
   })
   if (!res.ok) throw new Error((await res.json()).message || 'Failed to delete account')
 }
+
+export async function verifyCurrentPassword(id, currentPassword) {
+  const res = await fetch(`${BASE_URL}/api/users/${id}/verify-password`, {
+    method: 'POST',
+    headers: getAuthHeaders(),
+    body: JSON.stringify({ currentPassword }),
+  })
+  if (!res.ok) throw new Error((await res.json()).message || 'Verification failed')
+  return res.json()
+}
+
+export async function changePassword(id, currentPassword, newPassword) {
+  const res = await fetch(`${BASE_URL}/api/users/${id}/password`, {
+    method: 'PATCH',
+    headers: getAuthHeaders(),
+    body: JSON.stringify({ currentPassword, newPassword }),
+  })
+  if (!res.ok) throw new Error((await res.json()).message || 'Failed to change password')
+  return res.json()
+}
