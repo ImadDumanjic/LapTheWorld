@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { getGuideBySlug } from '../data/travelGuides'
 import TravelGuideHero from '../components/travel-guide/TravelGuideHero'
@@ -45,6 +46,10 @@ function NotFound({ slug }) {
 export default function TravelGuidePage() {
   const { slug } = useParams()
   const guide = getGuideBySlug(slug)
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [slug])
 
   if (!guide) return <NotFound slug={slug ?? ''} />
 

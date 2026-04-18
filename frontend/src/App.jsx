@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
+import WelcomePage from './pages/WelcomePage'
 import AuthPage from './pages/AuthPage'
 import LandingPage from './pages/LandingPage'
 import ResetPasswordPage from './pages/ResetPasswordPage'
@@ -10,7 +11,7 @@ import TravelGuidePage from './pages/TravelGuidePage'
 import RaceWeekendLandingPage from './pages/RaceWeekendLandingPage'
 import Header from './components/layout/Header'
 
-const HIDE_HEADER_ON = ['/', '/landing', '/reset-password']
+const HIDE_HEADER_ON = ['/', '/auth', '/landing', '/reset-password']
 
 function Layout() {
   const { pathname } = useLocation()
@@ -20,7 +21,8 @@ function Layout() {
     <>
       {showHeader && <Header />}
       <Routes>
-        <Route path="/" element={<AuthPage />} />
+        <Route path="/" element={<WelcomePage />} />
+        <Route path="/auth" element={<AuthPage />} />
         <Route path="/landing" element={<LandingPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route path="/championship" element={<ChampionshipPage />} />

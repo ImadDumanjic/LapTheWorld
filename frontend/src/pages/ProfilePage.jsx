@@ -137,7 +137,7 @@ export default function ProfilePage() {
   // Auth guard
   useEffect(() => {
     if (!localStorage.getItem('token')) {
-      navigate('/')
+      navigate('/auth')
     }
   }, [navigate])
 
@@ -156,7 +156,7 @@ export default function ProfilePage() {
       .catch(() => {
         // Token invalid / expired — force logout
         logout()
-        navigate('/')
+        navigate('/auth')
       })
       .finally(() => setLoading(false))
   }, [navigate])
@@ -205,7 +205,7 @@ export default function ProfilePage() {
       const userId = getTokenUserId()
       await deleteAccount(userId)
       logout()
-      navigate('/')
+      navigate('/auth')
     } catch (err) {
       toast.error(err.message || 'Failed to delete account')
       setShowDelete(false)
