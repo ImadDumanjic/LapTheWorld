@@ -3,6 +3,12 @@ import monacoHero         from '../../assets/MonacoHero.png'
 import canadaHero         from '../../assets/CanadaHero.png'
 import belgiumHero        from '../../assets/BelgiumHero.png'
 import azerbaijanHero     from '../../assets/AzerbaijanHero.png'
+import singaporeHero      from '../../assets/SingaporeHero.png'
+import italyHero          from '../../assets/ItalyHero.png'
+import lasVegasHero       from '../../assets/LasVegasHero.png'
+import austinHero         from '../../assets/AustinHero.png'
+import brazilHero         from '../../assets/BrazilHero.png'
+import abuDhabiHero       from '../../assets/AbuDhabiHero.png'
 import { getFlagUrl } from '../calendar/countryFlags'
 
 const HERO_IMAGES = {
@@ -10,6 +16,12 @@ const HERO_IMAGES = {
   canada:     canadaHero,
   belgium:    belgiumHero,
   azerbaijan: azerbaijanHero,
+  singapore:  singaporeHero,
+  italy:      italyHero,
+  'las-vegas': lasVegasHero,
+  usa:        austinHero,
+  brazil:     brazilHero,
+  uae:        abuDhabiHero,
 }
 
 // ── Sine-wave circuit decoration ──────────────────────────────────────────────
@@ -115,7 +127,7 @@ function ScrollIndicator() {
 // ── Hero ──────────────────────────────────────────────────────────────────────
 export default function TravelGuideHero({ guide }) {
   const { title, city, country, circuit, slug } = guide
-  const heroImage = HERO_IMAGES[slug] ?? travelGuideImage
+  const heroImage = HERO_IMAGES[slug]
 
   const flagUrl = getFlagUrl(country)
 

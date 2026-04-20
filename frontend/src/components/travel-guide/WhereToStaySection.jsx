@@ -1,9 +1,11 @@
-import { Map, MapMarker, MapTileLayer, MapZoomControl } from '@/components/ui/map'
+import { Map, MapMarker, MapPopup, MapTileLayer, MapZoomControl } from '@/components/ui/map'
 
-// Marker styles — injected as a <style> tag so they survive renderToString serialization.
-// The hover rule uses CSS so it works without JS event handlers on the serialized HTML.
+// Marker + popup styles injected as a <style> tag so they survive renderToString serialization.
+// CSS hover rules work without JS event handlers on the serialized HTML.
+// Leaflet popup overrides use !important to win over leaflet.css and Tailwind bg-popover.
 const markerStyles = `
   .leaflet-div-icon { background: none !important; border: none !important; }
+
   .ltw-pin {
     transition: transform 220ms ease, filter 220ms ease;
     cursor: pointer;
@@ -12,11 +14,57 @@ const markerStyles = `
     transform: scale(1.2);
     filter: drop-shadow(0 0 10px rgba(77,208,225,0.7));
   }
+
+  .ltw-hotel-pin {
+    transition: transform 220ms ease, filter 220ms ease;
+    cursor: pointer;
+  }
+  .ltw-hotel-pin:hover {
+    transform: scale(1.2);
+    filter: drop-shadow(0 0 10px rgba(255,180,50,0.65));
+  }
+
+  /* Outer popup container — bg-popover from MapPopup applies here, must be transparent */
+  .leaflet-popup {
+    background: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+  .leaflet-popup-content-wrapper {
+    background: rgba(8,18,28,0.97) !important;
+    border: 1px solid rgba(255,255,255,0.10) !important;
+    border-radius: 10px !important;
+    box-shadow: 0 8px 28px rgba(0,0,0,0.65) !important;
+    padding: 0 !important;
+    color: inherit !important;
+  }
+  .leaflet-popup-content {
+    margin: 12px 14px !important;
+    width: auto !important;
+  }
+  .leaflet-popup-tip-container {
+    overflow: visible !important;
+  }
+  .leaflet-popup-tip {
+    background: rgba(8,18,28,0.97) !important;
+    box-shadow: none !important;
+  }
+  .leaflet-popup-close-button {
+    color: rgba(255,255,255,0.28) !important;
+    font-size: 18px !important;
+    line-height: 22px !important;
+    right: 6px !important;
+    top: 4px !important;
+    padding: 0 !important;
+  }
+  .leaflet-popup-close-button:hover {
+    color: rgba(255,255,255,0.70) !important;
+    background: transparent !important;
+  }
 `
 
-// Premium accommodation marker — outer glow ring → dark inner circle → house icon.
-// Uses className so the CSS hover rule above applies after renderToString serialization.
-function AccommodationPin() {
+// ── Circuit marker — teal glow, racing flag icon ─────────────────────────────
+function CircuitPin() {
   return (
     <div
       className="ltw-pin"
@@ -31,7 +79,6 @@ function AccommodationPin() {
         boxShadow: '0 0 0 1.5px rgba(77,208,225,0.24), 0 0 20px rgba(77,208,225,0.42)',
       }}
     >
-      {/* Inner circle */}
       <div
         style={{
           width: 26,
@@ -45,7 +92,6 @@ function AccommodationPin() {
           boxShadow: 'inset 0 1px 0 rgba(100,200,220,0.1)',
         }}
       >
-        {/* House / accommodation icon */}
         <svg
           width="13"
           height="13"
@@ -56,16 +102,65 @@ function AccommodationPin() {
           strokeLinecap="round"
           strokeLinejoin="round"
         >
-          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-          <polyline points="9 22 9 12 15 12 15 22" />
+          <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z" />
+          <line x1="4" y1="22" x2="4" y2="15" />
         </svg>
       </div>
     </div>
   )
 }
 
-// ── Live dark map ─────────────────────────────────────────────────────────────
-function LiveMap({ coordinates, city, country }) {
+// ── Hotel marker — amber glow, bed icon ───────────────────────────────────────
+function HotelPin() {
+  return (
+    <div
+      className="ltw-hotel-pin"
+      style={{
+        width: 30,
+        height: 30,
+        borderRadius: '50%',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: 'radial-gradient(circle, rgba(255,180,50,0.18) 0%, transparent 72%)',
+        boxShadow: '0 0 0 1.5px rgba(255,180,50,0.30), 0 0 14px rgba(255,180,50,0.32)',
+      }}
+    >
+      <div
+        style={{
+          width: 22,
+          height: 22,
+          borderRadius: '50%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          background: 'rgba(8,20,30,0.92)',
+          border: '1.5px solid rgba(255,180,50,0.52)',
+          boxShadow: 'inset 0 1px 0 rgba(255,200,80,0.10)',
+        }}
+      >
+        {/* Bed icon */}
+        <svg
+          width="11"
+          height="11"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="rgba(255,180,50,0.88)"
+          strokeWidth="2.3"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M3 19V9a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v10" />
+          <path d="M3 15h18" />
+          <path d="M7 8V5h10v3" />
+        </svg>
+      </div>
+    </div>
+  )
+}
+
+// ── Map with circuit + hotel markers ─────────────────────────────────────────
+function LiveMap({ coordinates, city, country, hotels }) {
   const { lat, lng } = coordinates
   const DARK_TILES = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png'
 
@@ -87,14 +182,36 @@ function LiveMap({ coordinates, city, country }) {
       >
         <MapTileLayer url={DARK_TILES} />
         <MapZoomControl position="bottom-3 right-3" />
+
+        {/* Circuit / area marker */}
         <MapMarker
           position={[lat, lng]}
-          icon={<AccommodationPin />}
+          icon={<CircuitPin />}
           iconAnchor={[18, 18]}
         />
+
+        {/* Hotel markers — one per entry in hotels[], popup on click */}
+        {hotels.map(hotel => (
+          <MapMarker
+            key={`${hotel.lat},${hotel.lng}`}
+            position={[hotel.lat, hotel.lng]}
+            icon={<HotelPin />}
+            iconAnchor={[15, 15]}
+            popupAnchor={[0, -15]}
+          >
+            <MapPopup minWidth={180} maxWidth={220}>
+              <p style={{ fontSize: 12, fontWeight: 700, color: 'rgba(255,255,255,0.88)', marginBottom: 4, lineHeight: 1.3 }}>
+                {hotel.name}
+              </p>
+              <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.42)', lineHeight: 1.45, margin: 0 }}>
+                {hotel.address}
+              </p>
+            </MapPopup>
+          </MapMarker>
+        ))}
       </Map>
 
-      {/* City label chip — same position and style as the old placeholder */}
+      {/* City label chip */}
       <div
         className="absolute top-3 left-3 px-3 py-1.5 rounded-lg z-[1000]"
         style={{ background: 'rgba(10,22,30,0.85)', border: '1px solid rgba(255,255,255,0.07)' }}
@@ -127,7 +244,12 @@ export default function WhereToStaySection({ guide }) {
   return (
     <section>
       <SectionTitle title="Where to Stay" />
-      <LiveMap coordinates={guide.coordinates} city={guide.city} country={guide.country} />
+      <LiveMap
+        coordinates={guide.coordinates}
+        city={guide.city}
+        country={guide.country}
+        hotels={guide.hotels ?? []}
+      />
     </section>
   )
 }

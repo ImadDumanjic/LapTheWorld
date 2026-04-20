@@ -52,7 +52,27 @@
           "Avoid driving to the circuit if possible"
         ]
       }
-    }
+    },
+    "hotels": [
+      {
+        "name": "Hotel Bonaventure Montreal",
+        "address": "900 Rue De La Gauchetière O, Montreal, QC H5A 1E4, Canada",
+        "lat": 45.4994,
+        "lng": -73.5651
+      },
+      {
+        "name": "Le Centre Sheraton Montreal Hotel",
+        "address": "1201 René-Lévesque Blvd W, Montreal, QC H3B 2L7, Canada",
+        "lat": 45.4979,
+        "lng": -73.5714
+      },
+      {
+        "name": "Hotel Universel Montreal",
+        "address": "5000 Rue Sherbrooke E, Montreal, QC H1V 1A1, Canada",
+        "lat": 45.553,
+        "lng": -73.541
+      }
+    ]
   },
   {
     "slug": "monaco",
@@ -107,7 +127,27 @@
           "Wear comfortable shoes because there is a lot of walking"
         ]
       }
-    }
+    },
+    "hotels": [
+      {
+        "name": "Fairmont Monte Carlo",
+        "address": "12 Av. des Spélugues, 98000 Monaco",
+        "lat": 43.74006,
+        "lng": 7.43007
+      },
+      {
+        "name": "Novotel Monte Carlo",
+        "address": "16 Bld Princesse Charlotte, 98000 Monaco",
+        "lat": 43.739239,
+        "lng": 7.421961
+      },
+      {
+        "name": "Hôtel de Paris Monte-Carlo",
+        "address": "Place du Casino, 98000 Monaco",
+        "lat": 43.73899,
+        "lng": 7.42734
+      }
+    ]
   },
   {
     "slug": "british",
@@ -162,7 +202,27 @@
           "Renting a car can help, but arrive very early if you drive"
         ]
       }
-    }
+    },
+    "hotels": [
+      {
+        "name": "Hilton Garden Inn Silverstone",
+        "address": "Silverstone Circuit, Towcester NN12 8GZ, United Kingdom",
+        "lat": 52.0733,
+        "lng": -1.0147
+      },
+      {
+        "name": "Whittlebury Hall Hotel & Spa",
+        "address": "Whittlebury, Towcester NN12 8WP, United Kingdom",
+        "lat": 52.08021,
+        "lng": -0.99836
+      },
+      {
+        "name": "Premier Inn Silverstone",
+        "address": "Brackley Hatch, Towcester NN13 5TX, United Kingdom",
+        "lat": 52.0358,
+        "lng": -1.1472
+      }
+    ]
   },
   {
     "slug": "belgium",
@@ -217,7 +277,27 @@
           "Expect longer travel times than city-based races"
         ]
       }
-    }
+    },
+    "hotels": [
+      {
+        "name": "Hotel de la Source",
+        "address": "Route du Circuit 22, B-4970 Francorchamps, Belgium",
+        "lat": 50.4477129,
+        "lng": 5.9597799
+      },
+      {
+        "name": "Van der Valk Hotel Spa",
+        "address": "Place Royale 39, 4900 Spa, Belgium",
+        "lat": 50.4925,
+        "lng": 5.865
+      },
+      {
+        "name": "Silva Hotel Spa-Balmoral",
+        "address": "Route de Balmoral 33, 4900 Spa, Belgium",
+        "lat": 50.4784,
+        "lng": 5.887
+      }
+    ]
   },
   {
     "slug": "italy",
@@ -272,7 +352,27 @@
           "Wear comfortable shoes because the venue involves a lot of walking"
         ]
       }
-    }
+    },
+    "hotels": [
+      {
+        "name": "Hotel de la Ville Monza",
+        "address": "Viale Regina Margherita di Savoia 15, 20900 Monza, Italy",
+        "lat": 45.59262,
+        "lng": 9.27145
+      },
+      {
+        "name": "Helios Hotel Monza",
+        "address": "Viale Elvezia 4, 20900 Monza, Italy",
+        "lat": 45.5958,
+        "lng": 9.2825
+      },
+      {
+        "name": "B&B Hotel Milano-Monza",
+        "address": "Via Lario 19, 20900 Monza, Italy",
+        "lat": 45.59013,
+        "lng": 9.282
+      }
+    ]
   },
   {
     "slug": "singapore",
@@ -327,7 +427,27 @@
           "Expect race-related road closures in the city center"
         ]
       }
-    }
+    },
+    "hotels": [
+      {
+        "name": "Mandarin Oriental, Singapore",
+        "address": "5 Raffles Avenue, Singapore 039797",
+        "lat": 1.287633,
+        "lng": 103.854897
+      },
+      {
+        "name": "Pan Pacific Singapore",
+        "address": "7 Raffles Boulevard, Marina Square, Singapore 039595",
+        "lat": 1.291533,
+        "lng": 103.859267
+      },
+      {
+        "name": "PARKROYAL COLLECTION Marina Bay",
+        "address": "6 Raffles Boulevard, Singapore 039594",
+        "lat": 1.291667,
+        "lng": 103.856667
+      }
+    ]
   },
   {
     "slug": "azerbaijan",
@@ -382,7 +502,27 @@
           "Pack both light clothing and a layer for breezier evenings"
         ]
       }
-    }
+    },
+    "hotels": [
+      {
+        "name": "Hilton Baku",
+        "address": "1B Azadliq Avenue, Baku AZ1000, Azerbaijan",
+        "lat": 40.371944,
+        "lng": 49.849444
+      },
+      {
+        "name": "JW Marriott Absheron Baku",
+        "address": "674 Azadliq Square, Baku AZ1010, Azerbaijan",
+        "lat": 40.37417,
+        "lng": 49.85639
+      },
+      {
+        "name": "Promenade Hotel Baku",
+        "address": "9-13 Neftchilar Avenue, Baku, Azerbaijan",
+        "lat": 40.3663,
+        "lng": 49.836
+      }
+    ]
   },
   {
     "slug": "usa",
@@ -437,7 +577,27 @@
           "Bring sunscreen, a hat, and a refillable water bottle"
         ]
       }
-    }
+    },
+    "hotels": [
+      {
+        "name": "Hyatt Place Austin Airport",
+        "address": "9532 Spirit of Austin Ln, Austin, TX 78719, USA",
+        "lat": 30.2045,
+        "lng": -97.666
+      },
+      {
+        "name": "Hilton Austin Airport",
+        "address": "9515 Hotel Dr, Austin, TX 78719, USA",
+        "lat": 30.2028,
+        "lng": -97.6628
+      },
+      {
+        "name": "Cambria Hotel Austin Airport",
+        "address": "7800 E Ben White Blvd, Austin, TX 78741, USA",
+        "lat": 30.2205,
+        "lng": -97.6937
+      }
+    ]
   },
   {
     "slug": "brazil",
@@ -492,7 +652,27 @@
           "Coordinate transport in advance rather than deciding on the day"
         ]
       }
-    }
+    },
+    "hotels": [
+      {
+        "name": "ibis Sao Paulo Interlagos",
+        "address": "Av. Interlagos 2215, São Paulo - SP, 04661-200, Brazil",
+        "lat": -23.67297,
+        "lng": -46.67702
+      },
+      {
+        "name": "Transamerica Executive Chácara Santo Antônio",
+        "address": "Rua Américo Brasiliense 2163, São Paulo - SP, 04715-005, Brazil",
+        "lat": -23.6298,
+        "lng": -46.7042
+      },
+      {
+        "name": "Blue Tree Premium Verbo Divino",
+        "address": "Rua Verbo Divino 1323, São Paulo - SP, 04719-002, Brazil",
+        "lat": -23.633,
+        "lng": -46.7048
+      }
+    ]
   },
   {
     "slug": "las-vegas",
@@ -547,7 +727,27 @@
           "Review road closures and access zones before each day"
         ]
       }
-    }
+    },
+    "hotels": [
+      {
+        "name": "The Venetian Resort",
+        "address": "3355 S Las Vegas Blvd, Las Vegas, NV 89109, USA",
+        "lat": 36.12139,
+        "lng": -115.16889
+      },
+      {
+        "name": "Bellagio",
+        "address": "3600 S Las Vegas Blvd, Las Vegas, NV 89109, USA",
+        "lat": 36.112625,
+        "lng": -115.176704
+      },
+      {
+        "name": "Paris Las Vegas",
+        "address": "3655 S Las Vegas Blvd, Las Vegas, NV 89109, USA",
+        "lat": 36.112541,
+        "lng": -115.17067
+      }
+    ]
   },
   {
     "slug": "uae",
@@ -602,6 +802,26 @@
           "Combine race weekend with nearby attractions if you have extra time"
         ]
       }
-    }
+    },
+    "hotels": [
+      {
+        "name": "W Abu Dhabi - Yas Island",
+        "address": "Yas Island, Abu Dhabi, United Arab Emirates",
+        "lat": 24.4672,
+        "lng": 54.6031
+      },
+      {
+        "name": "Crowne Plaza Abu Dhabi - Yas Island",
+        "address": "Yas Plaza Hotels, Yas Island, Abu Dhabi 41880, United Arab Emirates",
+        "lat": 24.4662,
+        "lng": 54.5985
+      },
+      {
+        "name": "Centro Yas Island",
+        "address": "Yas Plaza, Yas Island, Abu Dhabi, United Arab Emirates",
+        "lat": 24.465173,
+        "lng": 54.598734
+      }
+    ]
   }
 ]

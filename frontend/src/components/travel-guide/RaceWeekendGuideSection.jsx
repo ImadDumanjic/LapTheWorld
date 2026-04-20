@@ -39,8 +39,6 @@ function ChevronDownIcon() {
 }
 
 // ── CardShell — shared visual foundation for all guide cards ──────────────────
-// Provides: gradient bg, blurred orb, dot texture, inset top-highlight, hover glow.
-// Both FeaturedCard and GuideCard render through this — only padding/minHeight differ.
 function CardShell({ children, className = '', style = {}, onClick }) {
   return (
     <div
@@ -134,8 +132,7 @@ function TipsList({ tips, isOpen }) {
 }
 
 // ── Featured card — Before the Race ──────────────────────────────────────────
-function FeaturedCard({ section }) {
-  const [isOpen, setIsOpen] = useState(false)
+function FeaturedCard({ section, isOpen, onToggle }) {
   if (!section) return null
 
   const tips    = section.tips ?? []
@@ -145,8 +142,8 @@ function FeaturedCard({ section }) {
 
   return (
     <CardShell
-      onClick={() => setIsOpen(o => !o)}
-      className="flex flex-col justify-between"
+      onClick={onToggle}
+      className="flex flex-col justify-between h-full"
       style={{ minHeight: 300, padding: '32px 36px' }}
     >
       <div className="relative z-10 flex flex-col gap-6 flex-1">
@@ -181,7 +178,7 @@ function FeaturedCard({ section }) {
       {/* Toggle row */}
       <div className="relative z-10 mt-6">
         <button
-          onClick={e => { e.stopPropagation(); setIsOpen(o => !o) }}
+          onClick={e => { e.stopPropagation(); onToggle() }}
           className="flex items-center gap-1.5 text-[10px] font-extrabold uppercase tracking-[2px] focus:outline-none focus:ring-0"
           style={{ color: 'rgba(100,168,200,0.7)' }}
         >
@@ -199,16 +196,15 @@ function FeaturedCard({ section }) {
 }
 
 // ── Smaller card — During Race / Travel Advice ────────────────────────────────
-function GuideCard({ section, icon }) {
-  const [isOpen, setIsOpen] = useState(false)
+function GuideCard({ section, icon, isOpen, onToggle }) {
   if (!section) return null
 
   const tips = section.tips ?? []
 
   return (
     <CardShell
-      onClick={() => setIsOpen(o => !o)}
-      className="flex flex-col justify-between"
+      onClick={onToggle}
+      className="flex flex-col justify-between flex-1"
       style={{ padding: '22px 24px', minHeight: 148 }}
     >
       <div className="relative z-10 flex flex-col gap-3">
@@ -238,7 +234,7 @@ function GuideCard({ section, icon }) {
       {/* Toggle row */}
       <div className="relative z-10 mt-4">
         <button
-          onClick={e => { e.stopPropagation(); setIsOpen(o => !o) }}
+          onClick={e => { e.stopPropagation(); onToggle() }}
           className="flex items-center gap-1.5 text-[10px] font-extrabold uppercase tracking-[2px] focus:outline-none focus:ring-0"
           style={{ color: 'rgba(100,168,200,0.62)' }}
         >
@@ -277,22 +273,48 @@ function SectionTitle({ title }) {
 export default function RaceWeekendGuideSection({ guide }) {
   const { beforeRace, duringRace, travelAdvice } = guide.guideSections ?? {}
 
+  const [openCards, setOpenCards] = useState({ before: false, during: false, travel: false })
+  const anyOpen = openCards.before || openCards.during || openCards.travel
+
+  const toggle = key => setOpenCards(prev => ({ ...prev, [key]: !prev[key] }))
+
   return (
     <section>
       <SectionTitle title="Your Race Weekend Guide" />
 
-      {/* Layout: featured card (2/3) + two stacked cards (1/3) */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      {/*
+        When all cards are collapsed: default align-items:stretch makes both grid cells
+        equal height — h-full on FeaturedCard and flex-1 on GuideCards then fill that height
+        so all bottom edges align.
+
+        When any card is open: lg:items-start lets each cell size to its own content,
+        so the expanded card grows freely without pulling the other column with it.
+      */}
+      <div className={`grid grid-cols-1 lg:grid-cols-3 gap-6${anyOpen ? ' lg:items-start' : ''}`}>
 
         {/* Featured — Before the Race */}
         <div className="lg:col-span-2">
-          <FeaturedCard section={beforeRace} />
+          <FeaturedCard
+            section={beforeRace}
+            isOpen={openCards.before}
+            onToggle={() => toggle('before')}
+          />
         </div>
 
         {/* Stacked — During Race + Travel Advice */}
         <div className="lg:col-span-1 flex flex-col gap-6">
-          <GuideCard section={duringRace}   icon={<FlagIcon />}    />
-          <GuideCard section={travelAdvice} icon={<CompassIcon />} />
+          <GuideCard
+            section={duringRace}
+            icon={<FlagIcon />}
+            isOpen={openCards.during}
+            onToggle={() => toggle('during')}
+          />
+          <GuideCard
+            section={travelAdvice}
+            icon={<CompassIcon />}
+            isOpen={openCards.travel}
+            onToggle={() => toggle('travel')}
+          />
         </div>
 
       </div>
