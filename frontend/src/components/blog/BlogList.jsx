@@ -94,7 +94,7 @@ function StatusBox({ type, message }) {
 
 // ─── Blog list ────────────────────────────────────────────────────────────────
 
-export default function BlogList({ data, loading, error, page, onPageChange }) {
+export default function BlogList({ data, loading, error, page, onPageChange, onSelectBlog }) {
   if (loading) return <StatusBox type="loading" />
   if (error)   return <StatusBox type="error" message={error} />
   if (!data?.blogs?.length) return <EmptyState />
@@ -105,14 +105,14 @@ export default function BlogList({ data, loading, error, page, onPageChange }) {
     <div>
       {/* Featured */}
       <div className="mb-6">
-        <FeaturedBlogCard blog={featured} />
+        <FeaturedBlogCard blog={featured} onClick={() => onSelectBlog(featured)} />
       </div>
 
       {/* Grid */}
       {rest.length > 0 && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {rest.map(blog => (
-            <BlogCard key={blog.id} blog={blog} />
+            <BlogCard key={blog.id} blog={blog} onClick={() => onSelectBlog(blog)} />
           ))}
         </div>
       )}

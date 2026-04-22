@@ -12,17 +12,18 @@ function authorName(author) {
   return full || author.username
 }
 
-export default function BlogCard({ blog }) {
+export default function BlogCard({ blog, onClick }) {
   const imageUrl = getBlogImageUrl(blog.image_url)
 
   return (
     <article
-      className="group rounded-xl overflow-hidden flex flex-col h-full transition-transform duration-300 hover:-translate-y-1"
+      className="group rounded-xl overflow-hidden flex flex-col h-full transition-transform duration-300 hover:-translate-y-1 cursor-pointer"
       style={{
         background: 'rgba(15,32,39,0.8)',
         border: '1px solid rgba(255,255,255,0.06)',
         boxShadow: '0 4px 20px rgba(0,0,0,0.3)',
       }}
+      onClick={onClick}
       onMouseEnter={e => { e.currentTarget.style.boxShadow = '0 0 0 1px rgba(44,83,100,0.3), 0 8px 32px rgba(0,0,0,0.4)' }}
       onMouseLeave={e => { e.currentTarget.style.boxShadow = '0 4px 20px rgba(0,0,0,0.3)' }}
     >

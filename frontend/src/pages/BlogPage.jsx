@@ -2,6 +2,7 @@ import { useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import blogHeroBanner from '../assets/BlogHeroBanner.png'
 import BlogCreateModal from '../components/blog/BlogCreateModal'
+import BlogPreviewModal from '../components/blog/BlogPreviewModal'
 import BlogList from '../components/blog/BlogList'
 import { useBlogs } from '../hooks/useBlogs'
 
@@ -101,6 +102,7 @@ function AuthRequiredModal({ onClose }) {
 export default function BlogPage() {
   const [showAuthModal,   setShowAuthModal]   = useState(false)
   const [showCreateModal, setShowCreateModal] = useState(false)
+  const [previewBlog,     setPreviewBlog]     = useState(null)
   const blogSectionRef = useRef(null)
 
   const isLoggedIn = !!localStorage.getItem('token')
@@ -127,6 +129,7 @@ export default function BlogPage() {
     <>
       {showAuthModal   && <AuthRequiredModal onClose={() => setShowAuthModal(false)} />}
       {showCreateModal && <BlogCreateModal onClose={() => setShowCreateModal(false)} onSuccess={handleBlogCreated} />}
+      {previewBlog     && <BlogPreviewModal blog={previewBlog} onClose={() => setPreviewBlog(null)} />}
 
       {/* ── Hero ──────────────────────────────────────────────────────────── */}
       <div className="relative min-h-svh flex items-center overflow-hidden">
@@ -239,6 +242,7 @@ export default function BlogPage() {
             error={error}
             page={page}
             onPageChange={setPage}
+            onSelectBlog={setPreviewBlog}
           />
 
         </div>

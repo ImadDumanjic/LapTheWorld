@@ -12,17 +12,18 @@ function authorName(author) {
   return full || author.username
 }
 
-export default function FeaturedBlogCard({ blog }) {
+export default function FeaturedBlogCard({ blog, onClick }) {
   const imageUrl = getBlogImageUrl(blog.image_url)
 
   return (
     <article
-      className="relative w-full rounded-2xl overflow-hidden"
+      className="relative w-full rounded-2xl overflow-hidden cursor-pointer"
       style={{
         minHeight: 420,
         border: '1px solid rgba(255,255,255,0.06)',
         boxShadow: '0 0 0 1px rgba(44,83,100,0.15), 0 20px 60px rgba(0,0,0,0.5)',
       }}
+      onClick={onClick}
     >
       {/* Background image or gradient fallback */}
       {imageUrl ? (
