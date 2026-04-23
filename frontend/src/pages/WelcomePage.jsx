@@ -4,10 +4,8 @@ import f1CarImg from '../assets/F1Car.png'
 
 // ─── CSS keyframes & class definitions ────────────────────────────────────────
 const STYLES = `
-  @keyframes wGradientFlow {
-    0%, 100% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-  }
+  @import url('https://fonts.googleapis.com/css2?family=Michroma&family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;500;600&display=swap');
+
   @keyframes wCarBlast {
     0%   { transform: translateY(-50%) translateX(0); }
     22%  { transform: translateY(-50%) translateX(0); }
@@ -21,40 +19,15 @@ const STYLES = `
     from { opacity: 1; transform: scale(1); }
     to   { opacity: 0; transform: scale(0.97); }
   }
-  @keyframes wGlowPulse {
-    0%, 100% {
-      box-shadow: 0 0 14px rgba(0,210,255,0.45), 0 0 28px rgba(0,210,255,0.2), 0 0 50px rgba(0,210,255,0.08);
-    }
-    50% {
-      box-shadow: 0 0 22px rgba(0,210,255,0.75), 0 0 48px rgba(0,210,255,0.3), 0 0 80px rgba(0,210,255,0.12);
-    }
+  @keyframes wLightOn {
+    0%, 100% { opacity: 1; box-shadow: 0 0 30px rgba(0,210,255,0.6), 0 0 60px rgba(0,210,255,0.3); }
+    50%       { opacity: 0.85; }
   }
-  @keyframes wLightFlicker {
-    0%   { opacity: 1; }
-    15%  { opacity: 0.85; }
-    30%  { opacity: 1; }
-    100% { opacity: 1; }
+  @keyframes wScanLine {
+    0%   { transform: translateX(-100%); }
+    100% { transform: translateX(400%); }
   }
 
-  .w-bg {
-    background: linear-gradient(135deg, #0F2027 0%, #1a3a4a 30%, #2C5364 60%, #203a43 80%, #0F2027 100%);
-    background-size: 400% 400%;
-    animation: wGradientFlow 10s ease infinite;
-  }
-  .w-btn-glow {
-    animation: wGlowPulse 2.5s ease-in-out infinite;
-    transition: background 0.2s ease, transform 0.2s ease;
-  }
-  .w-btn-glow:hover:not(:disabled) {
-    background: rgba(0,210,255,0.09) !important;
-    transform: scale(1.04);
-    animation: none;
-    box-shadow: 0 0 28px rgba(0,210,255,0.85), 0 0 56px rgba(0,210,255,0.35) !important;
-  }
-  .w-btn-glow:disabled {
-    cursor: not-allowed;
-    opacity: 0.55;
-  }
   .w-car {
     animation: wCarBlast 2s ease-in both;
   }
@@ -65,7 +38,21 @@ const STYLES = `
     animation: wScreenWipe 1.0s cubic-bezier(0.4, 0, 0.2, 1) 0.65s both;
   }
   .w-light-on {
-    animation: wLightFlicker 0.12s ease forwards;
+    animation: wLightOn 2.4s ease-in-out infinite;
+  }
+  .w-scan {
+    animation: wScanLine 4s linear infinite;
+  }
+  .w-btn {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .w-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 0 45px rgba(0,210,255,0.85), 0 0 80px rgba(0,210,255,0.4) !important;
+  }
+  .w-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
   }
 `
 
@@ -106,7 +93,6 @@ export default function WelcomePage() {
       <style>{STYLES}</style>
 
       <div
-        className="w-bg"
         style={{
           minHeight: '100svh',
           display: 'flex',
@@ -115,19 +101,51 @@ export default function WelcomePage() {
           justifyContent: 'center',
           position: 'relative',
           overflow: 'hidden',
+          background: 'linear-gradient(135deg, #0F2027 0%, #2C5364 100%)',
+          backgroundAttachment: 'fixed',
         }}
       >
-        {/* ── Grid background ── */}
+        {/* ── Cyan tech grid ── */}
         <div style={{
           position: 'absolute',
           inset: 0,
           pointerEvents: 'none',
           backgroundImage: `
-            linear-gradient(rgba(0,210,255,0.07) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(0,210,255,0.07) 1px, transparent 1px)
+            linear-gradient(rgba(120,200,220,0.12) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(120,200,220,0.12) 1px, transparent 1px)
           `,
-          backgroundSize: '58px 58px',
+          backgroundSize: '48px 48px',
+          opacity: 0.6,
         }} />
+
+        {/* ── Vignette ── */}
+        <div style={{
+          position: 'absolute',
+          inset: 0,
+          pointerEvents: 'none',
+          background: 'radial-gradient(ellipse at center, transparent 0%, rgba(15,32,39,0.7) 80%)',
+        }} />
+
+        {/* ── Scan line ── */}
+        <div style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          height: '1px',
+          overflow: 'hidden',
+          pointerEvents: 'none',
+          zIndex: 5,
+        }}>
+          <div
+            className="w-scan"
+            style={{
+              height: '1px',
+              width: '33%',
+              background: 'linear-gradient(to right, transparent, rgba(120,200,220,0.6), transparent)',
+            }}
+          />
+        </div>
 
         {/* ── Main content ── */}
         <div
@@ -146,22 +164,23 @@ export default function WelcomePage() {
         >
           {/* ── F1 start lights ── */}
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.85rem', marginBottom: '0.4rem' }}>
-            {/* Pure circles — no housing */}
-            <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
+            <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
               {[1, 2, 3, 4, 5].map(i => {
                 const on = lightsOn >= i
                 return (
                   <div
                     key={i}
+                    className={on ? 'w-light-on' : ''}
                     style={{
-                      width: 36,
-                      height: 36,
+                      width: 48,
+                      height: 48,
                       borderRadius: '50%',
                       background: on
                         ? 'radial-gradient(circle at 35% 35%, #ff6040, #FF1A00 60%, #cc1000)'
-                        : 'radial-gradient(circle at 35% 35%, #2a0808, #180404)',
+                        : 'transparent',
+                      border: on ? 'none' : '2px solid rgba(100,130,145,0.45)',
                       boxShadow: on
-                        ? '0 0 10px 3px rgba(255,26,0,0.85), 0 0 28px 8px rgba(255,26,0,0.4), 0 0 55px 14px rgba(255,60,0,0.18)'
+                        ? '0 0 30px rgba(0,210,255,0.6), 0 0 60px rgba(0,210,255,0.3)'
                         : 'none',
                       transition: 'background 0.06s ease, box-shadow 0.06s ease',
                       flexShrink: 0,
@@ -173,11 +192,11 @@ export default function WelcomePage() {
 
             {/* Label below lights */}
             <span style={{
-              fontSize: '0.7rem',
-              letterSpacing: '0.22em',
-              color: 'rgba(0,210,255,0.5)',
+              fontSize: '0.65rem',
+              letterSpacing: '0.5em',
+              color: '#00D2FF',
               textTransform: 'uppercase',
-              fontWeight: 600,
+              fontFamily: '"Michroma", sans-serif',
             }}>
               Lights Out &nbsp;·&nbsp; Season 2026
             </span>
@@ -193,6 +212,7 @@ export default function WelcomePage() {
               textTransform: 'uppercase',
               margin: 0,
               textShadow: '0 2px 20px rgba(0,0,0,0.4)',
+              fontFamily: '"Orbitron", sans-serif',
             }}>
               Welcome To
             </h1>
@@ -204,7 +224,8 @@ export default function WelcomePage() {
               textTransform: 'uppercase',
               margin: 0,
               lineHeight: 0.9,
-              textShadow: '0 0 50px rgba(0,210,255,0.4), 0 0 100px rgba(0,210,255,0.15)',
+              textShadow: '0 0 20px rgba(0,210,255,0.6), 0 0 40px rgba(0,210,255,0.3)',
+              fontFamily: '"Orbitron", sans-serif',
             }}>
               LapTheWorld
             </h1>
@@ -212,12 +233,13 @@ export default function WelcomePage() {
 
           {/* ── Subtitle ── */}
           <p style={{
-            fontSize: 'clamp(0.85rem, 1.8vw, 1rem)',
-            color: 'rgba(180,230,255,0.6)',
+            fontSize: 'clamp(0.95rem, 1.8vw, 1.1rem)',
+            color: 'rgba(200,220,230,0.7)',
             margin: '0.2rem 0 0',
             maxWidth: 460,
             lineHeight: 1.7,
             letterSpacing: '0.02em',
+            fontFamily: '"Rajdhani", sans-serif',
           }}>
             Your ultimate guide to experiencing Formula 1 around the world.
           </p>
@@ -226,20 +248,24 @@ export default function WelcomePage() {
           <button
             onClick={handleStart}
             disabled={phase !== 'idle'}
-            className="w-btn-glow"
+            className="w-btn"
             style={{
-              marginTop: '0.4rem',
-              padding: '0.85rem 2.8rem',
-              background: 'transparent',
-              border: '1.5px solid rgba(0,210,255,0.65)',
-              color: '#00D2FF',
-              fontSize: '0.9rem',
+              marginTop: '0.8rem',
+              padding: '1rem 2.8rem',
+              background: '#00D2FF',
+              border: 'none',
+              color: '#ffffff',
+              fontSize: '0.85rem',
               fontWeight: 700,
-              letterSpacing: '0.18em',
+              letterSpacing: '0.25em',
               cursor: 'pointer',
-              borderRadius: '3px',
+              borderRadius: '2px',
               textTransform: 'uppercase',
-              fontFamily: 'inherit',
+              fontFamily: '"Orbitron", sans-serif',
+              boxShadow: '0 0 30px rgba(0,210,255,0.6), 0 0 60px rgba(0,210,255,0.3)',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.75rem',
             }}
           >
             Lights Out &nbsp;→
