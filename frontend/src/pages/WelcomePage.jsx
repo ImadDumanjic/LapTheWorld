@@ -281,8 +281,8 @@ export default function WelcomePage() {
               position: 'fixed',
               top: '50%',
               left: 0,
-              width: 'clamp(680px, 110vw, 1200px)',
-              height: 'clamp(160px, 28vw, 290px)',
+              width: 'clamp(800px, 130vw, 1400px)',
+              height: 'clamp(200px, 34vw, 360px)',
               zIndex: 25,
               filter:
                 'drop-shadow(-30px 0 18px rgba(0,210,255,0.99)) ' +
