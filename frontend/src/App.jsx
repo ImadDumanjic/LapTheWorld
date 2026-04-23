@@ -9,6 +9,7 @@ import BlogPage from './pages/BlogPage'
 import ProfilePage from './pages/ProfilePage'
 import TravelGuidePage from './pages/TravelGuidePage'
 import RaceWeekendLandingPage from './pages/RaceWeekendLandingPage'
+import AdminPage from './pages/AdminPage'
 import Header from './components/layout/Header'
 
 const HIDE_HEADER_ON = ['/', '/auth', '/landing', '/reset-password']
@@ -31,6 +32,7 @@ function Layout() {
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/travel-guide" element={<RaceWeekendLandingPage />} />
         <Route path="/travel-guide/:slug" element={<TravelGuidePage />} />
+        <Route path="/admin" element={<AdminPage />} />
       </Routes>
     </>
   )

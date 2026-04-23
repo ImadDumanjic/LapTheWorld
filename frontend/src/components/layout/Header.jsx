@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { logout } from '../../services/authService'
 
 const BlogIcon = () => (
@@ -90,6 +90,8 @@ export default function Header() {
   const [visible, setVisible]     = useState(true)
   const lastScrollY               = useRef(0)
   const navigate                  = useNavigate()
+  const { pathname }              = useLocation()
+  const isAdmin                   = pathname === '/admin'
 
   const handleLogout = () => {
     setOpen(false)
@@ -138,12 +140,14 @@ export default function Header() {
         <div
           className="flex items-center justify-between"
           style={{
-            background: 'rgba(255,255,255,0.08)',
+            background: isAdmin ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.08)',
             backdropFilter: 'blur(20px)',
             WebkitBackdropFilter: 'blur(20px)',
-            border: '1px solid rgba(255,255,255,0.1)',
+            border: isAdmin ? '1px solid rgba(0,0,0,0.08)' : '1px solid rgba(255,255,255,0.1)',
             borderRadius: 22,
-            boxShadow: '0 8px 32px rgba(0,0,0,0.35), 0 1px 0 rgba(255,255,255,0.06) inset',
+            boxShadow: isAdmin
+              ? '0 4px 20px rgba(0,0,0,0.08)'
+              : '0 8px 32px rgba(0,0,0,0.35), 0 1px 0 rgba(255,255,255,0.06) inset',
             padding: '9px 9px 9px 16px',
           }}
         >
@@ -152,39 +156,70 @@ export default function Header() {
             <img src="/LapTheWorld.svg" alt="Lap The World" style={{ height: 55, width: 'auto' }} />
           </Link>
 
-          {/* Menu button */}
-          <button
-            aria-label="Toggle menu"
-            onClick={() => setOpen(v => !v)}
-            onMouseEnter={() => setHoverMenu(true)}
-            onMouseLeave={() => setHoverMenu(false)}
-            style={{
-              width: 44,
-              height: 44,
-              borderRadius: '50%',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              flexShrink: 0,
-              border: '1px solid rgba(255,255,255,0.08)',
-              cursor: 'pointer',
-              transition: 'transform 0.2s ease, filter 0.2s ease, background 0.2s ease',
-              background: open
-                ? 'rgba(255,255,255,0.14)'
-                : hoverMenu
-                  ? 'rgba(255,255,255,0.12)'
-                  : 'rgba(255,255,255,0.07)',
-              transform: hoverMenu ? 'scale(1.05)' : 'scale(1)',
-              filter: hoverMenu ? 'brightness(1.4)' : 'brightness(1)',
-              color: 'rgba(255,255,255,0.8)',
-            }}
-          >
-            <MenuIcon open={open} />
-          </button>
+          {/* Admin: red logout button */}
+          {isAdmin ? (
+            <button
+              onClick={handleLogout}
+              style={{
+                height: 44,
+                borderRadius: 12,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0,
+                paddingLeft: 20,
+                paddingRight: 20,
+                cursor: 'pointer',
+                border: 'none',
+                background: '#ef4444',
+                color: '#fff',
+                fontSize: 11,
+                fontFamily: 'inherit',
+                letterSpacing: '2px',
+                textTransform: 'uppercase',
+                fontWeight: 600,
+                transition: 'background 0.2s ease',
+              }}
+              onMouseEnter={e => { e.currentTarget.style.background = '#dc2626' }}
+              onMouseLeave={e => { e.currentTarget.style.background = '#ef4444' }}
+            >
+              Log Out
+            </button>
+          ) : (
+            /* Hamburger menu button */
+            <button
+              aria-label="Toggle menu"
+              onClick={() => setOpen(v => !v)}
+              onMouseEnter={() => setHoverMenu(true)}
+              onMouseLeave={() => setHoverMenu(false)}
+              style={{
+                width: 44,
+                height: 44,
+                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0,
+                border: '1px solid rgba(255,255,255,0.08)',
+                cursor: 'pointer',
+                transition: 'transform 0.2s ease, filter 0.2s ease, background 0.2s ease',
+                background: open
+                  ? 'rgba(255,255,255,0.14)'
+                  : hoverMenu
+                    ? 'rgba(255,255,255,0.12)'
+                    : 'rgba(255,255,255,0.07)',
+                transform: hoverMenu ? 'scale(1.05)' : 'scale(1)',
+                filter: hoverMenu ? 'brightness(1.4)' : 'brightness(1)',
+                color: 'rgba(255,255,255,0.8)',
+              }}
+            >
+              <MenuIcon open={open} />
+            </button>
+          )}
         </div>
 
-        {/* Dropdown */}
-        <nav
+        {/* Dropdown — hidden on admin page */}
+        {!isAdmin && <nav
           style={{
             position: 'absolute',
             top: 'calc(100% + 8px)',
@@ -260,7 +295,7 @@ export default function Header() {
             </svg>
             Log Out
           </button>
-        </nav>
+        </nav>}
 
       </div>
       </div>
