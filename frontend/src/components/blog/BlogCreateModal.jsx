@@ -17,12 +17,13 @@ const ImageIcon = () => (
 )
 
 export default function BlogCreateModal({ onClose, onSuccess }) {
-  const [title,      setTitle]      = useState('')
-  const [content,    setContent]    = useState('')
-  const [imageFile,  setImageFile]  = useState(null)
+  const [title,        setTitle]        = useState('')
+  const [content,      setContent]      = useState('')
+  const [imageFile,    setImageFile]    = useState(null)
   const [imagePreview, setImagePreview] = useState(null)
-  const [loading,    setLoading]    = useState(false)
-  const [error,      setError]      = useState(null)
+  const [loading,      setLoading]      = useState(false)
+  const [error,        setError]        = useState(null)
+  const [submitted,    setSubmitted]    = useState(false)
   const fileInputRef = useRef(null)
 
   const handleImageChange = (e) => {
@@ -61,6 +62,7 @@ export default function BlogCreateModal({ onClose, onSuccess }) {
       fd.append('content', content.trim())
       if (imageFile) fd.append('image', imageFile)
       await createBlog(fd)
+      setSubmitted(true)
       onSuccess()
     } catch (err) {
       setError(err.message)
@@ -99,6 +101,33 @@ export default function BlogCreateModal({ onClose, onSuccess }) {
         >
           <XIcon />
         </button>
+
+        {/* Success state */}
+        {submitted ? (
+          <div className="flex flex-col items-center text-center py-6">
+            <div
+              className="w-16 h-16 rounded-full flex items-center justify-center mb-5"
+              style={{ background: 'rgba(44,83,100,0.15)', border: '1px solid rgba(44,83,100,0.4)' }}
+            >
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(100,168,200,0.9)" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+            </div>
+            <p className="text-[10px] font-extrabold tracking-[3.5px] uppercase mb-2" style={{ color: 'rgba(44,83,100,0.9)' }}>Submitted</p>
+            <h2 className="font-extrabold uppercase mb-3" style={{ fontSize: 20, color: '#fff', letterSpacing: '0.5px' }}>Story Received!</h2>
+            <p className="text-[13px] leading-relaxed mb-7" style={{ color: 'rgba(255,255,255,0.45)' }}>
+              Your story has been submitted and is now awaiting admin review. You will receive an email once it has been approved or rejected.
+            </p>
+            <button
+              onClick={onClose}
+              className="py-3 px-8 rounded-[50px] text-white text-[11px] font-extrabold uppercase tracking-[2px] transition-all duration-300 cursor-pointer"
+              style={{ background: 'linear-gradient(135deg, #3d7a96, #2C5364, #1a3340)' }}
+            >
+              Close
+            </button>
+          </div>
+        ) : (
+        <>
 
         {/* Header */}
         <p className="text-[10px] font-extrabold tracking-[3.5px] uppercase mb-2" style={{ color: 'rgba(44,83,100,0.9)' }}>
@@ -233,7 +262,7 @@ export default function BlogCreateModal({ onClose, onSuccess }) {
               onMouseEnter={e => { if (!loading) { e.currentTarget.style.boxShadow = '0 0 28px rgba(44,83,100,0.55)'; e.currentTarget.style.transform = 'translateY(-1px)' } }}
               onMouseLeave={e => { e.currentTarget.style.boxShadow = ''; e.currentTarget.style.transform = '' }}
             >
-              {loading ? 'Publishing…' : 'Publish Story'}
+              {loading ? 'Submitting…' : 'Submit for Review'}
             </button>
             <button
               type="button"
@@ -248,6 +277,8 @@ export default function BlogCreateModal({ onClose, onSuccess }) {
           </div>
 
         </form>
+        </>
+        )}
       </div>
     </div>
   )

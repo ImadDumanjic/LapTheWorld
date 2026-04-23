@@ -1,5 +1,6 @@
 import User from '../../models/User.js'
 import Blog from '../../models/Blog.js'
+import { sendBlogApprovedEmail, sendBlogRejectedEmail } from '../services/emailService.js'
 
 const USER_SAFE_ATTRS = [
   'id', 'username', 'email', 'firstName', 'lastName', 'phone', 'role', 'createdAt', 'updatedAt',
@@ -34,7 +35,7 @@ export async function deleteUser(req, res) {
 export async function getAllBlogs(req, res) {
   try {
     const blogs = await Blog.findAll({
-      include: [{ model: User, as: 'author', attributes: ['username', 'email'] }],
+      include: [{ model: User, as: 'author', attributes: ['id', 'username', 'email', 'firstName', 'lastName'] }],
       order: [['created_at', 'DESC']],
     })
     res.json(blogs)
@@ -52,9 +53,12 @@ export async function updateBlogStatus(req, res) {
       return res.status(400).json({ message: 'Invalid status' })
     }
 
-    const blog = await Blog.findByPk(req.params.id)
+    const blog = await Blog.findByPk(req.params.id, {
+      include: [{ model: User, as: 'author', attributes: ['username', 'email', 'firstName', 'lastName'] }],
+    })
     if (!blog) return res.status(404).json({ message: 'Blog not found' })
 
+    const previousStatus = blog.status
     blog.status = status
     if (status === 'approved') {
       blog.approved_at = new Date()
@@ -66,6 +70,27 @@ export async function updateBlogStatus(req, res) {
     }
 
     await blog.save()
+
+    if (blog.author) {
+      const authorName = [blog.author.firstName, blog.author.lastName].filter(Boolean).join(' ') || blog.author.username
+
+      if (status === 'approved' && previousStatus !== 'approved') {
+        sendBlogApprovedEmail({
+          toEmail:    blog.author.email,
+          authorName,
+          blogTitle:  blog.title,
+        }).catch(err => console.error('Approval email failed:', err))
+      }
+
+      if (status === 'rejected' && previousStatus !== 'rejected') {
+        sendBlogRejectedEmail({
+          toEmail:    blog.author.email,
+          authorName,
+          blogTitle:  blog.title,
+        }).catch(err => console.error('Rejection email failed:', err))
+      }
+    }
+
     res.json(blog)
   } catch (err) {
     console.error('updateBlogStatus error:', err)

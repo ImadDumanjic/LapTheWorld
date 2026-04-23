@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import blogHeroBanner from '../assets/BlogHeroBanner.png'
 import BlogCreateModal from '../components/blog/BlogCreateModal'
 import BlogPreviewModal from '../components/blog/BlogPreviewModal'
@@ -121,8 +121,7 @@ export default function BlogPage() {
   }
 
   const handleBlogCreated = () => {
-    setShowCreateModal(false)
-    refresh()
+    // Don't refresh — new blogs are pending and won't appear in the public list
   }
 
   return (
@@ -211,6 +210,17 @@ export default function BlogPage() {
                 >
                   Explore
                 </button>
+                {isLoggedIn && (
+                  <Link
+                    to="/blog/my"
+                    className="py-3 px-7 rounded-[50px] text-[11px] font-extrabold uppercase tracking-[2.5px] cursor-pointer transition-all duration-300 no-underline"
+                    style={{ color: 'rgba(255,255,255,0.58)', border: '1.5px solid rgba(255,255,255,0.18)', background: 'transparent' }}
+                    onMouseEnter={e => { e.currentTarget.style.color = '#fff'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.38)'; e.currentTarget.style.background = 'rgba(255,255,255,0.04)'; e.currentTarget.style.transform = 'translateY(-2px)' }}
+                    onMouseLeave={e => { e.currentTarget.style.color = 'rgba(255,255,255,0.58)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.18)'; e.currentTarget.style.background = 'transparent'; e.currentTarget.style.transform = '' }}
+                  >
+                    My Blog Posts
+                  </Link>
+                )}
               </div>
 
             </div>
