@@ -1,46 +1,6 @@
 import { useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
-
-// ─── F1 Car SVG silhouette (nose points RIGHT — direction of travel) ──────────
-const F1Car = () => (
-  <svg viewBox="0 0 500 110" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: '100%', height: '100%' }}>
-    {/* Mirror horizontally so nose leads to the right */}
-    <g transform="translate(500,0) scale(-1,1)">
-      {/* Front wing */}
-      <path d="M8 72 L8 82 L95 78 L95 70 Z" fill="#00D2FF" />
-      <rect x="4" y="68" width="4" height="18" rx="1" fill="#00AACC" />
-      {/* Nose cone */}
-      <path d="M8 72 L8 82 L125 78 L125 58 Z" fill="#00B8D9" />
-      {/* Main body */}
-      <path d="M125 58 L155 44 L220 40 L300 40 L340 44 L390 55 L430 65 L430 80 L125 80 Z" fill="#00D2FF" />
-      {/* Cockpit opening */}
-      <path d="M210 54 L225 36 L285 36 L300 54 Z" fill="#061520" />
-      {/* Halo safety bar */}
-      <path d="M225 38 C 255 28 275 28 300 38" stroke="#00D2FF" strokeWidth="4" fill="none" strokeLinecap="round" />
-      <rect x="247" y="25" width="18" height="14" rx="3" fill="#00D2FF" />
-      {/* Engine air intake */}
-      <path d="M295 50 L310 36 L330 36 L345 50 Z" fill="#00AACC" />
-      {/* Rear wing supports */}
-      <rect x="418" y="20" width="5" height="50" rx="1" fill="#00D2FF" />
-      <rect x="432" y="20" width="5" height="50" rx="1" fill="#00D2FF" />
-      {/* Rear wing planes */}
-      <rect x="405" y="16" width="48" height="11" rx="2" fill="#00D2FF" />
-      <rect x="408" y="30" width="42" height="8" rx="1" fill="#00AACC" />
-      {/* Front wheel */}
-      <circle cx="135" cy="88" r="20" fill="#071828" />
-      <circle cx="135" cy="88" r="12" fill="#0d2235" />
-      <circle cx="135" cy="88" r="5" fill="#00D2FF" opacity="0.35" />
-      {/* Rear wheel */}
-      <ellipse cx="395" cy="88" rx="23" ry="20" fill="#071828" />
-      <ellipse cx="395" cy="88" rx="14" ry="12" fill="#0d2235" />
-      <ellipse cx="395" cy="88" rx="5" ry="5" fill="#00D2FF" opacity="0.35" />
-      {/* Rear diffuser */}
-      <path d="M430 72 L462 80 L430 80 Z" fill="#00AACC" />
-      {/* Exhaust glow */}
-      <circle cx="425" cy="65" r="3" fill="#FF4400" opacity="0.75" />
-    </g>
-  </svg>
-)
+import f1CarImg from '../assets/F1Car.png'
 
 // ─── CSS keyframes & class definitions ────────────────────────────────────────
 const STYLES = `
@@ -49,8 +9,9 @@ const STYLES = `
     50% { background-position: 100% 50%; }
   }
   @keyframes wCarBlast {
-    from { transform: translateY(-50%) translateX(-130vw); }
-    to   { transform: translateY(-50%) translateX(130vw); }
+    0%   { transform: translateY(-50%) translateX(0); }
+    22%  { transform: translateY(-50%) translateX(0); }
+    100% { transform: translateY(-50%) translateX(130vw); }
   }
   @keyframes wScreenWipe {
     from { transform: translateX(-100%); }
@@ -95,13 +56,13 @@ const STYLES = `
     opacity: 0.55;
   }
   .w-car {
-    animation: wCarBlast 1.3s linear both;
+    animation: wCarBlast 2s ease-in both;
   }
   .w-exit {
     animation: wContentExit 0.6s ease forwards;
   }
   .w-wipe {
-    animation: wScreenWipe 1.0s cubic-bezier(0.4, 0, 0.2, 1) 0.35s both;
+    animation: wScreenWipe 1.0s cubic-bezier(0.4, 0, 0.2, 1) 0.65s both;
   }
   .w-light-on {
     animation: wLightFlicker 0.12s ease forwards;
@@ -131,7 +92,7 @@ export default function WelcomePage() {
     const goId = setTimeout(() => {
       setPhase('go')
       setLightsOn(0)
-      const navId = setTimeout(() => navigate(dest), 1600)
+      const navId = setTimeout(() => navigate(dest), 2000)
       timerRefs.current.push(navId)
     }, 5 * 120 + 300) // 900 ms
 
@@ -294,8 +255,8 @@ export default function WelcomePage() {
               position: 'fixed',
               top: '50%',
               left: 0,
-              width: 'clamp(320px, 55vw, 520px)',
-              height: 'clamp(70px, 12vw, 115px)',
+              width: 'clamp(680px, 110vw, 1200px)',
+              height: 'clamp(160px, 28vw, 290px)',
               zIndex: 25,
               filter:
                 'drop-shadow(-30px 0 18px rgba(0,210,255,0.99)) ' +
@@ -303,22 +264,10 @@ export default function WelcomePage() {
                 'drop-shadow(-160px 0 65px rgba(0,210,255,0.22))',
             }}
           >
-            <F1Car />
+            <img src={f1CarImg} alt="" style={{ width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'left center' }} />
           </div>
         )}
 
-        {/* ── Screen wipe ── */}
-        {isGo && (
-          <div
-            className="w-wipe"
-            style={{
-              position: 'fixed',
-              inset: 0,
-              background: 'linear-gradient(90deg, #061520 0%, #0F2027 55%, #0F2027 100%)',
-              zIndex: 20,
-            }}
-          />
-        )}
       </div>
     </>
   )
