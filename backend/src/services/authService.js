@@ -84,6 +84,12 @@ export async function login({ email, password }) {
     throw err
   }
 
+  if (user.role === 'Admin') {
+    const err = new Error('Admins must sign in through the admin portal.')
+    err.status = 403
+    throw err
+  }
+
   await user.update({ failedLoginAttempts: 0, lockUntil: null })
 
   if (user.banned) {

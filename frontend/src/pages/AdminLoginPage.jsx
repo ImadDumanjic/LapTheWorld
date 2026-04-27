@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Toaster, toast } from 'react-hot-toast'
 import InputField from '../components/ui/InputField'
@@ -43,6 +43,14 @@ export default function AdminLoginPage() {
   const [error, setError]         = useState('')
 
   const clearError = () => setError('')
+
+  useEffect(() => {
+    const token = localStorage.getItem('token')
+    const role = localStorage.getItem('role')
+
+    if (token && role === 'Admin') navigate('/admin', { replace: true })
+    if (token && role === 'User') navigate('/landing', { replace: true })
+  }, [navigate])
 
   const reset = () => {
     setStep('credentials')

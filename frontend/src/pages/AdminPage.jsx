@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import toast, { Toaster } from 'react-hot-toast'
-import { Trash2, Check, X, ShieldCheck, Eye, Ban, UserCheck } from 'lucide-react'
+import { Trash2, Check, X, ShieldCheck, Eye, Ban, UserCheck, LogOut } from 'lucide-react'
 import { fetchAllUsers, removeUser, setBanStatus, fetchAllBlogs, changeBlogStatus } from '../services/adminService'
 import { getBlogImageUrl } from '../services/blogService'
+import { logout } from '../services/authService'
 
 const STATUS_CONFIG = {
   draft:    { label: 'Draft',    cls: 'bg-gray-100 text-gray-500' },
@@ -218,9 +219,16 @@ export default function AdminPage() {
 
   useEffect(() => {
     const token = localStorage.getItem('token')
-    if (!token) { navigate('/auth'); return }
+    const role = localStorage.getItem('role')
+    if (!token) { navigate('/admin-login', { replace: true }); return }
+    if (role !== 'Admin') { navigate('/landing', { replace: true }); return }
     loadData()
   }, [])
+
+  function handleLogout() {
+    logout()
+    navigate('/admin-login', { replace: true })
+  }
 
   async function loadData() {
     setLoading(true)
@@ -230,7 +238,10 @@ export default function AdminPage() {
       setUsers(u)
       setBlogs(b)
     } catch (err) {
-      if (err.status === 403) setForbidden(true)
+      if (err.status === 401) {
+        logout()
+        navigate('/admin-login', { replace: true })
+      } else if (err.status === 403) setForbidden(true)
       else setError(err.message)
     } finally {
       setLoading(false)
@@ -317,11 +328,21 @@ export default function AdminPage() {
         />
       )}
 
-      <div className="max-w-7xl mx-auto px-6 pt-40 pb-10">
+      <div className="max-w-7xl mx-auto px-6 pt-10 pb-10">
 
-        <div className="mb-8">
-          <h1 className="text-2xl font-semibold text-gray-900">Admin</h1>
-          <p className="text-sm text-gray-400 mt-1">Manage users and blog posts</p>
+        <div className="mb-8 flex items-start justify-between gap-4">
+          <div>
+            <h1 className="text-2xl font-semibold text-gray-900">Admin</h1>
+            <p className="text-sm text-gray-400 mt-1">Manage users and blog posts</p>
+          </div>
+          <button
+            type="button"
+            onClick={handleLogout}
+            className="inline-flex h-9 items-center gap-2 rounded-md bg-red-500 px-4 text-[11px] font-semibold uppercase tracking-[2px] text-white transition-colors hover:bg-red-600"
+          >
+            <LogOut className="size-4" />
+            Log Out
+          </button>
         </div>
 
         {/* Tab bar */}
