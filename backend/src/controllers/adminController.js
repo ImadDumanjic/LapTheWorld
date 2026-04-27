@@ -3,7 +3,9 @@ import Blog from '../../models/Blog.js'
 import { sendBlogApprovedEmail, sendBlogRejectedEmail } from '../services/emailService.js'
 
 const USER_SAFE_ATTRS = [
-  'id', 'username', 'email', 'firstName', 'lastName', 'phone', 'role', 'createdAt', 'updatedAt',
+  'id', 'username', 'email', 'firstName', 'lastName', 'phone', 'role',
+  'banned', 'bannedBy', 'bannedAt',
+  'createdAt', 'updatedAt',
 ]
 
 export async function getAllUsers(req, res) {
@@ -28,6 +30,32 @@ export async function deleteUser(req, res) {
     res.status(204).end()
   } catch (err) {
     console.error('deleteUser error:', err)
+    res.status(500).json({ message: err.message })
+  }
+}
+
+export async function banUser(req, res) {
+  try {
+    const { banned } = req.body
+    if (typeof banned !== 'boolean') {
+      return res.status(400).json({ message: '"banned" must be a boolean' })
+    }
+
+    const user = await User.findByPk(req.params.id)
+    if (!user) return res.status(404).json({ message: 'User not found' })
+    if (user.id === req.user.id) return res.status(400).json({ message: 'Cannot ban your own account' })
+    if (user.role === 'Admin') return res.status(400).json({ message: 'Cannot ban another admin' })
+
+    await user.update(
+      banned
+        ? { banned: true,  bannedBy: req.user.id, bannedAt: new Date() }
+        : { banned: false, bannedBy: null,         bannedAt: null }
+    )
+
+    const updated = await User.findByPk(req.params.id, { attributes: USER_SAFE_ATTRS })
+    res.json(updated)
+  } catch (err) {
+    console.error('banUser error:', err)
     res.status(500).json({ message: err.message })
   }
 }

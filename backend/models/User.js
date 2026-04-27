@@ -29,6 +29,26 @@ const User = sequelize.define('User', {
     allowNull: true,
     defaultValue: null,
   },
+  totpSecret: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    defaultValue: null,
+  },
+  banned: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: false,
+  },
+  bannedBy: {
+    type: DataTypes.UUID,
+    allowNull: true,
+    defaultValue: null,
+  },
+  bannedAt: {
+    type: DataTypes.DATE,
+    allowNull: true,
+    defaultValue: null,
+  },
   resetPasswordTokenHash: {
     type: DataTypes.STRING,
     allowNull: true,

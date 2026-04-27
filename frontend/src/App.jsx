@@ -11,10 +11,11 @@ import ProfilePage from './pages/ProfilePage'
 import TravelGuidePage from './pages/TravelGuidePage'
 import RaceWeekendLandingPage from './pages/RaceWeekendLandingPage'
 import AdminPage from './pages/AdminPage'
+import AdminLoginPage from './pages/AdminLoginPage'
 import MyBlogsPage from './pages/MyBlogsPage'
 import Header from './components/layout/Header'
 
-const HIDE_HEADER_ON = ['/', '/auth', '/landing', '/reset-password']
+const HIDE_HEADER_ON = ['/', '/auth', '/landing', '/reset-password', '/admin-login']
 
 function Layout() {
   const { pathname } = useLocation()
@@ -35,6 +36,7 @@ function Layout() {
         <Route path="/travel-guide" element={<RaceWeekendLandingPage />} />
         <Route path="/travel-guide/:slug" element={<TravelGuidePage />} />
         <Route path="/admin" element={<AdminPage />} />
+        <Route path="/admin-login" element={<AdminLoginPage />} />
         <Route path="/blog/my" element={<MyBlogsPage />} />
       </Routes>
     </>

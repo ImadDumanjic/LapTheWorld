@@ -23,6 +23,15 @@ export async function fetchAllUsers() {
   return handleResponse(res)
 }
 
+export async function setBanStatus(id, banned) {
+  const res = await fetch(`${BASE_URL}/api/admin/users/${id}/ban`, {
+    method: 'PATCH',
+    headers: getAuthHeaders(),
+    body: JSON.stringify({ banned }),
+  })
+  return handleResponse(res)
+}
+
 export async function removeUser(id) {
   const res = await fetch(`${BASE_URL}/api/admin/users/${id}`, {
     method: 'DELETE',

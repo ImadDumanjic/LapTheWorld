@@ -6,6 +6,7 @@ import authRoutes from './routes/authRoutes.js'
 import blogRoutes from './routes/blogRoutes.js'
 import userRoutes from './routes/userRoutes.js'
 import adminRoutes from './routes/adminRoutes.js'
+import adminAuthRoutes from './routes/adminAuthRoutes.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -22,6 +23,7 @@ app.get('/', (req, res) => {
 })
 
 app.use('/api/auth', authRoutes)
+app.use('/api/admin-auth', adminAuthRoutes)
 app.use('/api/blogs', blogRoutes)
 app.use('/api/users', userRoutes)
 app.use('/api/admin', adminRoutes)

@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import toast, { Toaster } from 'react-hot-toast'
-import { Trash2, Check, X, ShieldCheck, Eye } from 'lucide-react'
-import { fetchAllUsers, removeUser, fetchAllBlogs, changeBlogStatus } from '../services/adminService'
+import { Trash2, Check, X, ShieldCheck, Eye, Ban, UserCheck } from 'lucide-react'
+import { fetchAllUsers, removeUser, setBanStatus, fetchAllBlogs, changeBlogStatus } from '../services/adminService'
 import { getBlogImageUrl } from '../services/blogService'
 
 const STATUS_CONFIG = {
@@ -65,6 +65,45 @@ function DeleteButton({ onConfirm }) {
       title="Delete"
     >
       <Trash2 className="size-4" />
+    </button>
+  )
+}
+
+function BanButton({ banned, onConfirm }) {
+  const [confirming, setConfirming] = useState(false)
+
+  if (confirming) {
+    return (
+      <span className="flex items-center gap-1.5 text-xs">
+        <button
+          onClick={() => { onConfirm(); setConfirming(false) }}
+          className={`font-medium transition-colors ${banned ? 'text-green-600 hover:text-green-700' : 'text-red-600 hover:text-red-700'}`}
+        >
+          Confirm
+        </button>
+        <span className="text-gray-300">|</span>
+        <button onClick={() => setConfirming(false)} className="text-gray-400 hover:text-gray-600 transition-colors">
+          Cancel
+        </button>
+      </span>
+    )
+  }
+
+  return banned ? (
+    <button
+      onClick={() => setConfirming(true)}
+      className="p-1.5 rounded-md text-green-400 hover:text-green-600 hover:bg-green-50 transition-colors"
+      title="Unban user"
+    >
+      <UserCheck className="size-4" />
+    </button>
+  ) : (
+    <button
+      onClick={() => setConfirming(true)}
+      className="p-1.5 rounded-md text-gray-300 hover:text-orange-500 hover:bg-orange-50 transition-colors"
+      title="Ban user"
+    >
+      <Ban className="size-4" />
     </button>
   )
 }
@@ -208,6 +247,16 @@ export default function AdminPage() {
     }
   }
 
+  async function handleBanUser(id, banned) {
+    try {
+      const updated = await setBanStatus(id, banned)
+      setUsers(prev => prev.map(u => u.id === id ? updated : u))
+      toast.success(banned ? 'User banned' : 'User unbanned')
+    } catch (err) {
+      toast.error(err.message)
+    }
+  }
+
   async function handleBlogStatus(id, status) {
     try {
       const updated = await changeBlogStatus(id, status)
@@ -314,6 +363,7 @@ export default function AdminPage() {
                   <th className={TH}>Name</th>
                   <th className={TH}>Phone</th>
                   <th className={TH}>Role</th>
+                  <th className={TH}>Status</th>
                   <th className={TH}>Joined</th>
                   <th className={TH} />
                 </tr>
@@ -321,22 +371,56 @@ export default function AdminPage() {
               <tbody>
                 {users.length === 0 ? (
                   <tr>
-                    <td colSpan={8} className="px-4 py-12 text-center text-sm text-gray-400">No users found</td>
+                    <td colSpan={9} className="px-4 py-12 text-center text-sm text-gray-400">No users found</td>
                   </tr>
-                ) : users.map((user, idx) => (
-                  <tr key={user.id} className="border-b border-gray-50 hover:bg-gray-50/60 transition-colors last:border-0">
-                    <td className={`${TD} text-gray-400 tabular-nums w-10`}>{idx + 1}</td>
-                    <td className={`${TD} font-medium text-gray-900`}>{user.username}</td>
-                    <td className={`${TD} text-gray-500`}>{user.email}</td>
-                    <td className={`${TD} text-gray-500`}>{[user.firstName, user.lastName].filter(Boolean).join(' ') || '—'}</td>
-                    <td className={`${TD} text-gray-500`}>{user.phone || '—'}</td>
-                    <td className={TD}><RoleBadge role={user.role} /></td>
-                    <td className={`${TD} text-gray-400`}>{formatDate(user.createdAt)}</td>
-                    <td className={`${TD} text-right`}>
-                      <DeleteButton onConfirm={() => handleDeleteUser(user.id)} />
-                    </td>
-                  </tr>
-                ))}
+                ) : users.map((user, idx) => {
+                  const banner = user.bannedBy ? users.find(u => u.id === user.bannedBy) : null
+                  return (
+                    <tr
+                      key={user.id}
+                      className={`border-b border-gray-50 transition-colors last:border-0 ${
+                        user.banned ? 'bg-red-50/30 hover:bg-red-50/50' : 'hover:bg-gray-50/60'
+                      }`}
+                    >
+                      <td className={`${TD} text-gray-400 tabular-nums w-10`}>{idx + 1}</td>
+                      <td className={`${TD} font-medium ${user.banned ? 'text-gray-400 line-through' : 'text-gray-900'}`}>{user.username}</td>
+                      <td className={`${TD} text-gray-500`}>{user.email}</td>
+                      <td className={`${TD} text-gray-500`}>{[user.firstName, user.lastName].filter(Boolean).join(' ') || '—'}</td>
+                      <td className={`${TD} text-gray-500`}>{user.phone || '—'}</td>
+                      <td className={TD}><RoleBadge role={user.role} /></td>
+                      <td className={TD}>
+                        {user.banned ? (
+                          <div className="flex flex-col gap-0.5">
+                            <span className="inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-medium bg-red-100 text-red-600 w-fit">
+                              <Ban className="size-3" /> Banned
+                            </span>
+                            {banner && (
+                              <span className="text-[10px] text-gray-400 pl-0.5">
+                                by {banner.username}{user.bannedAt ? ` · ${formatDate(user.bannedAt)}` : ''}
+                              </span>
+                            )}
+                          </div>
+                        ) : (
+                          <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-green-100 text-green-700">
+                            Active
+                          </span>
+                        )}
+                      </td>
+                      <td className={`${TD} text-gray-400`}>{formatDate(user.createdAt)}</td>
+                      <td className={`${TD} text-right`}>
+                        <div className="flex items-center justify-end gap-0.5">
+                          {user.role !== 'Admin' && (
+                            <BanButton
+                              banned={user.banned}
+                              onConfirm={() => handleBanUser(user.id, !user.banned)}
+                            />
+                          )}
+                          <DeleteButton onConfirm={() => handleDeleteUser(user.id)} />
+                        </div>
+                      </td>
+                    </tr>
+                  )
+                })}
               </tbody>
             </table>
           </div>
