@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { getGuideBySlug } from '../data/travelGuides'
+import { useAudio } from '../context/AudioContext'
 import TravelGuideHero from '../components/travel-guide/TravelGuideHero'
 import CircuitInfoSection from '../components/travel-guide/CircuitInfoSection'
 import WeatherSection from '../components/travel-guide/WeatherSection'
@@ -46,10 +47,16 @@ function NotFound({ slug }) {
 export default function TravelGuidePage() {
   const { slug } = useParams()
   const guide = getGuideBySlug(slug)
+  const { loadCircuit, stopCurrent } = useAudio()
 
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [slug])
+
+  useEffect(() => {
+    loadCircuit(slug)
+    return () => stopCurrent()
+  }, [slug, loadCircuit, stopCurrent])
 
   if (!guide) return <NotFound slug={slug ?? ''} />
 

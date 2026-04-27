@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { logout } from '../../services/authService'
+import { useAudio } from '../../context/AudioContext'
 
 const BlogIcon = () => (
   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -30,6 +31,18 @@ const TravelIcon = () => (
 const ProfileIcon = () => (
   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
     <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+  </svg>
+)
+
+const PlayIcon = () => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+    <polygon points="5 3 19 12 5 21 5 3" />
+  </svg>
+)
+const PauseIcon = () => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+    <rect x="6" y="4" width="4" height="16" rx="1" />
+    <rect x="14" y="4" width="4" height="16" rx="1" />
   </svg>
 )
 
@@ -85,13 +98,16 @@ function MenuIcon({ open }) {
 }
 
 export default function Header() {
-  const [open, setOpen]           = useState(false)
-  const [hoverMenu, setHoverMenu] = useState(false)
-  const [visible, setVisible]     = useState(true)
-  const lastScrollY               = useRef(0)
-  const navigate                  = useNavigate()
-  const { pathname }              = useLocation()
-  const isAdmin                   = pathname === '/admin'
+  const [open, setOpen]               = useState(false)
+  const [hoverMenu, setHoverMenu]     = useState(false)
+  const [hoverAudio, setHoverAudio]   = useState(false)
+  const [visible, setVisible]         = useState(true)
+  const lastScrollY                   = useRef(0)
+  const navigate                      = useNavigate()
+  const { pathname }                  = useLocation()
+  const isAdmin                       = pathname === '/admin'
+  const isTravelGuide                 = /^\/travel-guide\/.+/.test(pathname)
+  const { isPlaying, toggle }         = useAudio()
 
   const handleLogout = () => {
     setOpen(false)
@@ -156,66 +172,103 @@ export default function Header() {
             <img src="/LapTheWorld.svg" alt="Lap The World" style={{ height: 55, width: 'auto' }} />
           </Link>
 
-          {/* Admin: red logout button */}
-          {isAdmin ? (
-            <button
-              onClick={handleLogout}
-              style={{
-                height: 44,
-                borderRadius: 12,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexShrink: 0,
-                paddingLeft: 20,
-                paddingRight: 20,
-                cursor: 'pointer',
-                border: 'none',
-                background: '#ef4444',
-                color: '#fff',
-                fontSize: 11,
-                fontFamily: 'inherit',
-                letterSpacing: '2px',
-                textTransform: 'uppercase',
-                fontWeight: 600,
-                transition: 'background 0.2s ease',
-              }}
-              onMouseEnter={e => { e.currentTarget.style.background = '#dc2626' }}
-              onMouseLeave={e => { e.currentTarget.style.background = '#ef4444' }}
-            >
-              Log Out
-            </button>
-          ) : (
-            /* Hamburger menu button */
-            <button
-              aria-label="Toggle menu"
-              onClick={() => setOpen(v => !v)}
-              onMouseEnter={() => setHoverMenu(true)}
-              onMouseLeave={() => setHoverMenu(false)}
-              style={{
-                width: 44,
-                height: 44,
-                borderRadius: '50%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexShrink: 0,
-                border: '1px solid rgba(255,255,255,0.08)',
-                cursor: 'pointer',
-                transition: 'transform 0.2s ease, filter 0.2s ease, background 0.2s ease',
-                background: open
-                  ? 'rgba(255,255,255,0.14)'
-                  : hoverMenu
-                    ? 'rgba(255,255,255,0.12)'
-                    : 'rgba(255,255,255,0.07)',
-                transform: hoverMenu ? 'scale(1.05)' : 'scale(1)',
-                filter: hoverMenu ? 'brightness(1.4)' : 'brightness(1)',
-                color: 'rgba(255,255,255,0.8)',
-              }}
-            >
-              <MenuIcon open={open} />
-            </button>
-          )}
+          {/* Right side: optional audio button + hamburger / admin logout */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+
+            {/* Play/pause — visible only on individual travel guide pages */}
+            {isTravelGuide && !isAdmin && (
+              <button
+                aria-label={isPlaying ? 'Pause audio guide' : 'Play audio guide'}
+                onClick={toggle}
+                onMouseEnter={() => setHoverAudio(true)}
+                onMouseLeave={() => setHoverAudio(false)}
+                style={{
+                  width: 44,
+                  height: 44,
+                  borderRadius: '50%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexShrink: 0,
+                  border: '1px solid rgba(0,210,255,0.3)',
+                  cursor: 'pointer',
+                  transition: 'transform 0.2s ease, filter 0.2s ease, background 0.2s ease',
+                  background: isPlaying
+                    ? 'rgba(0,210,255,0.18)'
+                    : hoverAudio
+                      ? 'rgba(0,210,255,0.12)'
+                      : 'rgba(0,210,255,0.06)',
+                  transform: hoverAudio ? 'scale(1.05)' : 'scale(1)',
+                  filter: hoverAudio ? 'brightness(1.3)' : 'brightness(1)',
+                  color: '#00D2FF',
+                }}
+              >
+                {isPlaying ? <PauseIcon /> : <PlayIcon />}
+              </button>
+            )}
+
+            {/* Admin: red logout button */}
+            {isAdmin ? (
+              <button
+                onClick={handleLogout}
+                style={{
+                  height: 44,
+                  borderRadius: 12,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexShrink: 0,
+                  paddingLeft: 20,
+                  paddingRight: 20,
+                  cursor: 'pointer',
+                  border: 'none',
+                  background: '#ef4444',
+                  color: '#fff',
+                  fontSize: 11,
+                  fontFamily: 'inherit',
+                  letterSpacing: '2px',
+                  textTransform: 'uppercase',
+                  fontWeight: 600,
+                  transition: 'background 0.2s ease',
+                }}
+                onMouseEnter={e => { e.currentTarget.style.background = '#dc2626' }}
+                onMouseLeave={e => { e.currentTarget.style.background = '#ef4444' }}
+              >
+                Log Out
+              </button>
+            ) : (
+              /* Hamburger menu button */
+              <button
+                aria-label="Toggle menu"
+                onClick={() => setOpen(v => !v)}
+                onMouseEnter={() => setHoverMenu(true)}
+                onMouseLeave={() => setHoverMenu(false)}
+                style={{
+                  width: 44,
+                  height: 44,
+                  borderRadius: '50%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexShrink: 0,
+                  border: '1px solid rgba(255,255,255,0.08)',
+                  cursor: 'pointer',
+                  transition: 'transform 0.2s ease, filter 0.2s ease, background 0.2s ease',
+                  background: open
+                    ? 'rgba(255,255,255,0.14)'
+                    : hoverMenu
+                      ? 'rgba(255,255,255,0.12)'
+                      : 'rgba(255,255,255,0.07)',
+                  transform: hoverMenu ? 'scale(1.05)' : 'scale(1)',
+                  filter: hoverMenu ? 'brightness(1.4)' : 'brightness(1)',
+                  color: 'rgba(255,255,255,0.8)',
+                }}
+              >
+                <MenuIcon open={open} />
+              </button>
+            )}
+
+          </div>
         </div>
 
         {/* Dropdown — hidden on admin page */}

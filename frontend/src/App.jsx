@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
+import { AudioProvider } from './context/AudioContext'
 import WelcomePage from './pages/WelcomePage'
 import AuthPage from './pages/AuthPage'
 import LandingPage from './pages/LandingPage'
@@ -43,7 +44,9 @@ function Layout() {
 export default function App() {
   return (
     <BrowserRouter>
-      <Layout />
+      <AudioProvider>
+        <Layout />
+      </AudioProvider>
     </BrowserRouter>
   )
 }
