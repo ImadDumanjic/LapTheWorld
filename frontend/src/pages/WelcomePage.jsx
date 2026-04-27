@@ -1,8 +1,10 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, useAnimation } from 'framer-motion'
 import f1CarImg from '../assets/F1Car.png'
 import globeImg from '../assets/Globe.png'
+import redLightUrl from '../assets/sounds/RedLight.mp3'
+import f1CarUrl from '../assets/sounds/F1Car.mp3'
 
 const STYLES = `
   @import url('https://fonts.googleapis.com/css2?family=Michroma&family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;500;600&display=swap');
@@ -68,26 +70,84 @@ export default function WelcomePage() {
   const carControls = useAnimation()
   const timerRefs   = useRef([])
 
+  // Measured audio durations (seconds); fallbacks used until metadata loads
+  const beepDurRef = useRef(0.12)
+  const f1DurRef   = useRef(3.2)
+  const f1AudioRef = useRef(null)
+
+  useEffect(() => {
+    // Preload metadata so durations are ready before the user clicks
+    const beepMeta = new Audio(redLightUrl)
+    beepMeta.preload = 'metadata'
+    beepMeta.addEventListener('loadedmetadata', () => {
+      if (isFinite(beepMeta.duration) && beepMeta.duration > 0)
+        beepDurRef.current = beepMeta.duration
+    }, { once: true })
+
+    const f1Audio = new Audio(f1CarUrl)
+    f1Audio.preload = 'auto'
+    f1Audio.addEventListener('loadedmetadata', () => {
+      if (isFinite(f1Audio.duration) && f1Audio.duration > 0)
+        f1DurRef.current = f1Audio.duration
+    }, { once: true })
+    f1AudioRef.current = f1Audio
+
+    return () => {
+      try {
+        if (f1AudioRef.current) {
+          f1AudioRef.current.pause()
+          f1AudioRef.current.src = ''
+        }
+      } catch (_) {}
+    }
+  }, [])
+
+  const playBeep = () => {
+    try {
+      const sound = new Audio(redLightUrl)
+      sound.play().catch(() => {})
+    } catch (_) {}
+  }
+
   const handleStart = async () => {
     if (phase !== 'idle') return
     const dest = localStorage.getItem('token') ? '/landing' : '/auth'
 
     setPhase('lighting')
 
-    // Light up lamps one by one
+    const beepMs = beepDurRef.current * 1000
+
+    // Light up lamps one by one; each fires exactly one beep-duration after the previous
     for (let i = 1; i <= 5; i++) {
-      timerRefs.current.push(setTimeout(() => setLightsOn(i), i * 120))
+      timerRefs.current.push(
+        setTimeout(() => {
+          setLightsOn(i)
+          playBeep()
+        }, (i - 1) * beepMs)
+      )
     }
 
-    // Hold all lights on briefly, then start orbit phase
-    await delay(5 * 120 + 200, timerRefs)   // 800 ms
+    // Wait for all 5 beeps + brief hold before lights go out
+    await delay(5 * beepMs + 200, timerRefs)
 
     setPhase('orbit')
     setLightsOn(0)
 
+    // Start F1Car sound as orbit begins (called inside click-event async chain)
+    try {
+      if (f1AudioRef.current) {
+        f1AudioRef.current.currentTime = 0
+        f1AudioRef.current.play().catch(() => {})
+      }
+    } catch (_) {}
+
     // Wait for React to mount the globe + car before animating the car.
-    // The globe uses a direct `animate` prop so it fades in automatically on mount.
     await delay(60, timerRefs)
+
+    // Match orbit duration to F1Car.mp3 so the car shoots off right at the sound's end
+    const SHOOT_DUR = 0.55
+    const NAV_DELAY = 0.16
+    const orbitDuration = Math.max(1.0, f1DurRef.current - SHOOT_DUR - NAV_DELAY)
 
     // ── Full elliptical orbit ──────────────────────────────────────────────
     await carControls.start({
@@ -95,7 +155,7 @@ export default function WelcomePage() {
       y:       ORBIT.map(f => f.y),
       opacity: ORBIT.map(f => f.opacity),
       scale:   ORBIT.map(f => f.scale),
-      transition: { duration: 3.2, ease: 'linear', times: ORBIT.map(f => f.t) },
+      transition: { duration: orbitDuration, ease: 'linear', times: ORBIT.map(f => f.t) },
     })
 
     // ── Car shoots off right + wipe ────────────────────────────────────────
@@ -105,8 +165,16 @@ export default function WelcomePage() {
       x: window.innerWidth + 400,
       scale: 1.08,
       opacity: 1,
-      transition: { duration: 0.55, ease: [0.12, 0, 0.9, 1] },
+      transition: { duration: SHOOT_DUR, ease: [0.12, 0, 0.9, 1] },
     })
+
+    // Stop F1Car audio as the page transition completes
+    try {
+      if (f1AudioRef.current) {
+        f1AudioRef.current.pause()
+        f1AudioRef.current.currentTime = 0
+      }
+    } catch (_) {}
 
     await delay(160, timerRefs)
     navigate(dest)
@@ -234,8 +302,8 @@ export default function WelcomePage() {
             style={{
               position: 'fixed',
               left: '50%', top: '50%',
-              width: 760, height: 760,
-              marginLeft: -380, marginTop: -380,
+              width: 900, height: 900,
+              marginLeft: -450, marginTop: -450,
               zIndex: 20,
             }}
           >
@@ -270,8 +338,8 @@ export default function WelcomePage() {
             style={{
               position: 'fixed',
               left: '50%', top: '50%',
-              marginLeft: -225, marginTop: -72,
-              width: 450, height: 144,
+              marginLeft: -270, marginTop: -87,
+              width: 540, height: 173,
               zIndex: 30,
               pointerEvents: 'none',
               filter:
