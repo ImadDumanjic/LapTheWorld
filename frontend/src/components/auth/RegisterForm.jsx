@@ -113,7 +113,7 @@ export default function RegisterForm({ onSwitch, isRegister }) {
         />
       </div>
 
-      <p className="text-white/40 text-[13px] mt-7 text-center">
+      <p className="text-white/40 text-[13px] mt-4 text-center">
         Already have an account?{' '}
         <button
           type="button"
@@ -123,10 +123,10 @@ export default function RegisterForm({ onSwitch, isRegister }) {
           Sign In
         </button>
       </p>
-      <div className="text-[12px] text-white/25 mt-[18px] tracking-wider">── or ──</div>
+      <div className="text-[12px] text-white/25 mt-[10px] tracking-wider">── or ──</div>
       <button
         type="button"
-        className="bg-transparent border-0 text-[#5b8fa8] opacity-70 text-[13px] font-[inherit] cursor-pointer p-0 mt-[18px] ml-[7px] transition-opacity duration-200 hover:opacity-100"
+        className="bg-transparent border-0 text-[#5b8fa8] opacity-70 text-[13px] font-[inherit] cursor-pointer p-0 mt-[10px] ml-[7px] transition-opacity duration-200 hover:opacity-100"
         onClick={() => navigate('/landing')}
       >
         Continue as Guest →
