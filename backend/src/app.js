@@ -12,7 +12,12 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 const app = express()
 
-app.use(cors())
+app.use(cors({
+  origin: 'http://localhost:5173',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
+}))
 app.use(express.json())
 
 // Serve uploaded images

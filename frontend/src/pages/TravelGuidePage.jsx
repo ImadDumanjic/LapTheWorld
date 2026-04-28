@@ -7,6 +7,7 @@ import CircuitInfoSection from '../components/travel-guide/CircuitInfoSection'
 import WeatherSection from '../components/travel-guide/WeatherSection'
 import WhereToStaySection from '../components/travel-guide/WhereToStaySection'
 import RaceWeekendGuideSection from '../components/travel-guide/RaceWeekendGuideSection'
+import VoiceAssistantButton from '../components/travel-guide/VoiceAssistantButton'
 
 // ── Not-found state ───────────────────────────────────────────────────────────
 function NotFound({ slug }) {
@@ -64,6 +65,7 @@ export default function TravelGuidePage() {
     <>
       {/* 1. Hero — full-bleed image, no bg-page-gradient */}
       <TravelGuideHero guide={guide} />
+      <VoiceAssistantButton circuitName={guide.circuit} />
 
       {/* 2–5. Content sections — all on the shared page gradient */}
       <div className="bg-page-gradient">
