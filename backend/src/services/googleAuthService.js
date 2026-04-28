@@ -6,13 +6,17 @@ const GOOGLE_TOKENINFO_URL = 'https://oauth2.googleapis.com/tokeninfo'
 async function verifyGoogleIdToken(idToken) {
   const url = `${GOOGLE_TOKENINFO_URL}?id_token=${encodeURIComponent(idToken)}`
   const response = await fetch(url)
+  const data = await response.json()
+
   if (!response.ok) {
+    console.error('[Google Auth] tokeninfo error:', data)
     const err = new Error('Invalid Google token')
     err.status = 401
     throw err
   }
-  const data = await response.json()
+
   const { sub, email, name, email_verified, aud, azp, exp } = data
+  console.log('[Google Auth] tokeninfo ok — aud:', aud, 'azp:', azp, 'email:', email)
 
   if (!sub || !email) {
     const err = new Error('Invalid Google token')
@@ -23,6 +27,7 @@ async function verifyGoogleIdToken(idToken) {
   const allowedClientIds = [process.env.GOOGLE_CLIENT_ID].filter(Boolean)
   const audience = aud || azp
   if (allowedClientIds.length > 0 && !allowedClientIds.includes(audience)) {
+    console.error('[Google Auth] audience mismatch — got:', audience, 'expected one of:', allowedClientIds)
     const err = new Error('Invalid token audience')
     err.status = 401
     throw err
