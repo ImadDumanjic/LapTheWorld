@@ -5,6 +5,7 @@ import InputField from '../ui/InputField'
 import Button from '../ui/Button'
 import { useAuth } from '../../hooks/useAuth'
 import ForgotPasswordModal from './ForgotPasswordModal'
+import GoogleSignIn from './GoogleSignIn'
 
 const EmailIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -34,7 +35,7 @@ export default function LoginForm({ onSwitch, isRegister }) {
   const [password, setPassword] = useState('')
   const [showPw, setShowPw] = useState(false)
   const [showForgotModal, setShowForgotModal] = useState(false)
-  const { login, loading } = useAuth()
+  const { login, googleLogin, loading } = useAuth()
   const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
@@ -104,7 +105,15 @@ export default function LoginForm({ onSwitch, isRegister }) {
           {loading ? 'Logging in…' : 'Login'}
         </Button>
 
-        <p className="text-white/40 text-[13px] mt-5 text-center">
+        <div className="w-full mt-[22px]">
+          <GoogleSignIn
+            googleLogin={googleLogin}
+            onSuccess={() => { toast.success('Welcome back!'); navigate('/landing') }}
+            onError={(msg) => toast.error(msg || 'Google sign-in failed')}
+          />
+        </div>
+
+        <p className="text-white/40 text-[13px] mt-7 text-center">
           Don't have an account?{' '}
           <button
             type="button"
@@ -114,10 +123,10 @@ export default function LoginForm({ onSwitch, isRegister }) {
             Sign Up
           </button>
         </p>
-        <div className="text-[12px] text-white/25 mt-[14px] tracking-wider">── or ──</div>
+        <div className="text-[12px] text-white/25 mt-[18px] tracking-wider">── or ──</div>
         <button
           type="button"
-          className="bg-transparent border-0 text-[#5b8fa8] opacity-70 text-[13px] font-[inherit] cursor-pointer p-0 mt-[17px] ml-[7px] transition-opacity duration-200 hover:opacity-100"
+          className="bg-transparent border-0 text-[#5b8fa8] opacity-70 text-[13px] font-[inherit] cursor-pointer p-0 mt-[18px] ml-[7px] transition-opacity duration-200 hover:opacity-100"
           onClick={() => navigate('/landing')}
         >
           Continue as Guest →

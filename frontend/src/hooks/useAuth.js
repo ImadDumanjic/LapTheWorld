@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { login, register, logout } from '../services/authService'
+import { login, register, logout, googleLogin } from '../services/authService'
 
 export function useAuth() {
   const [user, setUser] = useState(null)
@@ -36,6 +36,21 @@ export function useAuth() {
     }
   }
 
+  const handleGoogleLogin = async (data) => {
+    setLoading(true)
+    setError(null)
+    try {
+      const result = await googleLogin(data)
+      setUser(result.user)
+      return result
+    } catch (err) {
+      setError(err.message)
+      throw err
+    } finally {
+      setLoading(false)
+    }
+  }
+
   const handleLogout = () => {
     logout()
     setUser(null)
@@ -47,6 +62,7 @@ export function useAuth() {
     loading,
     login: handleLogin,
     register: handleRegister,
+    googleLogin: handleGoogleLogin,
     logout: handleLogout,
   }
 }
