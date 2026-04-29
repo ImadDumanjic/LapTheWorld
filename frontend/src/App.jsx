@@ -10,12 +10,13 @@ import BlogPage from './pages/BlogPage'
 import ProfilePage from './pages/ProfilePage'
 import TravelGuidePage from './pages/TravelGuidePage'
 import RaceWeekendLandingPage from './pages/RaceWeekendLandingPage'
+import CustomPlanPage from './pages/CustomPlanPage'
 import AdminPage from './pages/AdminPage'
 import AdminLoginPage from './pages/AdminLoginPage'
 import MyBlogsPage from './pages/MyBlogsPage'
 import Header from './components/layout/Header'
 
-const HIDE_HEADER_ON = ['/', '/auth', '/landing', '/reset-password', '/admin-login', '/admin']
+const HIDE_HEADER_ON = ['/', '/auth', '/landing', '/reset-password', '/admin-login', '/admin', '/custom-plan']
 
 function authState() {
   return {
@@ -62,6 +63,7 @@ function Layout() {
         <Route path="/profile" element={<NonAdminRoute><ProfilePage /></NonAdminRoute>} />
         <Route path="/travel-guide" element={<NonAdminRoute><RaceWeekendLandingPage /></NonAdminRoute>} />
         <Route path="/travel-guide/:slug" element={<NonAdminRoute><TravelGuidePage /></NonAdminRoute>} />
+        <Route path="/custom-plan" element={<CustomPlanPage />} />
         <Route path="/admin" element={<AdminRoute><AdminPage /></AdminRoute>} />
         <Route path="/admin-login" element={<AdminLoginRoute><AdminLoginPage /></AdminLoginRoute>} />
         <Route path="/blog/my" element={<NonAdminRoute><MyBlogsPage /></NonAdminRoute>} />

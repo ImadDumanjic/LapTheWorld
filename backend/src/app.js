@@ -7,6 +7,7 @@ import blogRoutes from './routes/blogRoutes.js'
 import userRoutes from './routes/userRoutes.js'
 import adminRoutes from './routes/adminRoutes.js'
 import adminAuthRoutes from './routes/adminAuthRoutes.js'
+import groqRoutes from './routes/groqRoutes.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -32,5 +33,6 @@ app.use('/api/admin-auth', adminAuthRoutes)
 app.use('/api/blogs', blogRoutes)
 app.use('/api/users', userRoutes)
 app.use('/api/admin', adminRoutes)
+app.use('/api/groq', groqRoutes)
 
 export default app
