@@ -168,7 +168,7 @@ function LiveMap({ coordinates, city, country, hotels }) {
     <div
       className="relative w-full rounded-2xl overflow-hidden"
       style={{
-        height: 260,
+        height: 380,
         border: '1px solid rgba(255,255,255,0.06)',
       }}
     >
