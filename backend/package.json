@@ -30,7 +30,8 @@
     "sanitize-html": "^2.17.2",
     "sequelize": "^6.37.8",
     "sharp": "^0.34.5",
-    "speakeasy": "^2.0.0"
+    "speakeasy": "^2.0.0",
+    "ws": "^8.20.0"
   },
   "devDependencies": {
     "eslint": "^10.1.0",

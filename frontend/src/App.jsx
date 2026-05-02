@@ -14,6 +14,7 @@ import CustomPlanPage from './pages/CustomPlanPage'
 import AdminPage from './pages/AdminPage'
 import AdminLoginPage from './pages/AdminLoginPage'
 import MyBlogsPage from './pages/MyBlogsPage'
+import LiveTimingPage from './pages/LiveTimingPage'
 import Header from './components/layout/Header'
 
 const HIDE_HEADER_ON = ['/', '/auth', '/landing', '/reset-password', '/admin-login', '/admin', '/custom-plan']
@@ -67,6 +68,7 @@ function Layout() {
         <Route path="/admin" element={<AdminRoute><AdminPage /></AdminRoute>} />
         <Route path="/admin-login" element={<AdminLoginRoute><AdminLoginPage /></AdminLoginRoute>} />
         <Route path="/blog/my" element={<NonAdminRoute><MyBlogsPage /></NonAdminRoute>} />
+        <Route path="/live-timing" element={<NonAdminRoute><LiveTimingPage /></NonAdminRoute>} />
       </Routes>
     </>
   )

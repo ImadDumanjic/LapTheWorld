@@ -2,6 +2,7 @@ import dotenv from 'dotenv';
 import app from './app.js';
 import sequelize from '../config/database.js';
 import { runMigrations } from './db/migrate.js';
+import { connect as connectF1 } from './services/f1LiveTimingService.js';
 
 dotenv.config();
 
@@ -15,6 +16,7 @@ async function initializeDatabase() {
 
     app.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);
+      connectF1();
     });
   } catch (error) {
     console.error('Unable to start server:', error.message);

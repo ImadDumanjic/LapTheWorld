@@ -36,6 +36,7 @@ const CARDS = [
     title: 'The Action, As It Happens',
     subtitle: 'Live Timing',
     align: 'right',
+    to: '/live-timing',
   },
   {
     id: 5,
