@@ -138,7 +138,8 @@ function buildRows(driverList, timingData) {
 
   for (const [num, timing] of Object.entries(lines)) {
     const driver = driverList?.[num] ?? {}
-    const pos    = parseInt(timing.Position ?? 99, 10)
+    const rawPos = parseInt(timing.Position, 10)
+    const pos    = isNaN(rawPos) ? 99 : rawPos
 
     // Tyre compound from latest stint
     const stints   = timing.Stints ?? {}
@@ -154,11 +155,20 @@ function buildRows(driverList, timingData) {
     const bestLap = timing.BestLapTime?.Value ?? null
     const isFastest = timing.LastLapTime?.OverallFastest === true
 
+    let fullName
+    if (driver.FirstName && driver.LastName) {
+      fullName = toTitleCase(`${driver.FirstName} ${driver.LastName}`)
+    } else if (driver.FullName || driver.BroadcastName) {
+      fullName = toTitleCase(driver.FullName ?? driver.BroadcastName)
+    } else {
+      fullName = `Driver #${num}`
+    }
+
     rows.push({
       num,
       pos,
       acronym:   driver.Tla ?? driver.BroadcastName?.split(' ').pop() ?? `#${num}`,
-      fullName:  toTitleCase(driver.FullName ?? driver.BroadcastName) ?? `Driver #${num}`,
+      fullName,
       teamName:  driver.TeamName ?? '—',
       teamColor: driver.TeamColour ? `#${driver.TeamColour}` : 'rgba(255,255,255,0.2)',
       gap:       timing.GapToLeader ?? null,
@@ -424,8 +434,8 @@ export default function LiveTimingPage() {
                                     </span>
                                   )}
                                 </div>
-                                <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.35)', marginTop: 1 }}>
-                                  #{row.num}
+                                <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.35)', marginTop: 1, letterSpacing: '1px' }}>
+                                  {row.acronym}
                                 </div>
                               </div>
                             </div>

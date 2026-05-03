@@ -27,13 +27,18 @@ export const liveState = {
 let ws         = null
 let connecting = false
 
+const TERMINAL_STATUSES = new Set(['Finalised', 'Ends', 'Finished', 'Inactive', 'Aborted'])
+
 function isSessionActive(sessionInfo, sessionData) {
   if (!sessionInfo?.Type) return false
-  // SessionData status transitions: 'Started' → 'Finished'
   const status = sessionData?.StatusSeries
-  if (Array.isArray(status) && status.length) {
-    const last = status[status.length - 1]
-    if (last?.SessionStatus === 'Finalised' || last?.SessionStatus === 'Ends') return false
+  // StatusSeries arrives as an object keyed by index OR as an array
+  const entries = Array.isArray(status)
+    ? status
+    : status && typeof status === 'object' ? Object.values(status) : []
+  if (entries.length) {
+    const last = entries[entries.length - 1]
+    if (TERMINAL_STATUSES.has(last?.SessionStatus)) return false
   }
   return true
 }

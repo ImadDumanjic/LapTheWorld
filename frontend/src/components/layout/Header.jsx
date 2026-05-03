@@ -50,7 +50,7 @@ const NAV_ITEMS = [
   { label: 'Blog Section',    to: '/blog',         icon: <BlogIcon /> },
   { label: 'Standings',       to: '/championship', icon: <StandingsIcon /> },
   { label: 'Calendar',        to: '/calendar',     icon: <CalendarIcon /> },
-  { label: 'Live Timing',     to: '#',             icon: <TimingIcon /> },
+  { label: 'Live Timing',     to: '/live-timing',  icon: <TimingIcon /> },
   { label: 'GP Travel Guide', to: '/travel-guide', icon: <TravelIcon /> },
   { label: 'Profile',         to: '/profile',      icon: <ProfileIcon /> },
 ]

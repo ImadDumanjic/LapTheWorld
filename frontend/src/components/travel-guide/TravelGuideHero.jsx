@@ -73,7 +73,7 @@ function CircuitDecoration() {
 function ScrollIndicator() {
   return (
     <div
-      className="absolute -bottom-2 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-4 select-none pointer-events-none"
+      className="absolute -bottom-10 sm:-bottom-2 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-4 select-none pointer-events-none"
       aria-hidden="true"
     >
       {/* Label */}
