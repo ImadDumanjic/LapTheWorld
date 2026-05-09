@@ -90,7 +90,7 @@ export default function MyBlogsPage() {
       const result = await fetchMyBlogs(p)
       setData(result)
     } catch (err) {
-      if (err.message?.includes('401') || err.message?.toLowerCase().includes('auth')) {
+      if (err.status === 401) {
         navigate('/auth')
       } else {
         setError(err.message)

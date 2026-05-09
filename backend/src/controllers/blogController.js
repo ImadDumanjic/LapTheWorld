@@ -93,9 +93,8 @@ export async function getBlogByIdHandler(req, res) {
 export async function updateBlogHandler(req, res) {
   try {
     const existing = await getBlogById(req.params.id)
-    if (!existing)                        return res.status(404).json({ message: 'Blog not found' })
-    if (existing.author_id !== req.user.id) return res.status(403).json({ message: 'Forbidden' })
-    if (existing.status === 'deleted')    return res.status(404).json({ message: 'Blog not found' })
+    if (!existing || existing.status === 'deleted') return res.status(404).json({ message: 'Blog not found' })
+    if (existing.author_id !== req.user.id)         return res.status(403).json({ message: 'Forbidden' })
 
     const title   = sanitizePlainText(req.body.title   ?? '')
     const content = sanitizePlainText(req.body.content ?? '')
@@ -132,8 +131,8 @@ export async function updateBlogHandler(req, res) {
 export async function deleteBlogHandler(req, res) {
   try {
     const existing = await getBlogById(req.params.id)
-    if (!existing)                        return res.status(404).json({ message: 'Blog not found' })
-    if (existing.author_id !== req.user.id) return res.status(403).json({ message: 'Forbidden' })
+    if (!existing || existing.status === 'deleted') return res.status(404).json({ message: 'Blog not found' })
+    if (existing.author_id !== req.user.id)         return res.status(403).json({ message: 'Forbidden' })
 
     await deleteBlog({ id: req.params.id, userId: req.user.id })
     res.status(204).end()

@@ -1,5 +1,13 @@
 import { URLSearchParams } from 'url'
 
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+}
+
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || process.env.GMAIL_SENDER_EMAIL
 
 async function getAccessToken() {
@@ -188,8 +196,9 @@ export async function sendBlogSubmissionAdminEmail({ blog, author, isEdit = fals
   const backendUrl   = process.env.BACKEND_URL   || 'http://localhost:3000'
   const adminPanelUrl = `${frontendUrl}/admin`
 
-  const authorName  = [author.firstName, author.lastName].filter(Boolean).join(' ') || author.username
-  const contentPreview = blog.content.length > 500 ? blog.content.slice(0, 500) + '…' : blog.content
+  const authorName  = escapeHtml([author.firstName, author.lastName].filter(Boolean).join(' ') || author.username)
+  const rawPreview = blog.content.length > 500 ? blog.content.slice(0, 500) + '…' : blog.content
+  const contentPreview = escapeHtml(rawPreview)
   const imageSection = blog.image_url
     ? `<tr><td style="padding:0 0 24px;"><img src="${backendUrl}${blog.image_url}" alt="Cover" style="width:100%;max-height:280px;object-fit:cover;border-radius:8px;display:block;" /></td></tr>`
     : ''
@@ -224,7 +233,7 @@ export async function sendBlogSubmissionAdminEmail({ blog, author, isEdit = fals
             </td></tr>
           </table>
           <p style="margin:0 0 6px;color:rgba(255,255,255,0.45);font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;">Title</p>
-          <p style="margin:0 0 20px;color:#fff;font-size:17px;font-weight:700;">${blog.title}</p>
+          <p style="margin:0 0 20px;color:#fff;font-size:17px;font-weight:700;">${escapeHtml(blog.title)}</p>
           ${imageSection}
           <p style="margin:0 0 6px;color:rgba(255,255,255,0.45);font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;">Content Preview</p>
           <p style="margin:0 0 28px;color:rgba(255,255,255,0.65);font-size:13px;line-height:1.75;white-space:pre-wrap;">${contentPreview}</p>
@@ -260,6 +269,8 @@ export async function sendBlogSubmissionAdminEmail({ blog, author, isEdit = fals
 export async function sendBlogApprovedEmail({ toEmail, authorName, blogTitle }) {
   const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173'
   const blogPageUrl = `${frontendUrl}/blog`
+  const safeAuthorName = escapeHtml(authorName)
+  const safeBlogTitle  = escapeHtml(blogTitle)
 
   const html = `<!DOCTYPE html>
 <html lang="en">
@@ -277,9 +288,9 @@ export async function sendBlogApprovedEmail({ toEmail, authorName, blogTitle }) 
         <tr><td style="padding:40px 40px 32px;">
           <p style="margin:0 0 6px;color:rgba(100,168,200,0.8);font-size:10px;font-weight:800;letter-spacing:3.5px;text-transform:uppercase;">Post Approved</p>
           <h1 style="margin:0 0 18px;color:#ffffff;font-size:21px;font-weight:700;letter-spacing:2px;text-transform:uppercase;">Your Story Is Live!</h1>
-          <p style="margin:0 0 12px;color:rgba(255,255,255,0.65);font-size:14px;line-height:1.75;">Hi ${authorName},</p>
+          <p style="margin:0 0 12px;color:rgba(255,255,255,0.65);font-size:14px;line-height:1.75;">Hi ${safeAuthorName},</p>
           <p style="margin:0 0 24px;color:rgba(255,255,255,0.65);font-size:14px;line-height:1.75;">
-            Great news! Your blog post <strong style="color:#fff;">"${blogTitle}"</strong> has been reviewed and approved by our team. It is now live and visible to all LapTheWorld readers.
+            Great news! Your blog post <strong style="color:#fff;">"${safeBlogTitle}"</strong> has been reviewed and approved by our team. It is now live and visible to all LapTheWorld readers.
           </p>
           <table cellpadding="0" cellspacing="0" border="0" style="width:100%;margin:0 0 28px;">
             <tr><td align="center">
@@ -308,6 +319,9 @@ export async function sendBlogApprovedEmail({ toEmail, authorName, blogTitle }) 
 }
 
 export async function sendBlogRejectedEmail({ toEmail, authorName, blogTitle }) {
+  const safeAuthorName = escapeHtml(authorName)
+  const safeBlogTitle  = escapeHtml(blogTitle)
+
   const html = `<!DOCTYPE html>
 <html lang="en">
 <head><meta charset="UTF-8" /><title>Blog Post Update – LapTheWorld</title></head>
@@ -324,9 +338,9 @@ export async function sendBlogRejectedEmail({ toEmail, authorName, blogTitle }) 
         <tr><td style="padding:40px 40px 32px;">
           <p style="margin:0 0 6px;color:rgba(100,168,200,0.8);font-size:10px;font-weight:800;letter-spacing:3.5px;text-transform:uppercase;">Post Review</p>
           <h1 style="margin:0 0 18px;color:#ffffff;font-size:21px;font-weight:700;letter-spacing:2px;text-transform:uppercase;">Post Not Approved</h1>
-          <p style="margin:0 0 12px;color:rgba(255,255,255,0.65);font-size:14px;line-height:1.75;">Hi ${authorName},</p>
+          <p style="margin:0 0 12px;color:rgba(255,255,255,0.65);font-size:14px;line-height:1.75;">Hi ${safeAuthorName},</p>
           <p style="margin:0 0 16px;color:rgba(255,255,255,0.65);font-size:14px;line-height:1.75;">
-            Thank you for submitting your blog post <strong style="color:#fff;">"${blogTitle}"</strong> to LapTheWorld. After review, our team has determined that it does not meet our current content guidelines and cannot be published at this time.
+            Thank you for submitting your blog post <strong style="color:#fff;">"${safeBlogTitle}"</strong> to LapTheWorld. After review, our team has determined that it does not meet our current content guidelines and cannot be published at this time.
           </p>
           <p style="margin:0 0 28px;color:rgba(255,255,255,0.45);font-size:13px;line-height:1.75;padding:16px;border:1px solid rgba(44,83,100,0.3);border-radius:6px;background:rgba(44,83,100,0.06);">
             This may be due to content that is off-topic, contains inappropriate language, violates our community standards, or does not align with the LapTheWorld editorial focus. You are welcome to revise your post and resubmit it.

@@ -15,6 +15,7 @@ const RENEGOTIATE_DELAY  = 30_000
 
 export const liveState = {
   sessionInfo:         {},
+  sessionData:         {},
   driverList:          {},
   timingData:          {},
   weatherData:         {},
@@ -75,7 +76,6 @@ function handleMessage(raw) {
         liveState.sessionActive = isSessionActive(liveState.sessionInfo, liveState.sessionData)
         break
       case 'SessionData':
-        liveState.sessionData = liveState.sessionData ?? {}
         mergeDeep(liveState.sessionData, data)
         liveState.sessionActive = isSessionActive(liveState.sessionInfo, liveState.sessionData)
         break

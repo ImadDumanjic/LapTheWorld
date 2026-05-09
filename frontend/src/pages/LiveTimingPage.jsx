@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-const API = 'http://localhost:3000/api/live'
+const API = `${import.meta.env.VITE_API_URL || 'http://localhost:3000'}/api/live`
 
 const POLL_ACTIVE   = 5_000        // 5 s when a session is live
 const POLL_INACTIVE = 5 * 60_000  // 5 min when no session is running

@@ -9,6 +9,7 @@ import adminRoutes from './routes/adminRoutes.js'
 import adminAuthRoutes from './routes/adminAuthRoutes.js'
 import groqRoutes from './routes/groqRoutes.js'
 import liveTimingRoutes from './routes/liveTimingRoutes.js'
+import guideRoutes from './routes/guideRoutes.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -36,5 +37,6 @@ app.use('/api/users', userRoutes)
 app.use('/api/admin', adminRoutes)
 app.use('/api/groq', groqRoutes)
 app.use('/api/live', liveTimingRoutes)
+app.use('/api/guides', guideRoutes)
 
 export default app

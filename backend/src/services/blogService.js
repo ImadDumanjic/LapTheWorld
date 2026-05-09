@@ -21,7 +21,7 @@ export async function getBlogs({ page = 1 } = {}) {
         attributes: ['username', 'firstName', 'lastName'],
       },
     ],
-    order: [['created_at', 'ASC']],
+    order: [['created_at', 'DESC']],
     limit,
     offset,
   })

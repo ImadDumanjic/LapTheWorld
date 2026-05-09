@@ -90,13 +90,13 @@ export async function login({ email, password }) {
     throw err
   }
 
-  await user.update({ failedLoginAttempts: 0, lockUntil: null })
-
   if (user.banned) {
     const err = new Error('Your account has been banned. Please contact support.')
     err.status = 403
     throw err
   }
+
+  await user.update({ failedLoginAttempts: 0, lockUntil: null })
 
   const token = jwt.sign(
     { id: user.id },

@@ -35,8 +35,6 @@ router.post('/chat', async (req, res) => {
       { role: 'user', content: message.trim() },
     ]
 
-    await new Promise(resolve => setTimeout(resolve, 1000))
-
     const completion = await groq.chat.completions.create({
       model: 'llama-3.3-70b-versatile',
       messages,

@@ -9,7 +9,8 @@
     "start": "node src/server.js",
     "lint": "eslint . --ext .js,.jsx",
     "lint:fix": "eslint . --ext .js,.jsx --fix",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "seed:guides": "node seeders/seedGuides.js"
   },
   "keywords": [],
   "author": "",

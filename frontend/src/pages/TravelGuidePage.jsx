@@ -1,6 +1,6 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import { getGuideBySlug } from '../data/travelGuides'
+import { fetchGuideBySlug } from '../services/guideService'
 import { useAudio } from '../context/AudioContext'
 import TravelGuideHero from '../components/travel-guide/TravelGuideHero'
 import CircuitInfoSection from '../components/travel-guide/CircuitInfoSection'
@@ -9,7 +9,6 @@ import WhereToStaySection from '../components/travel-guide/WhereToStaySection'
 import RaceWeekendGuideSection from '../components/travel-guide/RaceWeekendGuideSection'
 import FloatingButtonGroup from '../components/travel-guide/FloatingButtonGroup'
 
-// ── Not-found state ───────────────────────────────────────────────────────────
 function NotFound({ slug }) {
   return (
     <div className="bg-page-gradient min-h-svh flex items-center justify-center px-6 sm:px-12">
@@ -41,36 +40,61 @@ function NotFound({ slug }) {
   )
 }
 
-// ── TravelGuidePage ───────────────────────────────────────────────────────────
-// Route: /travel-guide/:slug
-// Reads the slug param, finds the matching guide in travel-guides.json,
-// and renders each section in order.
+function LoadingState() {
+  return (
+    <div className="bg-page-gradient min-h-svh flex items-center justify-center">
+      <div
+        className="w-8 h-8 rounded-full border-2 border-transparent animate-spin"
+        style={{ borderTopColor: 'rgba(100,168,200,0.7)' }}
+      />
+    </div>
+  )
+}
+
 export default function TravelGuidePage() {
   const { slug } = useParams()
-  const guide = getGuideBySlug(slug)
   const { loadCircuit, stopCurrent } = useAudio()
+
+  const [guide, setGuide]     = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [notFound, setNotFound] = useState(false)
 
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [slug])
 
   useEffect(() => {
+    let cancelled = false
+    setLoading(true)
+    setNotFound(false)
+    setGuide(null)
+
+    fetchGuideBySlug(slug)
+      .then(data => {
+        if (cancelled) return
+        if (!data) { setNotFound(true) } else { setGuide(data) }
+      })
+      .catch(() => { if (!cancelled) setNotFound(true) })
+      .finally(() => { if (!cancelled) setLoading(false) })
+
+    return () => { cancelled = true }
+  }, [slug])
+
+  useEffect(() => {
+    if (!guide) return
     loadCircuit(slug)
     return () => stopCurrent()
-  }, [slug, loadCircuit, stopCurrent])
+  }, [slug, guide, loadCircuit, stopCurrent])
 
-  if (!guide) return <NotFound slug={slug ?? ''} />
+  if (loading)  return <LoadingState />
+  if (notFound) return <NotFound slug={slug ?? ''} />
 
   return (
     <>
-      {/* 1. Hero — full-bleed image, no bg-page-gradient */}
       <TravelGuideHero guide={guide} />
       <FloatingButtonGroup guide={guide} />
 
-      {/* 2–5. Content sections — all on the shared page gradient */}
       <div className="bg-page-gradient">
-
-        {/* 2. Circuit Info + Weather — side by side */}
         <div className="px-6 sm:px-12 pt-14 pb-10">
           <div className="max-w-[1200px] mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
@@ -80,20 +104,17 @@ export default function TravelGuidePage() {
           </div>
         </div>
 
-        {/* 3. Where to Stay — full-width map placeholder */}
         <div className="px-6 sm:px-12 py-10">
           <div className="max-w-[1200px] mx-auto">
             <WhereToStaySection guide={guide} />
           </div>
         </div>
 
-        {/* 4. Race Weekend Guide — featured + stacked cards */}
         <div className="px-6 sm:px-12 pt-6 pb-24">
           <div className="max-w-[1200px] mx-auto">
             <RaceWeekendGuideSection guide={guide} />
           </div>
         </div>
-
       </div>
     </>
   )

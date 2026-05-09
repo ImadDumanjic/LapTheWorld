@@ -1,6 +1,7 @@
+import { Op } from 'sequelize'
 import User from '../../models/User.js'
 import { comparePassword, hashPassword } from '../utils/passwordHelper.js'
-import { validatePassword } from '../utils/validators.js'
+import { validatePassword, validateEmail, validatePhone } from '../utils/validators.js'
 
 export async function getProfile(req, res) {
   try {
@@ -25,6 +26,20 @@ export async function updateProfile(req, res) {
     if (!user) return res.status(404).json({ message: 'User not found' })
 
     const { firstName, lastName, email, phone } = req.body
+
+    if (email !== undefined) {
+      if (!validateEmail(email)) {
+        return res.status(400).json({ message: 'Invalid email address' })
+      }
+      if (email !== user.email) {
+        const taken = await User.findOne({ where: { email, id: { [Op.ne]: user.id } } })
+        if (taken) return res.status(409).json({ message: 'Email is already in use' })
+      }
+    }
+
+    if (phone && !validatePhone(phone)) {
+      return res.status(400).json({ message: 'Invalid phone number' })
+    }
 
     await user.update({ firstName, lastName, email, phone })
 

@@ -34,7 +34,12 @@ export async function fetchMyBlogs(page = 1) {
   const res = await fetch(`${BASE_URL}/api/blogs/my?page=${page}`, {
     headers: authHeader(),
   })
-  if (!res.ok) throw new Error('Failed to fetch your blogs')
+  if (!res.ok) {
+    const data = await res.json().catch(() => ({}))
+    const err = new Error(data.message || 'Failed to fetch your blogs')
+    err.status = res.status
+    throw err
+  }
   return res.json()
 }
 
