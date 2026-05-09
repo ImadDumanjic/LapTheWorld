@@ -5,17 +5,28 @@ import { fetchRaceCalendar } from '../services/calendarService'
 
 // Races that have a travel guide page — maps API race name → slug
 const TRAVEL_GUIDE_SLUGS = {
+  'Australian Grand Prix':    'australia',
+  'Chinese Grand Prix':       'china',
+  'Japanese Grand Prix':      'japan',
+  'Miami Grand Prix':         'miami',
+  'Barcelona Grand Prix':     'barcelona',
+  'Spanish Grand Prix':       'madrid',
   'Canadian Grand Prix':      'canada',
-  'Monaco Grand Prix':        'monaco',
+  'Austrian Grand Prix':      'austria',
   'British Grand Prix':       'british',
   'Belgian Grand Prix':       'belgium',
+  'Hungarian Grand Prix':     'hungary',
+  'Dutch Grand Prix':         'netherlands',
   'Italian Grand Prix':       'italy',
-  'Singapore Grand Prix':     'singapore',
   'Azerbaijan Grand Prix':    'azerbaijan',
+  'Singapore Grand Prix':     'singapore',
   'United States Grand Prix': 'usa',
+  'Mexico City Grand Prix':   'mexico',
   'Brazilian Grand Prix':     'brazil',
   'Las Vegas Grand Prix':     'las-vegas',
+  'Qatar Grand Prix':         'qatar',
   'Abu Dhabi Grand Prix':     'uae',
+  'Monaco Grand Prix':        'monaco',
 }
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
