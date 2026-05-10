@@ -9,19 +9,41 @@ import lasVegasHero       from '../../assets/LasVegasHero.png'
 import austinHero         from '../../assets/AustinHero.png'
 import brazilHero         from '../../assets/BrazilHero.png'
 import abuDhabiHero       from '../../assets/AbuDhabiHero.png'
+import australiaHero      from '../../assets/Australia.png'
+import austriaHero        from '../../assets/Austria.png'
+import barcelonaHero      from '../../assets/Barcelona.png'
+import chinaHero          from '../../assets/China.png'
+import hungaryHero        from '../../assets/Hungary.png'
+import japanHero          from '../../assets/Japan.png'
+import madridHero         from '../../assets/Madrid.png'
+import mexicoHero         from '../../assets/Mexico.png'
+import miamiHero          from '../../assets/Miami.png'
+import netherlandsHero    from '../../assets/Netherlands.png'
+import qatarHero          from '../../assets/Qatar.png'
 import { getFlagUrl } from '../calendar/countryFlags'
 
 const HERO_IMAGES = {
-  monaco:     monacoHero,
-  canada:     canadaHero,
-  belgium:    belgiumHero,
-  azerbaijan: azerbaijanHero,
-  singapore:  singaporeHero,
-  italy:      italyHero,
+  monaco:      monacoHero,
+  canada:      canadaHero,
+  belgium:     belgiumHero,
+  azerbaijan:  azerbaijanHero,
+  singapore:   singaporeHero,
+  italy:       italyHero,
   'las-vegas': lasVegasHero,
-  usa:        austinHero,
-  brazil:     brazilHero,
-  uae:        abuDhabiHero,
+  usa:         austinHero,
+  brazil:      brazilHero,
+  uae:         abuDhabiHero,
+  australia:   australiaHero,
+  austria:     austriaHero,
+  barcelona:   barcelonaHero,
+  china:       chinaHero,
+  hungary:     hungaryHero,
+  japan:       japanHero,
+  madrid:      madridHero,
+  mexico:      mexicoHero,
+  miami:       miamiHero,
+  netherlands: netherlandsHero,
+  qatar:       qatarHero,
 }
 
 // ── Sine-wave circuit decoration ──────────────────────────────────────────────
