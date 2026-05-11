@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken'
 import User from '../../models/User.js'
 import { hashPassword, comparePassword } from '../utils/passwordHelper.js'
 
-export async function register({ username, email, password, firstName, lastName }) {
+export async function register({ username, email, password, firstName, lastName, phone }) {
   const existingByUsername = await User.findOne({ where: { username } })
   const existingByEmail = await User.findOne({ where: { email } })
 
@@ -18,6 +18,7 @@ export async function register({ username, email, password, firstName, lastName 
     password: hashedPassword,
     firstName,
     lastName,
+    phone: phone || null,
     role: 'User'
   })
 
@@ -80,6 +81,18 @@ export async function login({ email, password }) {
     await user.update({ failedLoginAttempts: attempts })
     const err = new Error('Invalid credentials')
     err.status = 401
+    throw err
+  }
+
+  if (user.role === 'Admin') {
+    const err = new Error('Admins must sign in through the admin portal.')
+    err.status = 403
+    throw err
+  }
+
+  if (user.banned) {
+    const err = new Error('Your account has been banned. Please contact support.')
+    err.status = 403
     throw err
   }
 

@@ -1,0 +1,850 @@
+// One-time seed script — run with: npm run seed:guides
+// Re-running is safe; upsert won't duplicate rows.
+import sequelize from '../config/database.js'
+import Guide from '../models/Guide.js'
+
+const guides = [
+  {
+    slug: 'canada', title: 'Canadian Grand Prix', country: 'Canada', city: 'Montreal',
+    circuit: 'Circuit Gilles Villeneuve',
+    coordinates: { lat: 45.5006, lng: -73.5228 },
+    weather: { location: 'Montreal, Canada' },
+    circuitInfo: { laps: 70, length_km: 4.361, drs_zones: 3, first_gp: 1978 },
+    guideSections: {
+      beforeRace: {
+        title: 'Before the Race',
+        description: 'Montreal welcomes the Grand Prix as the start of summer, so the atmosphere spreads far beyond the island and Circuit Gilles-Villeneuve itself. The best part of the trip here is that you can combine the French-Canadian city rhythm, excellent food, and very easy access to the track all in the same day.',
+        tips: [
+          'Walk through Old Montreal from Rue Saint-Paul to Vieux-Port a day or two before the main crowds arrive, because this part of the city feels best early in the morning before the weekend fully comes alive.',
+          'If you arrive in the city early enough before the island becomes fully restricted, rent a BIXI bike and ride a lap around Circuit Gilles-Villeneuve in Parc Jean-Drapeau to understand how flat and fast the track really is.',
+          'Book dinner on Peel Street, Crescent Street, or in Griffintown no later than Wednesday or Thursday, because that is where most of the pre-race city energy gathers.',
+          'Go to Parc Jean-Drapeau and Espace 67 the day before the race so you can see in advance how people flow toward the Concorde and Cosmos bridges.',
+          'If you want a better local city atmosphere than the official promotional zones, spend a few hours in Plateau between Avenue du Mont-Royal and Rue Saint-Denis, where the vibe is less touristy and much livelier.',
+          'Buy water, snacks, and small essentials downtown or in Longueuil before entering the island, because queues and prices around the track become noticeably worse from Thursday afternoon onward.',
+        ],
+      },
+      duringRace: {
+        title: 'During the Race',
+        description: 'On race day Montreal feels like the entire city is pouring onto Île Notre-Dame, but the logistics are actually fairly manageable if you follow the metro and bridges instead of using a car. The circuit itself offers a rare combination of stadium-style grandstands, picnic energy by the lake, and excellent viewing spots for the opening lap and heavy braking zones.',
+        tips: [
+          'Take the metro to Jean-Drapeau on the Yellow Line and buy a return ticket in advance at Berri-UQAM or Longueuil-Université-de-Sherbrooke, because those stations create the biggest post-race queues.',
+          'If you are sitting near the Senna corner, arrive early enough to pass security calmly and catch the support categories, because this sector is one of the best for the opening lap and often for the first serious incidents.',
+          'For slower technical action, aim for the L\'Épingle hairpin area, where you can really see how late the drivers brake and how aggressively they exit onto the long straight.',
+          'Bring a light rain jacket and earplugs even if the city center is sunny, because the wind from the Saint Lawrence River on the island often changes the perceived temperature within an hour.',
+          'If you use the southern access via Victoria Bridge, check whether your grandstand matches that entrance, because it is not valid for every sector and you do not want to discover that at the checkpoint.',
+          'After the checkered flag, avoid rushing into the first metro wave and instead wait around twenty minutes on the island or walk toward Concorde Bridge if your sector allows it.',
+        ],
+      },
+      travelAdvice: {
+        title: 'Travel Advice',
+        description: 'In Montreal it makes much more sense to stay near the metro than near the track, because the island itself has no practical city accommodation and you will be entering from the mainland every day anyway. The easiest bases are the ones that connect you directly to the Yellow Line or quickly to Berri-UQAM.',
+        tips: [
+          'The most practical neighborhoods for accommodation are Downtown, Old Montreal, and the area around Berri-UQAM, because from there you can easily access the STM network and quickly reach the Yellow Line.',
+          'If you want cheaper accommodation and an easier return after the race, look at Longueuil near Longueuil-Université-de-Sherbrooke station, because you are already on the opposite end of the same line everyone uses to reach the island.',
+          'Do not rely on a rental car for getting to the circuit, because there is no normal public parking for spectators on the island and you will end up farther from the action than if you had stayed on the metro.',
+          'For evening outings after practice sessions, the best balance between access and atmosphere is Peel Street, Crescent Street, and Griffintown, but expect noise late into the night.',
+          'If you want quieter mornings and better cafés, Plateau and Mile End are better than the hotel zone around Bell Centre, just leave yourself an extra twenty minutes to reach the metro.',
+          'Pack a small shoulder bag you can comfortably carry all day, because Jean-Drapeau involves a lot of walking between the station, entrances, grandstands, and bridges even when distances look short on the map.',
+        ],
+      },
+    },
+    hotels: [
+      { name: 'Hotel Bonaventure Montreal', address: '900 Rue De La Gauchetière O, Montreal, QC H5A 1E4, Canada', lat: 45.4994, lng: -73.5651 },
+      { name: 'Le Centre Sheraton Montreal Hotel', address: '1201 René-Lévesque Blvd W, Montreal, QC H3B 2L7, Canada', lat: 45.4979, lng: -73.5714 },
+      { name: 'Hotel Universel Montreal', address: '5000 Rue Sherbrooke E, Montreal, QC H1V 1A1, Canada', lat: 45.553, lng: -73.541 },
+    ],
+  },
+  {
+    slug: 'monaco', title: 'Monaco Grand Prix', country: 'Monaco', city: 'Monte Carlo',
+    circuit: 'Circuit de Monaco',
+    coordinates: { lat: 43.7347, lng: 7.4206 },
+    weather: { location: 'Monaco' },
+    circuitInfo: { laps: 78, length_km: 3.337, drs_zones: 1, first_gp: 1950 },
+    guideSections: {
+      beforeRace: {
+        title: 'Before the Race',
+        description: 'Monaco is a race you can truly feel beneath your feet, because the streets, crossings, tunnel, and marina are part of everyday city life long before the cars hit the circuit. The best introduction is to walk as much of the lap as possible, because only then do you realize how steep the terrain is and how every grandstand feels like a completely different city.',
+        tips: [
+          'Walk the entire circuit early in the morning from Sainte-Dévote through Avenue d\'Ostende to Place du Casino, then down Mirabeau and Portier to Port Hercule while the sidewalks are still manageable for photos.',
+          'Have breakfast at Marché de la Condamine on Place d\'Armes and try barbagiuan or socca, because it feels far more local than the hotel terraces by the marina.',
+          'Climb to Le Rocher via Rampe Major or Avenue de la Porte-Neuve before the day-trippers arrive, because the narrow streets of Monaco-Ville are most beautiful while they are still quiet.',
+          'If you are staying in Nice or Menton, do a practice TER train ride to Monaco-Monte-Carlo station the day before and remember which exit works best for your grandstand.',
+          'For a break from asphalt and crowds, go to Larvotto Promenade or Plage du Larvotto, where you can completely switch from race weekend mode into a Mediterranean rhythm for an hour.',
+          'Buy water and small essentials in La Condamine or Fontvieille before entering the expensive marina areas, because the price difference becomes obvious immediately.',
+        ],
+      },
+      duringRace: {
+        title: 'During the Race',
+        description: 'Monaco is less about walking between sectors and more about choosing one great viewing point and understanding exactly what you want to watch. Some places give you a perfect sense of speed and wall proximity, while others offer strategic views over multiple corners and the rhythm of the city breathing around the circuit.',
+        tips: [
+          'On race day expect a lot of stairs and vertical movement, so wear comfortable trainers with good grip instead of city shoes, because elevators and escalators do not connect every route.',
+          'If you are going to Le Rocher, arrive very early with a cap and enough water, because the best viewing spots disappear long before the official program really begins.',
+          'For photos and the feeling of how narrow the track is, the best sectors are around Tabac and Piscine, while Casino and Mirabeau reward precision watching more than overtaking.',
+          'Use the public elevators and moving walkways between Boulevard Louis II, Rue Grimaldi, and the higher parts of Monte Carlo to save your legs for the return to the station.',
+          'Do not carry bulky bags or souvenir shopping through the city, because you will constantly squeeze through barriers, stairways, and narrow pedestrian corridors.',
+          'After the session, have a drink on Quai Albert Ier or Rue Caroline and wait for the first station rush to fade instead of immediately joining the densest queue.',
+        ],
+      },
+      travelAdvice: {
+        title: 'Travel Advice',
+        description: 'The smartest Monaco plan is to stay outside the principality itself and rely on trains, buses, or walking, because Monaco during Grand Prix weekend punishes every travel plan built around a car. The French Riviera works in your favor here, so accommodation in neighboring towns is often both smarter and more pleasant.',
+        tips: [
+          'The best bases outside Monaco are Nice, Menton, Villefranche-sur-Mer, and Beausoleil, because all of them sit on the same rail corridor to Monaco-Monte-Carlo station.',
+          'From Nice Côte d\'Azur Airport use Bus 80 toward Monaco if you want a direct connection without transfers instead of immediately spending heavily on taxis.',
+          'If you still decide to drive, target Parking des Salines on the western entrance and then walk via Galerie des Salines and the Wurtemberg pedestrian crossing or use the free shuttle to Fontvieille.',
+          'Download Monapass before your trip, because it centralizes public transport, schedules, and services you will likely need while the city transforms into a race circuit.',
+          'Choose accommodation near a station or direct bus line instead of only following scenic hotel photos, because five minutes on a Monaco map can easily mean twenty minutes uphill.',
+          'Travel with less luggage than usual, because the station has multiple exits and vertical connections, and a large suitcase during Grand Prix weekend becomes more punishment than comfort.',
+        ],
+      },
+    },
+    hotels: [
+      { name: 'Fairmont Monte Carlo', address: '12 Av. des Spélugues, 98000 Monaco', lat: 43.74006, lng: 7.43007 },
+      { name: 'Novotel Monte Carlo', address: '16 Bld Princesse Charlotte, 98000 Monaco', lat: 43.739239, lng: 7.421961 },
+      { name: 'Hôtel de Paris Monte-Carlo', address: 'Place du Casino, 98000 Monaco', lat: 43.73899, lng: 7.42734 },
+    ],
+  },
+  {
+    slug: 'british', title: 'British Grand Prix', country: 'United Kingdom', city: 'Silverstone',
+    circuit: 'Silverstone Circuit',
+    coordinates: { lat: 52.0786, lng: -1.0169 },
+    weather: { location: 'Silverstone, UK' },
+    circuitInfo: { laps: 52, length_km: 5.891, drs_zones: 2, first_gp: 1950 },
+    guideSections: {
+      beforeRace: { title: 'Before the Race', description: 'Silverstone is not a city race weekend but a true motorsport camp surrounded by the fields of Northamptonshire, so preparation matters just as much as the race itself. Once you accept that this is a huge rural venue with lots of walking and unpredictable weather, the whole experience becomes much easier and far more enjoyable.', tips: ['Visit the Silverstone Museum before the main race weekend begins, because it gives you the best historical context for the circuit before the crowds around the grandstands become overwhelming.', 'If you are staying in Towcester or Brackley, have dinner near Watling Street or central Brackley before Thursday evening, because restaurant queues are still manageable and shopping for the weekend is much easier.', 'Buy water, breakfast supplies, and rain gear in Milton Keynes, Northampton, or Banbury before arriving at the circuit, because relying on trackside kiosks every day quickly becomes frustrating.', 'If you are camping or returning toward Silverstone Village, check the walking routes through Winterhills in advance, because that area becomes one of the main pedestrian funnels from the village and parking zones.', 'If you are taking the train to Milton Keynes Central, walk to the shuttle departure area the day before so you do not waste time searching for the correct bus line among the morning crowds.', 'Do not plan the entire weekend around only the circuit and your hotel, because the surrounding villages are calm and enjoyable during the hours when fan zones at other races are already overcrowded.'] },
+      duringRace: { title: 'During the Race', description: 'Silverstone rewards people who respect its scale and avoid trying to see everything at once. The track is large enough that every sector has its own personality, from the brutal speed through Copse to the slower and more technical rhythm around Vale and Club.', tips: ['Choose one half of the circuit for the day and stay there, because trying to walk from Copse to Stowe and back usually costs more energy than the extra views are worth.', 'If you want to experience true aerodynamic speed, head toward Copse and Maggotts-Becketts, while Stowe and Vale-Club are better for watching heavy braking and exits onto the straights.', 'At Silverstone always carry both sunscreen and a waterproof layer, because the clouds and wind over the open fields can change much faster than the forecast for Northampton suggests.', 'Eat breakfast early and avoid delaying your coffee until mid-morning, because the biggest concession queues form right when the first Formula 1 activities begin.', 'If you want a smoother exit after the sessions, stay for the evening entertainment or leave your sector slightly before the main crowd, because thousands of people move through the same corridors at the same time.', 'Do not underestimate how tiring the grass banks and uneven ground become after hours of standing, so bring a seat cushion or light folding mat if you have general admission tickets.'] },
+      travelAdvice: { title: 'Travel Advice', description: 'For Silverstone, accommodation is less about prestige and more about your connection to the shuttle system or easy access to the A43. Milton Keynes, Northampton, and Banbury are usually the smartest choices because they balance rail access, buses, and enough restaurants for evenings after the circuit.', tips: ['Milton Keynes is the easiest base if you are arriving from London by train, because official shuttles leave directly from Milton Keynes Central station and the routes are clearly marked.', 'Northampton, Towcester, Banbury, Oxford Parkway, Brackley, and Buckingham all offer official bus transfers to Gate 1 or Gate 19, so choose your town based on hotel price rather than map appearance.', 'If you are driving, study the approach via the A43 in advance instead of relying entirely on navigation apps, because temporary one-way systems and road closures are introduced throughout the weekend.', 'For taxis and private rides, expect drop-off and pick-up zones to be pushed toward local rail stations, which makes the train and shuttle combination more reliable than trying to drive directly to the gates.', 'If you are camping in Silverstone Village or near Woodlands, follow the marked walking routes at night and avoid cutting across dark temporary paths that may close during the event.', 'Pack sturdy shoes, layered clothing, and a power bank, because this is one of those Formula 1 weekends where you spend far more hours outdoors than you initially expect.'] },
+    },
+    hotels: [
+      { name: 'Hilton Garden Inn Silverstone', address: 'Silverstone Circuit, Towcester NN12 8GZ, United Kingdom', lat: 52.0733, lng: -1.0147 },
+      { name: 'Whittlebury Hall Hotel & Spa', address: 'Whittlebury, Towcester NN12 8WP, United Kingdom', lat: 52.08021, lng: -0.99836 },
+      { name: 'Premier Inn Silverstone', address: 'Brackley Hatch, Towcester NN13 5TX, United Kingdom', lat: 52.0358, lng: -1.1472 },
+    ],
+  },
+  {
+    slug: 'belgium', title: 'Belgian Grand Prix', country: 'Belgium', city: 'Spa',
+    circuit: 'Spa-Francorchamps',
+    coordinates: { lat: 50.4372, lng: 5.9714 },
+    weather: { location: 'Spa, Belgium' },
+    circuitInfo: { laps: 44, length_km: 7.004, drs_zones: 2, first_gp: 1950 },
+    guideSections: {
+      beforeRace: { title: 'Before the Race', description: 'Spa-Francorchamps is more than just a circuit; it is an entire section of the Ardennes filled with small towns, forests, hills, and weather that behaves like another participant in the weekend. Before the race it is worth slowing down and experiencing the rhythm of Spa, Stavelot, or Malmedy, because that makes the main event far easier to enjoy.', tips: ['Spend a morning in Spa around Rue Royale and Parc de Sept Heures, because the town center gives a perfect contrast to the wild atmosphere you will later experience at the circuit.', 'Visit Stavelot Abbey and the Spa-Francorchamps museum before race weekend, because it helps you understand how deeply this Grand Prix is connected to local roads and regional history.', 'If you are driving, do one full practice run through Francorchamps and the nearby roads the day before so you can see where traffic bottlenecks form and how narrow the village access routes really are.', 'Buy food and drinks in Malmedy or Spa before heading to the circuit, because the selection around the track becomes far more limited once the serious crowds arrive.', 'Check Ardennes weather radars instead of only looking at forecasts from your departure city, because it is completely normal for Liège to be dry while clouds and rain already sit above Eau Rouge.', 'If you plan to use trains, simulate the transfer at Verviers-Central the evening before and remember where the bus departures are, because that removes a huge amount of stress on race morning.'] },
+      duringRace: { title: 'During the Race', description: 'At Spa the terrain is half the experience, so your viewing spot determines how much you walk, climb, and move between sessions. Once you enter the circuit, it is much smarter to focus on one sector than to chase the entire lap through mud, grass, and massive distances.', tips: ['If you want to watch Eau Rouge and Raidillon, arrive very early because the best hillside viewing spots fill up quickly and later you either end up too high or too far from the fence.', 'La Source is best if you want to watch the opening meters after the start and plenty of braking action, while Pouhon and Blanchimont are better for understanding how the cars flow at full speed.', 'Bring a waterproof jacket and spare socks in a separate bag, because Spa can be dry at the parking lot while the area where you stand all afternoon is cold and soaked.', 'If you are arriving from Verviers-Central by public transport, remember that bus lines 294 and 395 operate differently on Sunday compared to Friday and Saturday.', 'Do not underestimate the elevation changes between sectors, so if your ticket is for one side of the track, stay there and enjoy the support races instead of constantly chasing another corner.', 'If you park at Malmedy Expo, use the shuttle service to the Combes entrance and return the same way, because it is much more comfortable than walking along the roads through evening traffic.'] },
+      travelAdvice: { title: 'Travel Advice', description: 'Spa is one of those races where logistics can become just as demanding as the weather forecast, so it is important to decide in advance whether you are relying on trains, shuttles, cars, or a combination of options. A good plan here means less stress on the narrow Ardennes roads and far more energy for the circuit itself.', tips: ['Spa and Stavelot are the most practical places to stay if you want atmosphere, while Verviers and Liège work better if rail access and a larger hotel selection matter more to you.', 'The closest major train station is Verviers-Central, and the Event Train Ticket often gives discounted return travel from anywhere in Belgium when combined with your Grand Prix ticket code.', 'Public bus lines 294 and 395 from Verviers cost around 3.50 euros per ride, but do not rely on them for your Sunday return without checking the replacement shuttle system first.', 'If you are driving and want the lowest risk of mud problems, choose the Malmedy Expo asphalt parking with shuttle service instead of grassy parking fields near the village.', 'The park-and-ride bicycle option using the RAVeL route from the free parking area five kilometers from the circuit is excellent if you want to avoid the worst traffic entering and leaving the venue.', 'Pack hiking shoes or at least trainers with strong grip, because Spa is not the kind of circuit where smooth city sneakers feel comfortable on wet grassy slopes.'] },
+    },
+    hotels: [
+      { name: 'Hotel de la Source', address: 'Route du Circuit 22, B-4970 Francorchamps, Belgium', lat: 50.4477129, lng: 5.9597799 },
+      { name: 'Van der Valk Hotel Spa', address: 'Place Royale 39, 4900 Spa, Belgium', lat: 50.4925, lng: 5.865 },
+      { name: 'Silva Hotel Spa-Balmoral', address: 'Route de Balmoral 33, 4900 Spa, Belgium', lat: 50.4784, lng: 5.887 },
+    ],
+  },
+  {
+    slug: 'italy', title: 'Italian Grand Prix', country: 'Italy', city: 'Monza',
+    circuit: 'Autodromo Nazionale Monza',
+    coordinates: { lat: 45.6156, lng: 9.2811 },
+    weather: { location: 'Monza, Italy' },
+    circuitInfo: { laps: 53, length_km: 5.793, drs_zones: 2, first_gp: 1950 },
+    guideSections: {
+      beforeRace: { title: 'Before the Race', description: 'Monza is special because it is not only about race day, but an entire weekend inside a massive royal park where motorsport and northern Italian city life blend together perfectly. If you plan your trip well, you can use Monza itself as a relaxed base before the tifosi transform the circuit into a full festival atmosphere.', tips: ['Spend a few hours in Parco di Monza and around Villa Reale before the main crowds arrive, because only then do you realize how huge the park really is before walking through it all weekend.', 'Have lunch in Monza\'s historic center around Via Bergamo or Piazza Trento e Trieste instead of planning every meal in Milan, because the town develops its own unique rhythm during Grand Prix weekend.', 'If you are arriving from Milan by train, do a practice run to Monza station and find the Black Shuttle departure point in advance so race day feels much less chaotic.', 'If you are in town a few days early and the Autodromo offers tours, take the one that includes the old banking and the Fangio statue, because it is one of the best historical additions to the entire weekend.', 'Wear comfortable shoes from Thursday onward, because Monza looks manageable on the map but the distances between stations, shuttles, gates, and grandstands become exhausting very quickly.', 'Buy water and basic supplies in town before heading into the park, because even the simplest purchase turns into another long queue on race day.'] },
+      duringRace: { title: 'During the Race', description: 'Monza is pure speed, noise, and tifosi reacting to every moment as if it decides the championship itself. The track may look simple on television, but standing beside the fence shows how aggressively the cars attack Rettifilo, Lesmo, and Ascari with almost no margin for error.', tips: ['Arrive early because public entrances usually open around 7:30 on Friday and 7:00 on Saturday and Sunday, making the first morning hour the easiest way to avoid the worst congestion.', 'If your priority is the opening lap and heavy braking, focus on Rettifilo and Curva Grande, while Lesmo and Ascari are better for watching drivers flow through long sequences of direction changes.', 'The Black Shuttle saves energy getting into the park, but remember that you still face a serious walk from the drop-off area to the actual gates and grandstands.', 'Security checks can be strict with bottles and equipment, so bring a small plastic bottle under 500 ml and avoid carrying oversized power banks or metal containers without checking the rules first.', 'If you are meeting friends, the Fangio statue and Monza Circuit Shop are much smarter meeting points than random fence sections because everyone can find them easily.', 'When leaving the circuit, return through the same gate you entered from, whether it is Gate A Vedano, Gate B Santa Maria delle Selve, or the northern Biassono entrances, because crossing the park after the race takes forever.'] },
+      travelAdvice: { title: 'Travel Advice', description: 'For most visitors it makes more sense to stay in Milan and travel to Monza by train, because you gain better nightlife, more restaurants, and a much larger range of hotels. Monza itself is excellent if you want shorter transfers, but the key is understanding which side of the park you need to access.', tips: ['Milano Centrale, Porta Garibaldi, and Isola are extremely practical bases, because Trenord trains connect Milan and Monza quickly without making you feel disconnected from the city.', 'If your grandstand is on the southern or eastern side of the track, plan your access through Vedano and Gates A or B, while the northern side works better from Biassono and Gates C, D, or E.', 'Taxis rarely drop you as close to the circuit as you expect, so the train plus shuttle or train plus walking combination is usually less stressful.', 'Download the Monza Circuit app and save the parking map from monzamobilita.it before your trip, because parking colors, shuttle routes, and entry systems are easier to manage when available offline.', 'If you stay in Monza itself, choose accommodation between the station and the historic center so you can handle both morning departures and evening dinners without unnecessary transfers.', 'For rainy days inside the park, pack a light rain jacket instead of a large umbrella, because oversized items are exactly what slows security checks at the entrances.'] },
+    },
+    hotels: [
+      { name: 'Hotel de la Ville Monza', address: 'Viale Regina Margherita di Savoia 15, 20900 Monza, Italy', lat: 45.59262, lng: 9.27145 },
+      { name: 'Helios Hotel Monza', address: 'Viale Elvezia 4, 20900 Monza, Italy', lat: 45.5958, lng: 9.2825 },
+      { name: 'B&B Hotel Milano-Monza', address: 'Via Lario 19, 20900 Monza, Italy', lat: 45.59013, lng: 9.282 },
+    ],
+  },
+  {
+    slug: 'singapore', title: 'Singapore Grand Prix', country: 'Singapore', city: 'Singapore',
+    circuit: 'Marina Bay Street Circuit',
+    coordinates: { lat: 1.2914, lng: 103.8644 },
+    weather: { location: 'Singapore' },
+    circuitInfo: { laps: 62, length_km: 4.94, drs_zones: 3, first_gp: 2008 },
+    guideSections: {
+      beforeRace: { title: 'Before the Race', description: 'Singapore gives you the rare chance to experience a Grand Prix inside a city that already feels like part of the show long before the race begins. Marina Bay, the colonial Padang area, hawker centers, and compact neighborhoods make it easy to move around quickly and enjoy the city without exhausting yourself before race weekend.', tips: ['Walk around Marina Bay during daylight from Esplanade across Helix Bridge to the Singapore Flyer so you can understand the actual gate locations and distances between zones before the crowds arrive.', 'Eat at least one proper hawker meal at Maxwell Food Centre on Kadayanallur Street before switching to expensive race-week habits around the bay area.', 'If you want a neighborhood with real character before the evening sessions, spend a few hours in Kampong Glam around Arab Street and Haji Lane before returning toward the circuit.', 'For one of the best free city and track views, stand near Jubilee Bridge or the Fullerton area during blue hour just before sunset.', 'Use the air-conditioned walkways inside Marina Square, Suntec City, and Raffles City whenever heavy rain approaches, because it saves both time and energy in Singapore\'s humidity.', 'Pack a small fan, electrolyte drinks, and a thin poncho inside a zip bag, because Formula 1 in Singapore may happen at night but the humidity still feels intense.'] },
+      duringRace: { title: 'During the Race', description: 'Singapore is one of the easier races logistically if you understand your zone and which gate actually belongs to your ticket. The biggest mistake is assuming everything is only a few minutes apart, because underground walkways, checkpoints, and huge crowds completely control the pace of the evening.', tips: ['Match your gate to your ticket properly: Gate 1 Republic Boulevard works best for Nicoll Highway, Gate 2 Temasek Avenue for Promenade, Gates 3A and 3B for City Hall and Esplanade, and Gate 8 for Helix and Bayfront.', 'If you have Raffles Grandstand tickets, use the advantage of full-zone access and avoid spending the entire evening in one place without exploring the circuit atmosphere.', 'For Zone 4 Walkabout tickets, Gates 3B, 4, 5, 6, and 7 are the most practical, so do not waste time trying to enter near the pit straight if your ticket does not allow it anyway.', 'Avoid changing zones immediately after a major session or concert, because the underground passages become extremely crowded and the move usually takes much longer than expected.', 'Light trainers and clothes that dry quickly matter far more than fashion, because you will spend hours dealing with humidity, sweat, and likely short rain showers.', 'After leaving the circuit, it is often faster to walk toward City Hall or Raffles Place instead of forcing yourself onto the first packed train at Promenade station.'] },
+      travelAdvice: { title: 'Travel Advice', description: 'Singapore rewards accommodation near good MRT connections far more than hotels chosen only for luxury views. If you stay around City Hall, Bugis, Promenade, or even slightly farther away on a good MRT line, reaching the circuit becomes easier than for many people staying in expensive hotels without practical transport access.', tips: ['The most practical areas are City Hall, Bugis, and Promenade if you want to walk to the circuit, while Chinatown and Tiong Bahru offer a better balance of price and convenience for longer stays.', 'Use the MRT with a bank card or stored transit card, because even short ticket machine queues become frustrating during race weekend.', 'If you stay near Nicoll Highway or Bugis, walking to your gate is often smarter than taking a short taxi ride that gets trapped in road closures around the circuit.', 'Plan dinner after practice sessions around Beach Road, Boat Quay, or Circular Road, because those areas stay lively long after the food options inside the circuit begin losing quality.', 'Pack a quick-dry shirt, blister patches, and a lightweight poncho, because Singapore tests heat and humidity far more than complicated transport logistics.', 'If you stay outside the city center, check the extended MRT operating hours during race weekend and keep Grab as a backup after concerts, because crowd waves become unpredictable late at night.'] },
+    },
+    hotels: [
+      { name: 'Mandarin Oriental, Singapore', address: '5 Raffles Avenue, Singapore 039797', lat: 1.287633, lng: 103.854897 },
+      { name: 'Pan Pacific Singapore', address: '7 Raffles Boulevard, Marina Square, Singapore 039595', lat: 1.291533, lng: 103.859267 },
+      { name: 'PARKROYAL COLLECTION Marina Bay', address: '6 Raffles Boulevard, Singapore 039594', lat: 1.291667, lng: 103.856667 },
+    ],
+  },
+  {
+    slug: 'azerbaijan', title: 'Azerbaijan Grand Prix', country: 'Azerbaijan', city: 'Baku',
+    circuit: 'Baku City Circuit',
+    coordinates: { lat: 40.3725, lng: 49.8533 },
+    weather: { location: 'Baku, Azerbaijan' },
+    circuitInfo: { laps: 51, length_km: 6.003, drs_zones: 2, first_gp: 2017 },
+    guideSections: {
+      beforeRace: { title: 'Before the Race', description: 'Baku combines one of the fastest modern street circuits with a city best experienced on foot between the Caspian waterfront, ancient stone walls, and elegant oil-era boulevards. Arriving a little earlier is worth it here, because learning the layout of the city center makes race weekend navigation far easier.', tips: ['Walk along Baku Boulevard from Port Baku Mall toward Park Bulvar in the evening, because it immediately shows you how long the main straight really is and where the widest waterfront spaces open up.', 'Visit Icherisheher and the Maiden Tower early in the morning before the larger crowds arrive, because the Old City sits directly beside the circuit and feels much calmer before tour groups appear.', 'For coffee, dinner, or simply a good city atmosphere, focus on Fountain Square and Nizami Street, because those areas remain practical both before and after the race sessions.', 'If you want panoramic views over the city and the bay, take the funicular from Neftchilar Avenue toward the upper viewpoints before the road closures become heavier.', 'Handle cash withdrawals, SIM cards, and small essentials around 28 May or Sahil before heading toward the circuit, because it is much easier than dealing with those tasks between checkpoints.', 'The day before the race, walk between Port Baku, Park Bulvar, and Azneft Square so you understand where your entrances and possible exits are located within the city layout.'] },
+      duringRace: { title: 'During the Race', description: 'Baku is a race with two completely different personalities: one side is the enormous flat-out straight beside the sea, while the other is the narrow castle section where the cars seem barely wide enough to fit between the walls. That means choosing a sector is more about personal preference than pure overtaking statistics.', tips: ['The easiest access comes through the metro stations at 28 May, Sahil, or Icheri Sheher, because those stops naturally distribute spectators around the major circuit entrances.', 'If your tickets are near the pit straight or waterfront sectors, entering from the Port Baku side is usually easier than pushing through the denser crowds near the Old City.', 'For the most unique circuit atmosphere, focus on the Castle section and Giz Galasi area, but make sure you have a good screen view because much of the action there is followed through sound and live timing.', 'Remember bus numbers 65, 5, and 53, because they handle a large part of central city transport once special traffic rules begin during race weekend.', 'If you stay for concerts at Crystal Hall, either use the official shuttle near the Giz Galasi sectors or enjoy the roughly 2.5 kilometer walk along the boulevard if the weather is pleasant.', 'After 10 p.m., follow the marked exits toward 28 May, Sahil, or Icheri Sheher instead of waiting around the main gates that often close earlier than expected.'] },
+      travelAdvice: { title: 'Travel Advice', description: 'Baku is one of the few newer Formula 1 races where staying directly in the city center is genuinely worth it, because the circuit, promenade, restaurants, and metro are all within comfortable distances. Choosing the right neighborhood can easily cut your need for taxis in half.', tips: ['The most practical areas are Sahil and the surroundings of Nizami Street for nightlife, the Old City for atmosphere, and 28 May for transport connections across the rest of Baku.', 'Choose your hotel based on which side of the circuit you expect to enter most often, because Port Baku works better for the pit straight while Icheri Sheher is ideal for the castle section.', 'Baku is very walkable along Neftchilar Avenue and the boulevard, but the steep and slippery stone streets inside Icherisheher require better footwear than most tourists normally pack.', 'Evenings beside the Caspian Sea can become surprisingly windy, so bring a light jacket even if the daytime weather feels warm and calm.', 'If you are arriving by plane, organize your transfer into the city center in advance instead of improvising after midnight, because the combination of luggage and road closures can make the city feel more complicated than it actually is.', 'Keep a copy of your passport separate from your main wallet and stay organized with your belongings, because race weekend involves repeated checkpoints and controlled pedestrian corridors.'] },
+    },
+    hotels: [
+      { name: 'Hilton Baku', address: '1B Azadliq Avenue, Baku AZ1000, Azerbaijan', lat: 40.371944, lng: 49.849444 },
+      { name: 'JW Marriott Absheron Baku', address: '674 Azadliq Square, Baku AZ1010, Azerbaijan', lat: 40.37417, lng: 49.85639 },
+      { name: 'Promenade Hotel Baku', address: '9-13 Neftchilar Avenue, Baku, Azerbaijan', lat: 40.3663, lng: 49.836 },
+    ],
+  },
+  {
+    slug: 'usa', title: 'United States Grand Prix', country: 'USA', city: 'Austin',
+    circuit: 'Circuit of the Americas',
+    coordinates: { lat: 30.1328, lng: -97.6411 },
+    weather: { location: 'Austin, Texas' },
+    circuitInfo: { laps: 56, length_km: 5.513, drs_zones: 2, first_gp: 2012 },
+    guideSections: {
+      beforeRace: { title: 'Before the Race', description: 'Austin works best when you treat the Grand Prix as more than just a circuit visit and combine it with live music, tacos, and time around the city itself. COTA sits outside downtown, but the city side of the weekend gives the entire American race a personality you immediately feel once you walk through South Congress or East Austin.', tips: ['Spend a morning on South Congress Avenue before cooling off at Barton Springs Pool inside Zilker Park, because it is one of the best ways to escape the Texas heat before heading to the circuit.', 'For food before the race sessions, explore East Austin around East 6th Street or East Cesar Chavez, where the atmosphere feels far more local than the convention-center tourist areas.', 'If you plan to use the official shuttle service, confirm the exact departure point the day before and save the map on your phone, because race morning is not the time to search for buses among thousands of people and temporary road diversions.', 'If you are driving, fuel up and buy everything you need before turning toward Del Valle, because the areas around FM-812 and Elroy Road become heavily congested very quickly.', 'Check your parking lot assignment before the weekend begins, because Lots A, N, and T use different access routes from Lots C, D, E, F, G, H, and K, and the same navigation route can easily send you to the wrong side of the venue.', 'Buy sunscreen, sunglasses, and extra water inside Austin before race weekend, because the relaxed city atmosphere can make you forget how intense the Texas sun feels at COTA the next day.'] },
+      duringRace: { title: 'During the Race', description: 'COTA is a circuit where it really helps to know what you want to watch, because one side of the experience is the dramatic uphill start into Turn 1 while another is the technical rhythm through the esses and heavy braking at Turn 12. The venue is enormous, so a planned day feels far more enjoyable than wandering without direction.', tips: ['Arrive early at Turn 1 if you want the most iconic start view of the weekend, because the steep hill and wide track layout feel much more dramatic in person.', 'For pure car rhythm and direction changes, Turns 3 through 6 are the best sections, but bring binoculars or accept that you are watching flowing lines rather than classic overtaking battles.', 'If heavy braking action matters most to you, Turn 12 is the strongest choice, while the area around Turn 15 and the stadium section gives you several different viewing angles in one place.', 'From McAngus Lot, use the official tram service toward Grand Plaza instead of walking all the way from the rideshare area, because the distance becomes exhausting faster than most people expect.', 'The biggest Texas mistake is underestimating the midday sun before the main race, so refill water and find shade before the crowd settles into place for the start.', 'If you do not need to leave immediately, stay for the concert or at least let the first departure wave pass, because shuttle and rideshare lines explode right after the checkered flag.'] },
+      travelAdvice: { title: 'Travel Advice', description: 'For the United States Grand Prix, it almost always makes more sense to stay where you have restaurants and nightlife and then travel to the circuit with a proper plan instead of trying to stay as close to COTA as possible. Downtown Austin, East Austin, and areas near the airport usually provide the smartest balance.', tips: ['Downtown Austin, East Austin, and South Congress are the best bases if you want to combine the race with music, food, and a good selection of bars and cafés after returning from the circuit.', 'Hotels near the airport may shorten the morning drive, but without a car they often become less practical than staying downtown with a reliable shuttle plan.', 'If you are driving from Austin or Dallas, some parking lots work best via TX-130 South and Exit 451 toward Elroy Road, while other areas use Exit 453 toward FM-812.', 'If you are arriving from Houston or Bastrop, routes through Kellam Road or Ross Road are often easier than trying to cut through central Austin traffic.', 'For rideshare or private drop-offs, tell your driver to head specifically to McAngus Lot instead of simply saying COTA, because that can be the difference between an organized arrival and getting stranded on the wrong side of the perimeter.', 'Pack layers even if the weather forecast looks warm, because Texas mornings in October or November can feel cool while the afternoon becomes intensely sunny.'] },
+    },
+    hotels: [
+      { name: 'Hyatt Place Austin Airport', address: '9532 Spirit of Austin Ln, Austin, TX 78719, USA', lat: 30.2045, lng: -97.666 },
+      { name: 'Hilton Austin Airport', address: '9515 Hotel Dr, Austin, TX 78719, USA', lat: 30.2028, lng: -97.6628 },
+      { name: 'Cambria Hotel Austin Airport', address: '7800 E Ben White Blvd, Austin, TX 78741, USA', lat: 30.2205, lng: -97.6937 },
+    ],
+  },
+  {
+    slug: 'brazil', title: 'Brazilian Grand Prix', country: 'Brazil', city: 'Sao Paulo',
+    circuit: 'Interlagos',
+    coordinates: { lat: -23.7036, lng: -46.6997 },
+    weather: { location: 'Sao Paulo, Brazil' },
+    circuitInfo: { laps: 71, length_km: 4.309, drs_zones: 2, first_gp: 1973 },
+    guideSections: {
+      beforeRace: { title: 'Before the Race', description: 'Interlagos is a racing cathedral, but a successful trip to São Paulo actually depends a lot on the neighborhoods far away from the circuit that help you manage the scale of the city. Before race weekend, it is worth experiencing Paulista Avenue, Jardins, and Pinheiros first before shifting your focus toward the southern side of the city and pure motorsport.', tips: ['Spend your first days around Avenida Paulista and the nearby streets of Jardins, because that area balances museums, food, metro access, and a more comfortable urban atmosphere.', 'For lunch or dinner, head toward Rua dos Pinheiros or Mercado de Pinheiros, where it is easier to eat well and quickly than in the more chaotic tourist-heavy central areas.', 'If you want a quieter city break before Interlagos, visit Parque Trianon or take a short walk through Jardim Paulista before spending entire days on your feet at the circuit.', 'Do a practice run on Line 9 and learn the transfers between Pinheiros, Morumbi, Autódromo, or Cidade Dutra stations the day before the race, because the real weekend becomes much easier once you already know the system.', 'Avoid carrying unnecessary valuables while exploring the city at night and use ride-hailing apps for late returns, especially if you are coming back from distant neighborhoods after dinner.', 'Buy a rain jacket and cap in the city before race weekend, because Interlagos loves combining heat, wind, and sudden rain showers in the same afternoon.'] },
+      duringRace: { title: 'During the Race', description: 'Interlagos has the kind of atmosphere that makes everything feel louder, steeper, and more emotional than almost anywhere else on the calendar. From the downhill charge through Senna S to the exit of Junção, nearly every sector rewards patience and a carefully chosen viewing spot.', tips: ['If your goal is the most emotional race view possible, nothing beats the start and opening lap through Senna S and Curva do Sol, so arrive earlier than you think is necessary.', 'For a more technical feeling of the circuit, the areas around Mergulho and Junção are excellent because they show how uneven and physically demanding Interlagos really is.', 'Use the GPSP Express to Cidade Dutra or the regular Line 9 toward Autódromo station, then follow the official police-guided corridors and signage instead of improvising through side streets.', 'If you exit at Autódromo station, remember that shuttle buses connect to the main entrances but not directly to Gate G and the fan zone, so walking can sometimes be faster.', 'Grandstands without catering packages still provide free water refill points, so it is worth organizing a cup or light bottle early instead of waiting for the hottest part of the day.', 'After the race, stay with the main crowd flow back toward Line 9 and avoid trying shortcuts along Avenida Senador Teotônio Vilela, especially if you are alone.'] },
+      travelAdvice: { title: 'Travel Advice', description: 'São Paulo is a city where the neighborhood you choose matters more than the actual distance to the circuit. If you choose the right base and transport strategy, Interlagos feels manageable, but a poor setup can easily cost you hours in traffic and difficult transfers.', tips: ['The most practical neighborhoods for most visitors are Jardins, Paulista, Pinheiros, and Itaim Bibi, because they offer strong restaurant options and relatively manageable journeys toward the southern side of the city.', 'Do not rely on parking at the circuit, because Interlagos does not provide normal public spectator parking during Grand Prix weekend and a private car often creates more problems than solutions.', 'The GPSP Express train departs from Pinheiros, stops at Morumbi, and then runs directly toward Cidade Dutra, skipping the slowest section of the regular race-day approach.', 'If you prefer buses, look for SPTrans Express departures from places such as SP Market, Congonhas near Praça Comandante Lineu Gomes, Trianon-MASP, or Terminal Santo Amaro.', 'During major station transfers, keep your phone and wallet closer to your body than you might in a smaller city, because race weekend creates extremely crowded platforms and exits.', 'Even if you stay relatively close to the southern districts, leave yourself a large time buffer on Friday afternoons and Sunday evenings because Marginal Pinheiros and the approaches to Interlagos become heavily congested.'] },
+    },
+    hotels: [
+      { name: 'ibis Sao Paulo Interlagos', address: 'Av. Interlagos 2215, São Paulo - SP, 04661-200, Brazil', lat: -23.67297, lng: -46.67702 },
+      { name: 'Transamerica Executive Chácara Santo Antônio', address: 'Rua Américo Brasiliense 2163, São Paulo - SP, 04715-005, Brazil', lat: -23.6298, lng: -46.7042 },
+      { name: 'Blue Tree Premium Verbo Divino', address: 'Rua Verbo Divino 1323, São Paulo - SP, 04719-002, Brazil', lat: -23.633, lng: -46.7048 },
+    ],
+  },
+  {
+    slug: 'las-vegas', title: 'Las Vegas Grand Prix', country: 'USA', city: 'Las Vegas',
+    circuit: 'Las Vegas Strip Circuit',
+    coordinates: { lat: 36.1147, lng: -115.1728 },
+    weather: { location: 'Las Vegas, Nevada' },
+    circuitInfo: { laps: 50, length_km: 6.201, drs_zones: 2, first_gp: 2023 },
+    guideSections: {
+      beforeRace: { title: 'Before the Race', description: 'The Las Vegas Grand Prix becomes much easier once you treat it like a logistical puzzle between resorts, pedestrian bridges, the monorail, and a few important walking corridors. The city itself already feels like a spectacle, but the best weekends belong to the people who learn how to move efficiently between the Sphere, the Strip, and the eastern resort areas before the crowds arrive.', tips: ['Walk part of Las Vegas Boulevard during the daytime between Bellagio, Caesars Palace, Venetian, and the Sphere, because everything feels completely different once the nighttime crowds and race-week road closures begin.', 'For a calmer start to the evening, visit the Arts District around Main Street and Charleston Boulevard before heading toward the Strip once race-week traffic settles slightly.', 'If you want to experience a more local and older side of Las Vegas during a free evening, spend time around Fremont East and Fremont Street Experience instead of using your entire budget on expensive drinks near the circuit.', 'Buy a monorail pass in advance and remember the correct station for your zone: Harrah\'s-The LINQ for the Sphere area, Flamingo-Caesars for the central Strip, and Horseshoe-Paris for Harmon and Koval sectors.', 'Take time to visit Grand Prix Plaza before the official race weekend begins, because it helps you understand how the entire event is organized across the resort areas and walking routes.', 'Pack a light jacket during the afternoon already, because desert nights on open grandstands feel much colder than walking through warm hotel corridors.'] },
+      duringRace: { title: 'During the Race', description: 'Las Vegas may look compact on the map, but race weekend transforms a few city blocks into a serious test of patience and planning. The biggest advantage is not only having a good ticket but also understanding which bridge, station, or parallel street actually gets you back to your hotel efficiently.', tips: ['Use the pedestrian bridges around Flamingo Road, Paris-Horseshoe, and the walkways near Venetian and Sands Avenue, because searching for street-level crossings at the wrong time only wastes energy.', 'The Sphere zone offers the most recognizable race views, but Harmon and Koval sectors are often easier to navigate once you are inside the venue.', 'Buy coffee, water, or a simple meal inside your resort before entering the race areas, because the first post-security rush creates much longer queues than most people expect.', 'The Las Vegas Monorail avoids all major road closures, so after sessions it is almost always faster to exit through MGM Grand, Horseshoe-Paris, Flamingo-Caesars, or Harrah\'s-The LINQ stations than relying on rideshares immediately.', 'Do not underestimate how cold it feels standing outside after 10 p.m., because the desert air quickly affects your hands and legs even after a warm day.', 'If you order transportation after the race, walk several blocks toward Paradise Road or Sands Avenue before requesting the ride, because pickups directly beside the circuit are the slowest and most expensive.'] },
+      travelAdvice: { title: 'Travel Advice', description: 'During the Las Vegas Grand Prix, your location relative to the monorail and pedestrian bridges matters much more than how glamorous your hotel looks online. A famous resort with poor access can become far less practical than a simpler hotel positioned on the correct side of the race-week chaos.', tips: ['If easy transport matters most, choose hotels near MGM Grand, Horseshoe-Paris, Flamingo-Caesars, or Harrah\'s-The LINQ, because those are the most useful monorail access points during race weekend.', 'Downtown accommodation near Fremont Street can save money, but expect additional transfers toward the monorail or direct rideshare trips before the full road closures begin.', 'The Las Vegas Monorail runs through seven stations from MGM Grand to SAHARA and becomes the single most useful tool once Las Vegas Boulevard stops functioning like a normal road.', 'Buy your monorail pass online before arriving and use your phone as the ticket, because physical ticket purchases at stations become frustrating exactly when the crowds are largest.', 'If you rent a car, leave it parked for the entire weekend, because Koval Lane, Harmon Avenue, and Sands Avenue are exactly the kind of places where race-week traffic completely collapses.', 'November in Las Vegas is dry and surprisingly draining, so alongside your jacket pack lip balm, water, and a power bank in the same small bag.'] },
+    },
+    hotels: [
+      { name: 'The Venetian Resort', address: '3355 S Las Vegas Blvd, Las Vegas, NV 89109, USA', lat: 36.12139, lng: -115.16889 },
+      { name: 'Bellagio', address: '3600 S Las Vegas Blvd, Las Vegas, NV 89109, USA', lat: 36.112625, lng: -115.176704 },
+      { name: 'Paris Las Vegas', address: '3655 S Las Vegas Blvd, Las Vegas, NV 89109, USA', lat: 36.112541, lng: -115.17067 },
+    ],
+  },
+  {
+    slug: 'uae', title: 'Abu Dhabi Grand Prix', country: 'UAE', city: 'Abu Dhabi',
+    circuit: 'Yas Marina Circuit',
+    coordinates: { lat: 24.4672, lng: 54.6031 },
+    weather: { location: 'Abu Dhabi, UAE' },
+    circuitInfo: { laps: 58, length_km: 5.281, drs_zones: 2, first_gp: 2009 },
+    guideSections: {
+      beforeRace: { title: 'Before the Race', description: 'The Abu Dhabi finale feels different from most races on the calendar because Yas Island is not only home to the circuit but an entire entertainment district filled with marinas, concerts, resorts, and theme parks. If you arrive a little earlier, this becomes one of the easiest Formula 1 weekends to enjoy without the stress of a massive city commute.', tips: ['Before race weekend begins, walk around Yas Marina, Yas Bay Waterfront, and Yas Mall, because those three locations become the most useful reference points for navigating the island.', 'Use the free Yas Island hop-on shuttle service before the crowds arrive so you understand the layout of the island and the distances between attractions and race entrances.', 'If Yas Marina Circuit offers a pre-weekend track tour or driving experience, book it early because it makes understanding the grandstand layout and entry routes much easier once race weekend begins.', 'Reserve dinner at Yas Bay Waterfront instead of relying only on hotel restaurants, because that area develops a much stronger atmosphere during the evenings.', 'Ferrari World and SeaWorld are genuinely practical additions to this trip because they sit only minutes away from the circuit and do not require major city transfers.', 'Even though December is far more comfortable than the summer months, keep sunscreen and a light evening layer in your bag because the marina breeze becomes noticeable after sunset.'] },
+      duringRace: { title: 'During the Race', description: 'Yas Marina Circuit is one of the cleanest and easiest venues to navigate on the calendar, but that also means it helps to decide what type of experience you actually want instead of randomly choosing a grandstand. The season finale is not only about the race itself but also about the flow toward the marina, fan zones, and concerts after the sessions end.', tips: ['North Grandstand is the strongest choice if you want to watch heavy braking at the end of the long straight, while West and South grandstands reward people who prefer seeing multiple corners in a single view.', 'For Yasalam concerts, begin moving toward the exits slightly before the main crowd or immediately after the race program ends, because the walkways between the circuit and concert areas become extremely congested very quickly.', 'Use the marked pedestrian bridges and island walkways instead of trying to order transport directly outside your gate, because the final ten minutes on foot are often the fastest part of the journey.', 'Buy food and drinks before the major break leading into Formula 1 sessions, because the busiest queues form exactly when the main fan movement begins.', 'If you sit near the marina or other open sectors, a light jacket after sunset is genuinely useful rather than optional, especially once the wind moves across the water.', 'If you are meeting friends after the race, choose a fixed point such as Yas Marina or the Yas Mall entrance because crowds and weak signal near the exits make improvisation difficult.'] },
+      travelAdvice: { title: 'Travel Advice', description: 'The easiest Abu Dhabi plan is staying directly on Yas Island, but the race is still manageable from central Abu Dhabi or even Dubai if you organize your transport carefully. The key decision is how much convenience you want compared to how much city life you want outside the race itself.', tips: ['The simplest option is staying on Yas Island itself, but Saadiyat and central Abu Dhabi work better if you want more restaurants and a more normal city atmosphere outside the race.', 'For cheaper public transport access, use Bus 190 from Abu Dhabi Bus Station near Al Wahda Mall toward Yas Island because it is the clearest low-cost route to the circuit area.', 'If you are arriving from Dubai, first organize transport toward Abu Dhabi Bus Station and then transfer onto Bus 190 instead of improvising the entire journey in one step.', 'Taxis, Uber, and Careem operate well during race weekend, but for the return trip choose clear pickup points such as Yas Mall or Etihad Arena once the roads reopen.', 'If you are not staying on Yas Island, leave earlier than you think necessary, especially on Sunday, because traffic toward the island becomes heavy long before the support races finish.', 'Keep your tickets and QR codes saved inside the Abu Dhabi GP app and also store screenshots offline because you do not want to rely on mobile signal directly before the entrance checkpoints.'] },
+    },
+    hotels: [
+      { name: 'W Abu Dhabi - Yas Island', address: 'Yas Island, Abu Dhabi, United Arab Emirates', lat: 24.4672, lng: 54.6031 },
+      { name: 'Crowne Plaza Abu Dhabi - Yas Island', address: 'Yas Plaza Hotels, Yas Island, Abu Dhabi 41880, United Arab Emirates', lat: 24.4662, lng: 54.5985 },
+      { name: 'Centro Yas Island', address: 'Yas Plaza, Yas Island, Abu Dhabi, United Arab Emirates', lat: 24.465173, lng: 54.598734 },
+    ],
+  },
+  {
+    slug: 'australia', title: 'Australian Grand Prix', country: 'Australia', city: 'Melbourne',
+    circuit: 'Albert Park Circuit',
+    coordinates: { lat: -37.8497, lng: 144.968 },
+    weather: { location: 'Melbourne, Australia' },
+    circuitInfo: { laps: 58, length_km: 5.278, drs_zones: 4, first_gp: 1996 },
+    guideSections: {
+      beforeRace: {
+        title: 'Before the Race',
+        description: 'Melbourne opening the season has that perfect mix of café culture, trams, and lakeside park atmosphere that very few Formula 1 weekends can match. Albert Park feels like an extension of the city itself, so it is easy to combine mornings in laneway cafés with afternoon walks around the circuit.',
+        tips: [
+          'Choose accommodation in South Melbourne or St Kilda so you can reach the circuit with a short tram ride and still enjoy evening walks along Acland Street.',
+          'For breakfast before Thursday sessions, visit South Melbourne Market and then continue on foot across Albert Road toward the lake to immediately feel the atmosphere around the park.',
+          'Spend one afternoon exploring Flinders Lane, Centre Place, and Hosier Lane because it is the easiest way to experience Melbourne\'s coffee culture, street art, and city rhythm in a compact area.',
+          'If you want an easier evening before the race weekend begins, take tram 96 toward St Kilda Beach and watch sunset near St Kilda Pier.',
+          'For the most practical city setup, stay near Flinders Street Station or Southern Cross because those areas connect both the CBD and tram routes toward Albert Park very easily.',
+          'On Thursday, walk around Albert Park Lake before the larger crowds arrive so you can already understand where your nearest bridges, pedestrian paths, and exits will be after the sessions.',
+        ],
+      },
+      duringRace: {
+        title: 'During the Race',
+        description: 'The Australian Grand Prix weekend feels fast, loud, and very open, with views of the lake, the city skyline, and wide walking paths around the park. Because of that, the entire experience works best when you move early and rely on public transport instead of driving.',
+        tips: [
+          'For the southern and eastern sides of the park, use the tram corridors along St Kilda Road, especially routes 3, 5, 6, 16, 64, 67, and 72, because they leave you close to practical pedestrian entrances.',
+          'If you are coming from St Kilda or the southern CBD, tram 96 is one of the best options for the western side of the event and avoids unnecessary walking around the lake.',
+          'Arrive early in the morning and complete your first full walk around the lake before the bridges and access points become heavily crowded near the popular grandstands.',
+          'Buy food and water immediately after entering the venue instead of waiting between the major sessions, because the queues stretch fastest during the busiest transition periods.',
+          'For an easier exit after the program ends, avoid rushing to the first tram stop and instead walk a few blocks toward Clarendon Street or St Kilda Road before joining the crowd.',
+          'If you sit in open lakeside sectors, bring both a light jacket and sunscreen because Melbourne weather can shift between wind, sun, and cool temperatures within the same day.',
+        ],
+      },
+      travelAdvice: {
+        title: 'Travel Advice',
+        description: 'Melbourne is one of the easiest Formula 1 cities to navigate without a car, but it rewards people who stay organized with trams and long walking days. If you combine airport transfers, a myki card, and sensible walking routes properly, the entire weekend flows very smoothly.',
+        tips: [
+          'From Tullamarine Airport, use the SkyBus to Southern Cross Station and continue from there by tram, train, or walking instead of immediately joining expensive taxi queues.',
+          'Buy and top up a myki card as soon as you arrive because you will need it for trams and trains outside the free tram zone in the city center.',
+          'If you stay in the CBD, use the free tram zone for short city trips, but remember that most Albert Park journeys still continue outside the free area.',
+          'For easier evenings after the circuit, keep comfortable walking shoes because it is often faster to walk toward a quieter tram stop than wait directly beside the busiest event exits.',
+          'Melbourne weather during race season changes quickly, so pack sunglasses, a thin rain jacket, and layered clothing instead of relying on one heavy jacket.',
+          'If you plan to explore the city between sessions, stay close to the Flinders Street, Swanston Street, and St Kilda Road corridor because those routes make returning toward the park very simple.',
+        ],
+      },
+    },
+    hotels: [
+      { name: 'Crown Towers Melbourne', lat: -37.8226, lng: 144.9584 },
+      { name: 'The Langham Melbourne', lat: -37.8243, lng: 144.9671 },
+      { name: 'Pullman Melbourne Albert Park', lat: -37.8473, lng: 144.9725 },
+      { name: 'AC Hotel Melbourne Southbank', lat: -37.8265, lng: 144.9525 },
+    ],
+  },
+  {
+    slug: 'china', title: 'Chinese Grand Prix', country: 'China', city: 'Shanghai',
+    circuit: 'Shanghai International Circuit',
+    coordinates: { lat: 31.3389, lng: 121.2197 },
+    weather: { location: 'Shanghai, China' },
+    circuitInfo: { laps: 56, length_km: 5.451, drs_zones: 2, first_gp: 2004 },
+    guideSections: {
+      beforeRace: {
+        title: 'Before the Race',
+        description: 'Shanghai before the Grand Prix feels like two completely different postcards at once: the futuristic skyline beside the Huangpu River and the older shikumen neighborhoods around Xintiandi. The best way to experience it is by staying close to the metro and ending each evening in a different district.',
+        tips: [
+          'For the most practical stay, choose accommodation in Jing\'an near West Nanjing Road or in Huangpu close to Xintiandi so you can easily connect onto Metro Line 11 toward the circuit.',
+          'Spend your first evening walking along East Zhongshan Road on the Bund because it gives you the best view of both the historic riverfront facades and the skyscrapers across the water in Pudong.',
+          'For late dinners and a calmer city atmosphere, head toward Xintiandi and the streets around Madang Road where the area remains lively and comfortable after working hours.',
+          'If you want a quieter morning before heading to the circuit, focus on Jing\'an Temple and the blocks around West Nanjing Road because that area combines cafés, shopping, and simple metro access.',
+          'Reserve part of one day for Jiading because the district is home to the Shanghai International Circuit and places like Anting Old Street help you understand the local context around the race.',
+          'Save Shanghai Circuit, Baiyin Road, and Shanghai Automobile City stations inside your phone navigation immediately so you always have backup movement options along Metro Line 11.',
+        ],
+      },
+      duringRace: {
+        title: 'During the Race',
+        description: 'Race weekend in Jiading works best when treated as a metro event instead of a road trip. Shanghai handles huge sporting crowds very efficiently, but it punishes anyone who leaves too late or tries to improvise transport during peak periods.',
+        tips: [
+          'Use Metro Line 11 and target Shanghai Circuit station because it is the most direct and simplest access corridor into the venue.',
+          'Leave before the late-morning peak because official guidance regularly warns that the largest congestion forms between 10:00 and 12:00 around entrances and security checks.',
+          'If Shanghai Circuit station becomes too crowded, consider exiting earlier at Baiyin Road and completing the final section by shuttle or taxi toward the circuit.',
+          'Do not expect to drive casually into the venue area because roads such as Baiyin Road, Yining Road, Anchen Road, and Anxiao Road face closures throughout the weekend.',
+          'Keep your original passport or travel document accessible throughout the day because security staff frequently request it together with your digital ticket.',
+          'If you stay after the final session, wait for the pressure on Line 11 to decrease and use the time for food or a short walk through the fan areas instead of immediately forcing yourself onto the platform.',
+        ],
+      },
+      travelAdvice: {
+        title: 'Travel Advice',
+        description: 'Shanghai is enormous but very rewarding for travelers who rely on the metro system instead of trying to solve everything with taxis. The key is linking your hotel, nightlife areas, and the circuit through a few simple transfers rather than one very long drive.',
+        tips: [
+          'Use the metro as the foundation of your travel planning because the network connects central Shanghai, Hongqiao, and Jiading much more reliably than road traffic during Grand Prix weekend.',
+          'Set up metro payment or transit cards in advance and keep your bank card or transport card ready so you do not waste time at ticket machines during rush periods.',
+          'If you arrive through Hongqiao Railway Station, avoid relocating your hotel closer to the circuit at the last moment and instead stay in central Shanghai while using Line 11 on race days.',
+          'For relaxed evenings between sessions, stay around the Bund, Nanjing Road, Xintiandi, and Jing\'an Temple because all of them remain well connected by metro and safe for returning late.',
+          'Shanghai in spring can feel cool in the mornings but surprisingly warm by afternoon on exposed grandstands, so layered clothing works much better than one heavy jacket.',
+          'If you want to avoid extremely expensive rides after the race, take the metro several stations away from the circuit before ordering a taxi or rideshare service.',
+        ],
+      },
+    },
+    hotels: [
+      { name: 'The Shanghai EDITION', lat: 31.2406, lng: 121.4909 },
+      { name: 'JW Marriott Marquis Hotel Shanghai Pudong', lat: 31.2317, lng: 121.5064 },
+      { name: 'Cachet Boutique Shanghai', lat: 31.2338, lng: 121.4694 },
+      { name: 'Swissôtel Grand Shanghai', lat: 31.2253, lng: 121.4458 },
+    ],
+  },
+  {
+    slug: 'japan', title: 'Japanese Grand Prix', country: 'Japan', city: 'Suzuka',
+    circuit: 'Suzuka Circuit',
+    coordinates: { lat: 34.8431, lng: 136.5419 },
+    weather: { location: 'Suzuka, Japan' },
+    circuitInfo: { laps: 53, length_km: 5.807, drs_zones: 1, first_gp: 1987 },
+    guideSections: {
+      beforeRace: {
+        title: 'Before the Race',
+        description: 'Suzuka is a Formula 1 weekend with a very Japanese rhythm: precise transport systems, long walks, and evenings best spent in Nagoya. If you choose your base carefully, you can enjoy both a strong city experience and a very manageable journey to the circuit.',
+        tips: [
+          'Book a hotel near Nagoya Station or in Sakae because those areas give you the easiest access to Kintetsu trains toward Shiroko while still offering excellent evening food and nightlife.',
+          'Spend one evening around Oasis 21 and Hisaya-odori Park in Sakae because the area works perfectly for relaxed dinners and convenient late returns before early race mornings.',
+          'For a calmer city experience, explore Osu Shopping District and take your time through the covered arcades instead of only rushing between stations and restaurants.',
+          'If you arrive by Shinkansen, plan your connection through Nagoya Station and immediately check Kintetsu departures for the following morning so Friday does not begin with confusion.',
+          'To experience more of Mie Prefecture beyond the circuit, spend at least part of a day in Suzuka City itself or have lunch outside the track area instead of treating the region only as a transport corridor.',
+          'Reserve Kintetsu Limited Express tickets in advance if you want a more comfortable morning journey from Nagoya because the regular trains become extremely crowded during race weekend.',
+        ],
+      },
+      duringRace: {
+        title: 'During the Race',
+        description: 'Suzuka demands early starts and a little patience, but in return it gives one of the most special racing atmospheres on the entire calendar. The biggest mistake here is assuming transport can be improvised at the last minute.',
+        tips: [
+          'The safest route is taking the Kintetsu train to Shiroko Station and then continuing by Mie Kotsu bus or official shuttle toward Suzuka Circuit.',
+          'If you prefer an alternative with more walking, use Suzuka Circuit Ino Station and complete the final section to the gates on foot.',
+          'On the busiest days, leave Nagoya significantly earlier than you think necessary because the queues around Shiroko Station and shuttle buses grow extremely fast.',
+          'Keep cash or an IC card ready for local buses and small purchases near the station because it saves valuable time once the crowd floods onto the platforms.',
+          'After the final session, avoid sprinting toward the first shuttle queue and instead take a drink or walk through the merchandise area until the first departure wave settles down.',
+          'If you plan to support your favorite team all day, bring a rain jacket and one extra light layer because Suzuka weather can shift from warm sunshine to wind and rain surprisingly quickly.',
+        ],
+      },
+      travelAdvice: {
+        title: 'Travel Advice',
+        description: 'Japan is fantastic for Formula 1 travelers when everything is organized around railway hubs and reserved train segments. Suzuka is not difficult because of distance, but because half the crowd is often following the exact same plan at the same time.',
+        tips: [
+          'If this is your first visit, use the Tourist Information Centers at Nagoya Station or Oasis 21 for paper maps, train schedules, and updated local advice for the Mie region.',
+          'Reserve Kintetsu Limited Express seats as early as possible because having an assigned seat matters far more than improvising on crowded platforms during race weekend.',
+          'Accommodation inside Suzuka sells out extremely quickly, so Nagoya remains the most practical base while Sakae is better if nightlife and restaurants matter more to you.',
+          'If you arrive through Chubu Centrair Airport, organize your transfer toward Nagoya immediately after landing instead of leaving major connections for race morning.',
+          'For evenings after the circuit, stay around the Nagoya Station, Fushimi, and Sakae areas because those districts provide the easiest train access back toward Suzuka the next morning.',
+          'Pack a small towel, portable charger, and something comfortable for sitting on grass or concrete because those three small items make Suzuka weekends noticeably easier.',
+        ],
+      },
+    },
+    hotels: [
+      { name: 'Nagoya Marriott Associa Hotel', lat: 35.1702, lng: 136.8814 },
+      { name: 'Mitsui Garden Hotel Nagoya Premier', lat: 35.1687, lng: 136.8841 },
+      { name: 'Hotel Castle Inn Suzuka', lat: 34.8812, lng: 136.5854 },
+      { name: 'Courtyard by Marriott Nagoya', lat: 35.1656, lng: 136.8923 },
+    ],
+  },
+  {
+    slug: 'miami', title: 'Miami Grand Prix', country: 'United States', city: 'Miami',
+    circuit: 'Miami International Autodrome',
+    coordinates: { lat: 25.9581, lng: -80.2389 },
+    weather: { location: 'Miami, Florida, USA' },
+    circuitInfo: { laps: 57, length_km: 5.412, drs_zones: 3, first_gp: 2022 },
+    guideSections: {
+      beforeRace: {
+        title: 'Before the Race',
+        description: 'Miami during Grand Prix week is much more than the stadium area in Miami Gardens, because the city itself becomes part of the experience through neighborhoods like Brickell, Wynwood, Little Havana, and South Beach. The easiest way to enjoy the weekend is by staying close to major rail or metro corridors instead of trying to stay directly beside the circuit.',
+        tips: [
+          'For the most practical setup, book accommodation in Brickell or Downtown Miami so you can easily combine Brightline, Metromover, and evening restaurants near Biscayne Bay.',
+          'Spend one afternoon exploring Wynwood between NW 2nd Avenue and NW 26th Street because that area shows Miami\'s mural culture, cafés, and craft scene at its best.',
+          'For lunch before race weekend begins, head toward Calle Ocho in Little Havana and walk past Domino Park before stopping at one of the classic Cuban restaurants.',
+          'If you want beaches and architecture before the circuit crowds arrive, dedicate one morning to South Beach between Ocean Drive and South Pointe Park.',
+          'Do not choose a hotel only because it mentions Miami Gardens, because staying farther south with better transport options is often much easier than depending entirely on a car.',
+          'Keep the evening before race day relatively calm and stay around Downtown or Brickell because reaching the circuit smoothly requires early mornings and organized transport.',
+        ],
+      },
+      duringRace: {
+        title: 'During the Race',
+        description: 'The Miami International Autodrome works best when you accept that transport is part of the event itself and that most arrivals happen through planned shuttle systems and remote access zones. Once you follow that structure, the stadium and circuit operate much more smoothly than they initially appear on the map.',
+        tips: [
+          'The cleanest arrival option is taking Brightline to Aventura Station at 19796 West Dixie Highway and then using the free official shuttle directly toward the Hard Rock Stadium campus.',
+          'If you arrive by rideshare from the eastern side of the city, use the Brightline Aventura zone because the shuttle toward Entry Gate 3 is usually more organized than walking drop-off systems.',
+          'For southern access, remember the address 16000 NW 7th Avenue where shuttle buses depart from Lots 15 and 16 toward Gate 3.',
+          'If your seats are closer to the northern or western side of the venue, rideshare drop-off near 21001 NW 27th Avenue places you closer to Entry Gate 8, although some walking through Lot 35 is still required.',
+          'Do not expect to buy parking casually at the venue because the event operates through advance reservations instead of spontaneous drive-in access.',
+          'After the sessions finish, avoid blindly following the first crowd and instead carefully follow the signage toward your exact shuttle or rideshare zone because the wrong exit can add several unnecessary kilometers of walking.',
+        ],
+      },
+      travelAdvice: {
+        title: 'Travel Advice',
+        description: 'Miami forces you to decide in advance whether your weekend priority is beaches, nightlife, or the easiest possible race logistics, because having all three perfectly at once is difficult. The good news is that systems like Brightline and Miami\'s transit network can remove a huge amount of race-week stress if used properly.',
+        tips: [
+          'If you want the best balance between city life and the race, stay around Downtown Miami, Brickell, or Aventura instead of driving daily from South Beach across the entire county.',
+          'For shorter city trips use Metromover, while longer transfers across Miami become easier through Metrorail or Brightline whenever possible.',
+          'Keep South Beach for one dedicated full day before or after the race because commuting there every morning toward Miami Gardens takes much longer than maps suggest.',
+          'In Miami expect strong sun, humidity, and occasional rain showers, so carry sunscreen, a lightweight rain jacket, and a refillable water bottle if venue rules allow it.',
+          'For returning after the sessions, do not rely only on mobile signal outside the stadium and instead save the exact address of your shuttle or rideshare pickup zone in advance.',
+          'If you want a calmer end to the evening, plan dinner back in Brickell or Downtown after returning from the circuit instead of staying around the stadium where crowds disperse very slowly.',
+        ],
+      },
+    },
+    hotels: [
+      { name: 'EAST Miami', lat: 25.7606, lng: -80.1927 },
+      { name: 'citizenM Miami Brickell', lat: 25.7651, lng: -80.1938 },
+      { name: 'The Elser Hotel Miami', lat: 25.7782, lng: -80.1873 },
+      { name: '1 Hotel South Beach', lat: 25.7901, lng: -80.1307 },
+    ],
+  },
+  {
+    slug: 'barcelona', title: 'Spanish Grand Prix', country: 'Spain', city: 'Barcelona',
+    circuit: 'Circuit de Barcelona-Catalunya',
+    coordinates: { lat: 41.57, lng: 2.2611 },
+    weather: { location: 'Barcelona, Spain' },
+    circuitInfo: { laps: 66, length_km: 4.657, drs_zones: 2, first_gp: 1991 },
+    guideSections: {
+      beforeRace: {
+        title: 'Before the Race',
+        description: 'Barcelona before the Grand Prix offers that ideal Formula 1 combination of beaches, late dinners, and mornings that can begin in the modernist streets of Eixample and end beside the circuit. The city is compact enough that in only a couple of days you can experience both the local neighborhood atmosphere and the classic postcard views.',
+        tips: [
+          'For the easiest race weekend setup, choose accommodation near Barcelona Sants, Passeig de Gràcia, or El Clot because those areas connect conveniently onto Rodalies train routes toward Montmeló.',
+          'Spend one evening in Gràcia around Plaça del Diamant and Travessera de Gràcia if you want a more local neighborhood rhythm instead of only tourist-heavy Barcelona.',
+          'For a classic pre-race walk, combine La Rambla with La Boqueria and then move toward El Born and Passeig del Born for dinner where the atmosphere feels much better in the evening.',
+          'If you want to experience Barcelona\'s modernist architecture without excessive travel, walk along Passeig de Gràcia past Casa Batlló and La Pedrera before continuing down toward the older parts of the city.',
+          'For a more local food break, visit Mercat de la Llibertat or Mercat de l\'Abaceria in Gràcia instead of spending every meal inside the city center.',
+          'Before Friday, check for any Rodalies maintenance work or schedule changes because train operations around Barcelona sometimes shift and it is better to enter race weekend already knowing your exact route.',
+        ],
+      },
+      duringRace: {
+        title: 'During the Race',
+        description: 'Montmeló is a classic circuit that works best when approached by train and on foot instead of trying to simplify the day with taxis or private cars. Most of the stress here happens before and after the circuit rather than inside the grandstands themselves.',
+        tips: [
+          'The simplest route is taking Rodalies lines R2, R2 Nord, or R8 to Montmeló station and then walking the final section toward Circuit de Barcelona-Catalunya.',
+          'If you are arriving from Girona or the northern side of Catalonia, expect Granollers Centre to become your most logical transfer point toward Montmeló.',
+          'Leave for the station earlier than your instincts suggest because trains toward Montmeló become crowded extremely quickly already inside central Barcelona.',
+          'For the return trip, either leave immediately after the sessions or stay much longer at the circuit because the middle departure wave is usually the least comfortable part of the day.',
+          'Bring a cap and enough water for exposed grandstands because the Catalan sun in late spring feels much stronger than the cooler city mornings suggest.',
+          'If you do not have reserved parking, avoid improvising with a rental car in the streets around Montmeló because trains from Barcelona are usually faster and significantly less stressful.',
+        ],
+      },
+      travelAdvice: {
+        title: 'Travel Advice',
+        description: 'Barcelona is one of the best Formula 1 cities because it allows you to treat the race as a day trip while using the rest of the weekend as a true city break. Anyone who combines Rodalies, metro lines, and walking properly almost never needs a car.',
+        tips: [
+          'Airport logistics become easiest when your hotel sits near Sants or another station on the R2 corridor because that simplifies both airport transfers and race-day departures.',
+          'Barcelona transport cards work very well inside the city, but always check whether your Rodalies journey toward Montmeló is fully covered before relying on the same ticket.',
+          'For dinners between sessions, reserve restaurants in El Born, Gràcia, or Poblenou instead of staying around La Rambla where the experience-to-price ratio is usually weaker.',
+          'If you prefer quieter mornings, stay outside the Gothic Quarter and choose Eixample or Gràcia because you will sleep better and still reach trains very easily.',
+          'A lightweight backpack and comfortable trainers are essential in Barcelona because a single day can easily combine train stations, city exploration, and long walks toward the circuit.',
+          'If you want to avoid the first post-race train rush, stay in Montmeló longer or return to Barcelona later for a relaxed late lunch instead of immediately forcing your way into the first queue.',
+        ],
+      },
+    },
+    hotels: [
+      { name: 'Hotel Arts Barcelona', lat: 41.3853, lng: 2.1968 },
+      { name: 'Occidental Atenea Mar', lat: 41.4097, lng: 2.2196 },
+      { name: 'Majestic Hotel & Spa Barcelona', lat: 41.3926, lng: 2.1649 },
+      { name: 'Catalonia Barcelona Plaza', lat: 41.3758, lng: 2.1491 },
+    ],
+  },
+  {
+    slug: 'austria', title: 'Austrian Grand Prix', country: 'Austria', city: 'Spielberg',
+    circuit: 'Red Bull Ring',
+    coordinates: { lat: 47.2197, lng: 14.7647 },
+    weather: { location: 'Spielberg, Austria' },
+    circuitInfo: { laps: 71, length_km: 4.318, drs_zones: 3, first_gp: 1970 },
+    guideSections: {
+      beforeRace: {
+        title: 'Before the Race',
+        description: 'Spielberg feels completely different from the major city races because it immediately pulls you into the green hills of the Murtal region, small railway stations, and a very Alpine rhythm. The weekend works best when combined with Graz or Knittelfeld rather than trying to stay directly beside the circuit itself.',
+        tips: [
+          'If you want stronger nightlife and more restaurants, stay in Graz around Hauptplatz, Herrengasse, or Jakominiplatz and travel toward the circuit by train to Knittelfeld.',
+          'If shorter race-day transfers matter more to you, stay in Knittelfeld and begin your mornings with coffee around Hauptplatz before taking the shuttle toward the Red Bull Ring.',
+          'In Graz, make time for Schlossberg and either the funicular or elevator because it gives you one of the best panoramic views over the city\'s red rooftops.',
+          'For a more local morning atmosphere in Graz, visit Lendplatz Market before heading north because it is one of the best places for a relaxed breakfast before race travel.',
+          'Do not underestimate accommodation demand in the Murtal region and book extremely early because smaller bases like Spielberg, Zeltweg, and Knittelfeld fill faster than major cities.',
+          'If you rent a car for sightseeing, use it on non-race days instead of making it your primary race-weekend transport solution because the train toward Knittelfeld is usually the smarter option.',
+        ],
+      },
+      duringRace: {
+        title: 'During the Race',
+        description: 'The Red Bull Ring is one of those Formula 1 weekends where early logistics matter almost as much as the ticket itself. Once you settle into the rhythm of station, shuttle, and circuit, the entire day becomes significantly easier.',
+        tips: [
+          'The easiest public route is taking the train to Knittelfeld station and then using the free regional shuttle toward the Red Bull Ring.',
+          'The official shuttle from Knittelfeld operates Friday through Sunday approximately every 20 minutes between 07:00 and 20:00, with reduced frequency later in the evening.',
+          'If you are arriving through Judenburg or western parts of the region, use the shuttle departures from the bus station on Postgasse because those routes also connect directly to the circuit.',
+          'If you drive, aim to arrive before 08:00 because official guidance specifically recommends early arrivals to avoid the worst traffic around Spielberg.',
+          'Bring layered clothing because mornings in the valley can feel cool while afternoons on the exposed hillsides become very sunny and warm.',
+          'For the evening return, do not wait until the final moment and instead head toward the shuttle stop as soon as the main program ends because queues toward Knittelfeld grow very quickly.',
+        ],
+      },
+      travelAdvice: {
+        title: 'Travel Advice',
+        description: 'The Austrian Grand Prix works best for people who accept that this is a rural Formula 1 weekend built around trains and city bases rather than walking everywhere directly from a hotel. Choosing the right accommodation and understanding the rail connection toward Knittelfeld makes the biggest difference.',
+        tips: [
+          'If this is your first time in Graz, stop by the Tourist Information office on Herrengasse 16 for local maps, transport advice, and updated recommendations for the Murtal region.',
+          'Inside Graz, use the Hauptplatz–Jakominiplatz tram corridor because it connects the station, old town, and evening districts very efficiently.',
+          'The free Old Town Tram between Hauptplatz and Jakominiplatz is useful for short city movements without needing extra planning or transport tickets.',
+          'If you are driving from Vienna or eastern Austria, check conditions on the S6 and S36 motorways in advance because those routes are frequently highlighted in official race-week traffic warnings.',
+          'Avoid planning very late evenings far away from your accommodation because transport in the Murtal region depends on a few main corridors and does not operate with the same flexibility as a major city.',
+          'For Spielberg weekends, pack both sun protection and light rain gear because Alpine weather can completely change the feeling of the day between morning at the station and afternoon at the circuit.',
+        ],
+      },
+    },
+    hotels: [
+      { name: 'Lorettohof', lat: 47.2208, lng: 14.7601 },
+      { name: 'Schloss Gabelhofen', lat: 47.1696, lng: 14.6615 },
+      { name: 'Hotel Steirerschlössl', lat: 47.2022, lng: 14.7442 },
+      { name: 'IntercityHotel Graz', lat: 47.0703, lng: 15.4187 },
+    ],
+  },
+  {
+    slug: 'hungary', title: 'Hungarian Grand Prix', country: 'Hungary', city: 'Budapest',
+    circuit: 'Hungaroring',
+    coordinates: { lat: 47.5789, lng: 19.2486 },
+    weather: { location: 'Budapest, Hungary' },
+    circuitInfo: { laps: 70, length_km: 4.381, drs_zones: 2, first_gp: 1986 },
+    guideSections: {
+      beforeRace: {
+        title: 'Before the Race',
+        description: 'Budapest is one of the most enjoyable Formula 1 city breaks because the Hungaroring is reached from a city already full of nightlife, thermal baths, and grand boulevards. The ideal strategy is staying in Pest and treating the circuit as a day trip from the center.',
+        tips: [
+          'Choose accommodation near Metro Line M2 or close to Örs vezér tere if your priority is the simplest morning connection toward the Hungaroring.',
+          'Spend your first evening walking along Andrássy Avenue from Deák Ferenc tér toward Heroes\' Square because it gives you the elegant side of Budapest before the race-week atmosphere fully arrives.',
+          'For late-night food and bars, stay around District VII and the Gozsdu Udvar area, but remember that race mornings still require relatively early starts.',
+          'If you want a slower daytime break before the circuit, combine Heroes\' Square, Városliget, and Széchenyi Thermal Bath because all three locations fit naturally into the same part of the city.',
+          'Reserve one meal for the Jewish Quarter around Dohány Street and Király Street because that area shows how energetic Budapest becomes even before the nightlife peaks.',
+          'Install the BudapestGO app before arriving and immediately save locations such as Örs vezér tere, Városliget, and Keleti railway station for easier navigation throughout the weekend.',
+        ],
+      },
+      duringRace: {
+        title: 'During the Race',
+        description: 'The Hungaroring becomes much easier once you decide in advance whether you are using the suburban rail system or the official city shuttle buses. The circuit itself is not difficult to reach, but the key is avoiding last-minute improvisation once the main spectator flow begins.',
+        tips: [
+          'For the most direct city option, use the official City Shuttle buses departing from the area near Városliget Ice Rink and heading straight toward the Hungaroring.',
+          'If you prefer the traditional route, take the H8 HÉV suburban railway from Örs vezér tere and then continue using the official race-week transport connections toward the circuit.',
+          'If you travel by road from central Budapest, remember that official Bus 321 operates along the M3 motorway and stops near the Hungaroring, Aquarena, and Mogyoród.',
+          'For taxis, use Főtaxi as the official race partner and aim for the designated taxi rank near Gate 8 instead of trying to arrange random pickups in crowded areas.',
+          'Leave earlier than you initially think necessary because both the roads around Mogyoród and the pedestrian approaches toward the gates become heavily congested before the main sessions.',
+          'Bring a cap, water, and one light evening layer because Hungarian summer weekends can feel extremely hot during the day but surprisingly comfortable after sunset.',
+        ],
+      },
+      travelAdvice: {
+        title: 'Travel Advice',
+        description: 'Budapest is very easy to enjoy, but the Hungaroring rewards people who think one step ahead regarding tickets, routes, and evening returns. Choosing the right district for your hotel makes both the city and the race significantly smoother.',
+        tips: [
+          'If you stay for several days, use BKK travel cards or digital tickets through BudapestGO so you do not waste time at ticket machines every morning.',
+          'Districts V, VI, and VII offer the best balance between nightlife and practical access toward Metro Line M2 or the shuttle departure zones.',
+          'If you want thermal baths between sessions, save Széchenyi or Gellért for non-race mornings because race days themselves move much faster than a relaxed spa schedule.',
+          'Budapest Card can work well for museums and city transport, but always compare it with standard BKK tickets depending on how often you actually use the system.',
+          'Handle your airport transfer immediately toward Deák Ferenc tér or the central districts because those areas make both evening walks and Hungaroring departures easiest.',
+          'After the race, avoid panicking at the first large crowd and already know whether you are returning via Örs vezér tere, City Shuttle, or the official taxi corridors.',
+        ],
+      },
+    },
+    hotels: [
+      { name: 'Corinthia Budapest', lat: 47.5033, lng: 19.0697 },
+      { name: 'Hotel Clark Budapest', lat: 47.498, lng: 19.0399 },
+      { name: 'Mystery Hotel Budapest', lat: 47.5092, lng: 19.0613 },
+      { name: 'Kempinski Hotel Corvinus Budapest', lat: 47.4979, lng: 19.0525 },
+    ],
+  },
+  {
+    slug: 'netherlands', title: 'Dutch Grand Prix', country: 'Netherlands', city: 'Zandvoort',
+    circuit: 'Circuit Zandvoort',
+    coordinates: { lat: 52.3888, lng: 4.5409 },
+    weather: { location: 'Zandvoort, Netherlands' },
+    circuitInfo: { laps: 72, length_km: 4.259, drs_zones: 2, first_gp: 1952 },
+    guideSections: {
+      beforeRace: {
+        title: 'Before the Race',
+        description: 'Zandvoort is one of the rare Formula 1 weekends where you can have sand in your shoes, a train from Amsterdam, and grandstands beside the dunes all within the same day. The atmosphere feels far more coastal than urban, so the weekend works best when you accept that the sea is part of the experience.',
+        tips: [
+          'If you want the calmest logistics, stay in Haarlem and use the short train or bus connections toward Zandvoort instead of commuting daily from the center of Amsterdam.',
+          'For a longer city-break atmosphere, stay in Amsterdam but choose accommodation near Amsterdam Centraal or Sloterdijk for easier morning departures toward the coast.',
+          'Before Friday, walk along the full beachfront promenade from Boulevard de Favauge toward the southern side of town so you already understand the beach entrances and general rhythm of the area.',
+          'For a relaxed afternoon, sit around Fenemaplein or one of the beach clubs along the boulevard because those areas capture the coastal side of the Grand Prix atmosphere perfectly.',
+          'If you want to combine the race with a charming historic city, spend half a day in Haarlem around Grote Markt and the canals before heading toward the beachside crowds.',
+          'Do not plan the weekend around driving because Zandvoort openly prioritizes trains, shuttles, bicycles, and park-and-ride systems during race weekend.',
+        ],
+      },
+      duringRace: {
+        title: 'During the Race',
+        description: 'The Dutch Grand Prix lives through trains, buses, and bicycles rather than parking lots beside the gates. Once you fully accept that transport logic, Zandvoort works surprisingly smoothly even with massive crowds.',
+        tips: [
+          'The easiest option is taking the train to Zandvoort aan Zee because during race weekend up to twelve trains per hour operate from Amsterdam Centraal toward the coast.',
+          'If you are staying in Haarlem, direct bus lines 300 and 356 reach Circuit Zandvoort in roughly fifteen minutes and stop close to Gate 1.',
+          'After the sessions finish, avoid immediately rushing toward the station because the largest queues form there first, and instead spend extra time in the fan zone or on the beach.',
+          'For rideshare or taxi drop-offs, do not target central Zandvoort because official systems redirect most access toward park-and-ride zones in Amsterdam, Amstelveen, Hoofddorp, and surrounding stations.',
+          'If you stay inside Zandvoort or near Bloemendaal aan Zee, walking or cycling becomes one of the best race-day solutions and completely removes exit traffic stress.',
+          'Bring both a windbreaker and sunglasses because North Sea weather can easily switch between strong wind, bright sunshine, and damp coastal air within the same afternoon.',
+        ],
+      },
+      travelAdvice: {
+        title: 'Travel Advice',
+        description: 'Zandvoort is a small town but extremely well prepared for a Formula 1 event built around collective transport and long coastal walks. The biggest difference in comfort usually comes from where you sleep and when you decide to return after the sessions.',
+        tips: [
+          'If you enjoy quieter mornings, Haarlem is often a better base than central Amsterdam while still remaining close enough for evening dinners and nightlife.',
+          'Cycling only makes full sense if you already stay nearby because during the actual race weekend trains and buses usually outperform mixed transport combinations.',
+          'Parking in Zandvoort is expensive and actively discouraged during Grand Prix weekend, so private cars should always remain your last option rather than the default plan.',
+          'For meals between sessions, do not rely only on circuit food and instead use the beach pavilions and bars along the boulevard if you stay after the main program.',
+          'If you want two completely different experiences in one trip, dedicate one day to Amsterdam museums and canals and another purely to the beach, dunes, and the circuit atmosphere.',
+          'Bring comfortable shoes that handle sand and long walks well because you will spend much more time on foot here than at most traditional city races.',
+        ],
+      },
+    },
+    hotels: [
+      { name: 'NH Zandvoort Hotel', lat: 52.3749, lng: 4.5338 },
+      { name: 'Beachhouse Hotel', lat: 52.3793, lng: 4.5297 },
+      { name: 'Room Mate Aitana Amsterdam', lat: 52.3842, lng: 4.8903 },
+      { name: 'Boutiquehotel Staats Haarlem', lat: 52.3871, lng: 4.6377 },
+    ],
+  },
+  {
+    slug: 'madrid', title: 'Spanish Grand Prix', country: 'Spain', city: 'Madrid',
+    circuit: 'Madring',
+    coordinates: { lat: 40.4633, lng: -3.6167 },
+    weather: { location: 'Madrid, Spain' },
+    circuitInfo: { laps: 57, length_km: 5.47, drs_zones: 2, first_gp: 2026 },
+    guideSections: {
+      beforeRace: {
+        title: 'Before the Race',
+        description: 'Madrid\'s Formula 1 debut feels much more like a city-wide festival than an isolated trip to the outskirts because everything revolves around IFEMA, Valdebebas, and one of Europe\'s strongest transport systems. That means you can enjoy a full Madrid city break while still reaching the circuit very comfortably.',
+        tips: [
+          'For the easiest access toward the circuit, choose hotels near Metro Line 8, especially around Nuevos Ministerios, Colón, or Chamartín, because those routes connect directly toward Feria de Madrid.',
+          'If you want more elegant evenings and excellent restaurants, Salamanca district is one of the best bases while still remaining practical for race-day movement toward IFEMA.',
+          'For a more local neighborhood atmosphere, stay around Chamberí and spend evenings near Plaza de Olavide or Mercado de Chamberí along Calle de Alonso Cano.',
+          'Reserve one classic tourist evening for Puerta del Sol, Gran Vía, and Callao, but do not necessarily stay there if race logistics matter more than nightlife density.',
+          'Before the weekend begins, walk around IFEMA and Avenida del Partenón because those areas form the core movement corridors and entrances during the Grand Prix.',
+          'Because this is a new venue, follow final gate and grandstand maps closely once the organizer releases them, since movement details will matter more than at long-established circuits.',
+        ],
+      },
+      duringRace: {
+        title: 'During the Race',
+        description: 'Madrid will depend heavily on public transport, and that is actually one of the strongest advantages of the event. Anyone who accepts metro lines, Cercanías trains, and bus corridors will move through the weekend much more smoothly than visitors searching for parking beside the venue.',
+        tips: [
+          'For southern access, use Metro Line 8 toward Feria de Madrid station because it leads directly toward the South Gate of the IFEMA complex.',
+          'If you arrive by regional rail, Cercanías Line C1 toward Valdebebas is an excellent option, especially from Atocha, Recoletos, Nuevos Ministerios, or Chamartín.',
+          'Bus lines 73, 112, and 122 are useful for the IFEMA side of the venue, particularly around stops such as Partenón-Ribera del Sena and Feria de Madrid.',
+          'For the Valdebebas side, focus on lines 171, 174, or the N2 night bus toward Juan Antonio Samaranch Avenue and the Valdebebas interchange.',
+          'Do not plan your weekend around driving because the organizer already emphasizes limited parking availability and strongly recommends public transport.',
+          'If you want to understand the urban side of the future circuit, pay attention to the Ribera del Sena and Avenida del Partenón corridors because they already reveal much of the event\'s city character.',
+        ],
+      },
+      travelAdvice: {
+        title: 'Travel Advice',
+        description: 'Madrid works beautifully for Formula 1 visitors because the venue essentially becomes an extension of the city itself and sits only minutes from the airport. The biggest decision is whether you prioritize easier logistics or richer Madrid evenings outside the circuit.',
+        tips: [
+          'If you arrive through Barajas Airport, choose a hotel with a simple Metro Line 8 connection because the venue sits extremely close to the airport transport corridor.',
+          'For evening tapas and restaurants between sessions, Chamberí, La Latina, and Salamanca work much better than the busiest tourist streets around Sol and Gran Vía.',
+          'Madrid in September can still feel very hot, so plan for light clothing, sun protection, and serious hydration even if mornings initially feel cool.',
+          'If you want to combine the race with traditional sightseeing, reserve time for Prado Museum, Retiro Park, or Recoletos because all three connect easily with transport routes toward the circuit.',
+          'For late-night returns, metro lines, Cercanías, and taxis make far more sense than private cars once the IFEMA and Valdebebas sectors begin emptying simultaneously.',
+          'Because the venue is brand new, check official transport notices and your exact gate every day before leaving the hotel since movement systems will continue evolving during the first editions of the race.',
+        ],
+      },
+    },
+    hotels: [
+      { name: 'Only YOU Hotel Atocha', lat: 40.4066, lng: -3.6905 },
+      { name: 'Barceló Imagine', lat: 40.4728, lng: -3.6823 },
+      { name: 'NH Collection Eurobuilding', lat: 40.4581, lng: -3.6865 },
+      { name: 'Novotel Madrid Center', lat: 40.4237, lng: -3.6735 },
+    ],
+  },
+  {
+    slug: 'mexico', title: 'Mexico City Grand Prix', country: 'Mexico', city: 'Mexico City',
+    circuit: 'Autódromo Hermanos Rodríguez',
+    coordinates: { lat: 19.4042, lng: -99.0907 },
+    weather: { location: 'Mexico City, Mexico' },
+    circuitInfo: { laps: 71, length_km: 4.304, drs_zones: 3, first_gp: 1963 },
+    guideSections: {
+      beforeRace: {
+        title: 'Before the Race',
+        description: 'Mexico City during Grand Prix week has that rare energy of a place that feels enormous, historic, and deeply passionate about Formula 1 all at once. The best weekends balance the relaxed rhythm of Roma and Condesa with the intensity of the historic center and the practical transport corridors leading toward the circuit.',
+        tips: [
+          'For the best combination of restaurants, walking, and race logistics, stay in Roma Norte or Condesa, especially around Avenida Álvaro Obregón and Parque México.',
+          'Dedicate one full block of time to Centro Histórico where you can walk between Zócalo, Madero Street, and some of the city\'s densest collections of museums and historic architecture.',
+          'If you want a calmer cultural afternoon before the race weekend becomes intense, visit Coyoacán and spend time around its plazas and local market instead of remaining only in central tourist areas.',
+          'For evening dinners and nightlife, focus on the Roma–Condesa corridor because the atmosphere remains lively while still allowing relatively easy returns toward hotels.',
+          'Choose accommodation close to the metro network, especially if you plan to use Line 9 frequently because it becomes the most reliable route toward the circuit.',
+          'Do not overload every day with too many distant neighborhoods because Mexico City is enormous and traffic can easily consume much more time than maps suggest.',
+        ],
+      },
+      duringRace: {
+        title: 'During the Race',
+        description: 'The Mexico City Grand Prix is one of those weekends where public transport is not just recommended but genuinely the smartest way to survive the day. Anyone who leaves early and already knows their metro line and gate will move through the event much more comfortably than visitors improvising outside the circuit.',
+        tips: [
+          'The safest arrival route is Metro Line 9 using stations such as Velódromo, Ciudad Deportiva, or Puebla depending on which section of the venue your ticket belongs to.',
+          'As an alternative, use Metrobús Line 2 and target stations like Iztacalco or UPIICSA if they fit your location better than the metro.',
+          'Trolebús Line 2 is also useful, especially around stops such as Ciudad Deportiva, Puerta 8, Puebla, and Avenida Río Churubusco.',
+          'Do not expect public parking at the circuit because the Grand Prix heavily pushes spectators toward public transport and remote transfer systems instead of private cars.',
+          'If you use long-distance shuttle services, reserve them early and save the exact departure location in your phone because Mexico City is large enough that a wrong terminal can destroy an entire morning.',
+          'Keep your digital ticket saved offline with maximum screen brightness ready for entrance checks because crowd waves move quickly and there is no point searching through apps in front of security staff.',
+        ],
+      },
+      travelAdvice: {
+        title: 'Travel Advice',
+        description: 'Mexico City is brilliant for Formula 1 travelers, but it rewards respect for distances, altitude, and time spent moving across the city. Once you organize your neighborhood, metro strategy, and food plans properly, the weekend becomes exciting instead of exhausting.',
+        tips: [
+          'Take the first couple of days more slowly if you are not used to Mexico City\'s altitude, especially if you immediately combine heavy walking, late nights, and race weekends.',
+          'Buy and top up the Integrated Mobility Card as soon as you arrive because it gives access to metro lines, Metrobús, and other useful public systems across the city.',
+          'For the easiest balance between nightlife and race access, focus on Roma, Condesa, Juárez, or Reforma instead of distant districts requiring multiple transfers.',
+          'Rain showers can appear suddenly during the season, so keep a thin rain jacket inside your bag even when the morning begins sunny and dry.',
+          'After the race, avoid immediately forcing your way toward the busiest central districts and instead first leave the sports corridor before changing transport lines or ordering rideshares.',
+          'If you want one completely relaxed day without difficult logistics, dedicate it entirely to a single district such as Centro Histórico or Coyoacán instead of trying to cross the entire city repeatedly.',
+        ],
+      },
+    },
+    hotels: [
+      { name: 'Sofitel Mexico City Reforma', lat: 19.4272, lng: -99.1676 },
+      { name: 'Casa Decu', lat: 19.4108, lng: -99.1724 },
+      { name: 'Hyatt Regency Mexico City', lat: 19.4257, lng: -99.1969 },
+      { name: 'Hotel Geneve Mexico City', lat: 19.4223, lng: -99.1627 },
+    ],
+  },
+  {
+    slug: 'qatar', title: 'Qatar Grand Prix', country: 'Qatar', city: 'Lusail',
+    circuit: 'Lusail International Circuit',
+    coordinates: { lat: 25.49, lng: 51.4542 },
+    weather: { location: 'Lusail, Qatar' },
+    circuitInfo: { laps: 57, length_km: 5.419, drs_zones: 1, first_gp: 2021 },
+    guideSections: {
+      beforeRace: {
+        title: 'Before the Race',
+        description: 'Qatar during Grand Prix week looks ultra-modern and glamorous, but the best experience comes from balancing the traditional atmosphere of Souq Waqif with the newer waterfront areas of Lusail. Because the circuit sits outside the historic center, the weekend works best when metro lines, promenades, and evening districts are planned together.',
+        tips: [
+          'If you want a more traditional Doha experience, stay around Msheireb Downtown or Souq Waqif where you can easily combine older city streets, metro access, and evening walks.',
+          'For a more modern atmosphere, choose accommodation in Lusail or near the Marina Promenade if shorter race-day transfers matter more than the historic side of the city.',
+          'Spend your first evening in Souq Waqif, especially around the Gold Souq and Falcon Souq because the contrast between those areas and the futuristic Grand Prix atmosphere is one of the highlights of the trip.',
+          'Reserve one afternoon for Katara Cultural Village between West Bay and The Pearl if you want a combination of waterfront views, cafés, and cultural spaces.',
+          'For calmer evenings, walk along Lusail Marina Promenade or around Place Vendôme instead of constantly crossing the city by car because those areas carry the race-week atmosphere very comfortably.',
+          'If this is your first visit to Qatar, keep the metro map and navigation apps ready from the first day because the city is much easier to understand through stations and transport corridors than through raw map distances.',
+        ],
+      },
+      duringRace: {
+        title: 'During the Race',
+        description: 'Lusail works best when treated as a night-event metro experience with shuttle transfers instead of a venue reached casually by car. Once you understand that rhythm, the weekend becomes extremely manageable, but it is important to commit to the system from the moment you leave your hotel.',
+        tips: [
+          'For the easiest arrival, use the Doha Metro Red Line toward Lusail station and continue with the official shuttle service toward Lusail International Circuit.',
+          'Do not plan to walk the final section from the metro because the official shuttle system is designed as the primary connection between Lusail station and the circuit.',
+          'Leave your hotel earlier than you normally would for a city event because concentrated crowd waves build quickly around shuttle zones and security checks before the evening sessions.',
+          'If you stay around Msheireb, use the advantage of all three metro lines intersecting there because it becomes one of the most practical transfer hubs in the entire city.',
+          'For the return journey after the sessions, first take the shuttle back toward the metro and only then decide whether to continue by taxi or metro because that system remains more organized than improvised pickups beside the circuit.',
+          'Even though the race happens at night, still carry water and lightweight clothing because warm evenings, long corridors, and outdoor waiting times remain part of the experience.',
+        ],
+      },
+      travelAdvice: {
+        title: 'Travel Advice',
+        description: 'Doha and Lusail are extremely comfortable for Formula 1 visitors once you accept the metro as the foundation of movement and taxis only as a supplement. The easiest weekends come from choosing one strong base and building the entire trip around it instead of constantly relocating between districts.',
+        tips: [
+          'The Doha Metro offers excellent value and should become your main transport system because daily travel costs remain low while connections across the city stay reliable.',
+          'For final short transfers toward hotels or restaurants, Karwa and Uber make much more sense after completing the main journey by metro instead of using cars for every movement.',
+          'The Lusail Tram becomes useful for moving around the newer northern parts of the city, especially if you stay near the Marina or Place Vendôme.',
+          'For a more traditional sightseeing day, combine Msheireb, the Corniche, and Souq Waqif, while West Bay, Katara, and Lusail work better for a more modern version of the city.',
+          'In Qatar, indoor areas such as malls and metro stations can feel heavily air-conditioned, so alongside summer clothing always carry one thin extra layer.',
+          'If you want the least stressful race weekend possible, avoid switching hotels between Doha and Lusail during the event itself and instead keep one base for the entire trip.',
+        ],
+      },
+    },
+    hotels: [
+      { name: 'Raffles Doha', lat: 25.4147, lng: 51.5319 },
+      { name: 'Fairmont Doha', lat: 25.4145, lng: 51.5325 },
+      { name: 'The St. Regis Doha', lat: 25.3613, lng: 51.5562 },
+      { name: 'Waldorf Astoria Lusail', lat: 25.4034, lng: 51.5056 },
+    ],
+  },
+]
+
+async function seed() {
+  await sequelize.authenticate()
+
+  for (const g of guides) {
+    await Guide.upsert({
+      slug:             g.slug,
+      title:            g.title,
+      country:          g.country,
+      city:             g.city,
+      circuit:          g.circuit,
+      lat:              g.coordinates.lat,
+      lng:              g.coordinates.lng,
+      weather_location: g.weather.location,
+      circuit_info:     g.circuitInfo,
+      guide_sections:   g.guideSections,
+      hotels:           g.hotels,
+    })
+    console.log(`  ✓ ${g.slug}`)
+  }
+
+  console.log(`\nSeeded ${guides.length} guides.`)
+  await sequelize.close()
+}
+
+seed().catch(err => {
+  console.error(err)
+  process.exit(1)
+})

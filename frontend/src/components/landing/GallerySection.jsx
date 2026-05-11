@@ -12,6 +12,7 @@ const CARDS = [
     title: 'Share Your Race Weekend Story',
     subtitle: 'Blog Section',
     align: 'left',
+    to: '/blog',
   },
   {
     id: 2,
@@ -35,6 +36,7 @@ const CARDS = [
     title: 'The Action, As It Happens',
     subtitle: 'Live Timing',
     align: 'right',
+    to: '/live-timing',
   },
   {
     id: 5,
@@ -42,6 +44,7 @@ const CARDS = [
     title: 'Everything You Need. One Place.',
     subtitle: 'Grand Prix Travel Guide',
     align: 'left',
+    to: '/travel-guide',
   },
 ]
 

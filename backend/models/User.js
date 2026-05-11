@@ -9,9 +9,16 @@ const User = sequelize.define('User', {
   },
   username:  { type: DataTypes.STRING, allowNull: false, unique: true },
   email:     { type: DataTypes.STRING, allowNull: false, unique: true },
-  password:  { type: DataTypes.STRING, allowNull: false },
+  password:  { type: DataTypes.STRING, allowNull: true },
+  auth_provider: {
+    type: DataTypes.ENUM('password', 'google'),
+    allowNull: false,
+    defaultValue: 'password',
+  },
+  google_sub: { type: DataTypes.STRING, allowNull: true },
   firstName: { type: DataTypes.STRING },
   lastName:  { type: DataTypes.STRING },
+  phone:     { type: DataTypes.STRING, allowNull: true, defaultValue: null },
   role: {
     type: DataTypes.ENUM('Admin', 'User'),
     allowNull: false,
@@ -28,6 +35,26 @@ const User = sequelize.define('User', {
     allowNull: true,
     defaultValue: null,
   },
+  totpSecret: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    defaultValue: null,
+  },
+  banned: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: false,
+  },
+  bannedBy: {
+    type: DataTypes.UUID,
+    allowNull: true,
+    defaultValue: null,
+  },
+  bannedAt: {
+    type: DataTypes.DATE,
+    allowNull: true,
+    defaultValue: null,
+  },
   resetPasswordTokenHash: {
     type: DataTypes.STRING,
     allowNull: true,
@@ -37,6 +64,16 @@ const User = sequelize.define('User', {
     type: DataTypes.DATE,
     allowNull: true,
     defaultValue: null,
+  },
+  passwordChangedAt: {
+    type: DataTypes.DATE,
+    allowNull: true,
+    defaultValue: null,
+  },
+  passwordChangeCount: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    defaultValue: 0,
   },
 }, { timestamps: true, tableName: 'users' })
 

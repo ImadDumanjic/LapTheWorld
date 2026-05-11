@@ -1,0 +1,127 @@
+import User from '../../models/User.js'
+import Blog from '../../models/Blog.js'
+import { sendBlogApprovedEmail, sendBlogRejectedEmail } from '../services/emailService.js'
+
+const USER_SAFE_ATTRS = [
+  'id', 'username', 'email', 'firstName', 'lastName', 'phone', 'role',
+  'banned', 'bannedBy', 'bannedAt',
+  'createdAt', 'updatedAt',
+]
+
+export async function getAllUsers(req, res) {
+  try {
+    const users = await User.findAll({
+      attributes: USER_SAFE_ATTRS,
+      order: [['createdAt', 'DESC']],
+    })
+    res.json(users)
+  } catch (err) {
+    console.error('getAllUsers error:', err)
+    res.status(500).json({ message: err.message })
+  }
+}
+
+export async function deleteUser(req, res) {
+  try {
+    const user = await User.findByPk(req.params.id)
+    if (!user) return res.status(404).json({ message: 'User not found' })
+    if (user.id === req.user.id) return res.status(400).json({ message: 'Cannot delete your own account' })
+    await user.destroy()
+    res.status(204).end()
+  } catch (err) {
+    console.error('deleteUser error:', err)
+    res.status(500).json({ message: err.message })
+  }
+}
+
+export async function banUser(req, res) {
+  try {
+    const { banned } = req.body
+    if (typeof banned !== 'boolean') {
+      return res.status(400).json({ message: '"banned" must be a boolean' })
+    }
+
+    const user = await User.findByPk(req.params.id)
+    if (!user) return res.status(404).json({ message: 'User not found' })
+    if (user.id === req.user.id) return res.status(400).json({ message: 'Cannot ban your own account' })
+    if (user.role === 'Admin') return res.status(400).json({ message: 'Cannot ban another admin' })
+
+    await user.update(
+      banned
+        ? { banned: true,  bannedBy: req.user.id, bannedAt: new Date() }
+        : { banned: false, bannedBy: null,         bannedAt: null }
+    )
+
+    const updated = await User.findByPk(req.params.id, { attributes: USER_SAFE_ATTRS })
+    res.json(updated)
+  } catch (err) {
+    console.error('banUser error:', err)
+    res.status(500).json({ message: err.message })
+  }
+}
+
+export async function getAllBlogs(req, res) {
+  try {
+    const blogs = await Blog.findAll({
+      include: [{ model: User, as: 'author', attributes: ['id', 'username', 'email', 'firstName', 'lastName'] }],
+      order: [['created_at', 'DESC']],
+    })
+    res.json(blogs)
+  } catch (err) {
+    console.error('getAllBlogs error:', err)
+    res.status(500).json({ message: err.message })
+  }
+}
+
+export async function updateBlogStatus(req, res) {
+  try {
+    const { status } = req.body
+    const allowed = ['draft', 'pending', 'approved', 'rejected', 'deleted']
+    if (!allowed.includes(status)) {
+      return res.status(400).json({ message: 'Invalid status' })
+    }
+
+    const blog = await Blog.findByPk(req.params.id, {
+      include: [{ model: User, as: 'author', attributes: ['username', 'email', 'firstName', 'lastName'] }],
+    })
+    if (!blog) return res.status(404).json({ message: 'Blog not found' })
+
+    const previousStatus = blog.status
+    blog.status = status
+    if (status === 'approved') {
+      blog.approved_at = new Date()
+      blog.approved_by = req.user.id
+    }
+    if (status === 'deleted') {
+      blog.deleted_at = new Date()
+      blog.deleted_by = req.user.id
+    }
+
+    await blog.save()
+
+    if (blog.author) {
+      const authorName = [blog.author.firstName, blog.author.lastName].filter(Boolean).join(' ') || blog.author.username
+
+      if (status === 'approved' && previousStatus !== 'approved') {
+        sendBlogApprovedEmail({
+          toEmail:    blog.author.email,
+          authorName,
+          blogTitle:  blog.title,
+        }).catch(err => console.error('Approval email failed:', err))
+      }
+
+      if (status === 'rejected' && previousStatus !== 'rejected') {
+        sendBlogRejectedEmail({
+          toEmail:    blog.author.email,
+          authorName,
+          blogTitle:  blog.title,
+        }).catch(err => console.error('Rejection email failed:', err))
+      }
+    }
+
+    res.json(blog)
+  } catch (err) {
+    console.error('updateBlogStatus error:', err)
+    res.status(500).json({ message: err.message })
+  }
+}

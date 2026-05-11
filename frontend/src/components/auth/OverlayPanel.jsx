@@ -1,6 +1,6 @@
 export default function OverlayPanel({ isRegister }) {
   const clipPath = isRegister
-    ? 'polygon(0 0, 65% 0, 15% 100%, 0 100%)'
+    ? 'polygon(0 0, 60% 0, 15% 100%, 0 100%)'
     : 'polygon(85% 0, 100% 0, 100% 100%, 40% 100%)'
 
   return (

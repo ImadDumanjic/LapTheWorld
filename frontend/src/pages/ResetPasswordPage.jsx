@@ -96,7 +96,7 @@ export default function ResetPasswordPage() {
             <p className="text-white/50 text-[13px] leading-relaxed mb-8">
               Your password has been reset successfully. You can now log in with your new password.
             </p>
-            <Button onClick={() => navigate('/')}>Go to Login</Button>
+            <Button onClick={() => navigate('/auth')}>Go to Login</Button>
           </div>
         )}
 
@@ -112,7 +112,7 @@ export default function ResetPasswordPage() {
               <span className="text-white/70">15 minutes</span>.
               Please request a new one.
             </p>
-            <Button onClick={() => navigate('/')}>Request New Link</Button>
+            <Button onClick={() => navigate('/auth')}>Request New Link</Button>
           </div>
         )}
 
@@ -126,7 +126,7 @@ export default function ResetPasswordPage() {
               This reset link is invalid or has already been used.
               Please request a new one from the login page.
             </p>
-            <Button onClick={() => navigate('/')}>Back to Login</Button>
+            <Button onClick={() => navigate('/auth')}>Back to Login</Button>
           </div>
         )}
 
@@ -208,7 +208,7 @@ export default function ResetPasswordPage() {
             <div className="mt-5 text-center">
               <button
                 type="button"
-                onClick={() => navigate('/')}
+                onClick={() => navigate('/auth')}
                 className="bg-transparent border-0 text-white/25 text-[12px] font-[inherit] cursor-pointer p-0 hover:text-white/50 transition-colors duration-200"
               >
                 Back to Login

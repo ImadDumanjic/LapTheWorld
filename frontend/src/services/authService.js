@@ -17,6 +17,7 @@ export async function login(data) {
   if (!res.ok) throw new Error((await res.json()).message || 'Login failed')
   const result = await res.json()
   if (result.token) localStorage.setItem('token', result.token)
+  if (result.user?.role) localStorage.setItem('role', result.user.role)
   return result
 }
 
@@ -29,11 +30,26 @@ export async function register(data) {
   if (!res.ok) throw new Error((await res.json()).message || 'Registration failed')
   const result = await res.json()
   if (result.token) localStorage.setItem('token', result.token)
+  if (result.user?.role) localStorage.setItem('role', result.user.role)
+  return result
+}
+
+export async function googleLogin(data) {
+  const res = await fetch(`${BASE_URL}/api/auth/google/login`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ idToken: data.credential }),
+  })
+  if (!res.ok) throw new Error((await res.json()).message || 'Google sign-in failed')
+  const result = await res.json()
+  if (result.token) localStorage.setItem('token', result.token)
+  if (result.user?.role) localStorage.setItem('role', result.user.role)
   return result
 }
 
 export function logout() {
   localStorage.removeItem('token')
+  localStorage.removeItem('role')
 }
 
 export async function requestPasswordReset(email) {
@@ -43,6 +59,36 @@ export async function requestPasswordReset(email) {
     body: JSON.stringify({ email }),
   })
   if (!res.ok) throw new Error((await res.json()).message || 'Failed to send reset email')
+}
+
+export async function adminLogin(data) {
+  const res = await fetch(`${BASE_URL}/api/admin-auth/login`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  })
+  if (!res.ok) throw new Error((await res.json()).message || 'Login failed')
+  return res.json()
+}
+
+export async function adminVerifyTotp(data) {
+  const res = await fetch(`${BASE_URL}/api/admin-auth/verify-totp`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  })
+  if (!res.ok) throw new Error((await res.json()).message || 'Verification failed')
+  return res.json()
+}
+
+export async function adminConfirmTotpSetup(data) {
+  const res = await fetch(`${BASE_URL}/api/admin-auth/confirm-setup`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  })
+  if (!res.ok) throw new Error((await res.json()).message || 'Setup failed')
+  return res.json()
 }
 
 export async function resetPassword(token, newPassword) {

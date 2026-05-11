@@ -1,12 +1,50 @@
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
+import { AudioProvider } from './context/AudioContext'
+import WelcomePage from './pages/WelcomePage'
 import AuthPage from './pages/AuthPage'
 import LandingPage from './pages/LandingPage'
 import ResetPasswordPage from './pages/ResetPasswordPage'
 import ChampionshipPage from './pages/ChampionshipPage'
 import CalendarPage from './pages/CalendarPage'
+import BlogPage from './pages/BlogPage'
+import ProfilePage from './pages/ProfilePage'
+import TravelGuidePage from './pages/TravelGuidePage'
+import RaceWeekendLandingPage from './pages/RaceWeekendLandingPage'
+import CustomPlanPage from './pages/CustomPlanPage'
+import AdminPage from './pages/AdminPage'
+import AdminLoginPage from './pages/AdminLoginPage'
+import MyBlogsPage from './pages/MyBlogsPage'
+import LiveTimingPage from './pages/LiveTimingPage'
 import Header from './components/layout/Header'
 
-const HIDE_HEADER_ON = ['/', '/landing', '/reset-password']
+const HIDE_HEADER_ON = ['/', '/auth', '/landing', '/reset-password', '/admin-login', '/admin', '/custom-plan']
+
+function authState() {
+  return {
+    token: localStorage.getItem('token'),
+    role: localStorage.getItem('role'),
+  }
+}
+
+function NonAdminRoute({ children }) {
+  const { token, role } = authState()
+  if (token && role === 'Admin') return <Navigate to="/admin" replace />
+  return children
+}
+
+function AdminLoginRoute({ children }) {
+  const { token, role } = authState()
+  if (token && role === 'Admin') return <Navigate to="/admin" replace />
+  if (token && role === 'User') return <Navigate to="/landing" replace />
+  return children
+}
+
+function AdminRoute({ children }) {
+  const { token, role } = authState()
+  if (!token) return <Navigate to="/admin-login" replace />
+  if (role !== 'Admin') return <Navigate to="/landing" replace />
+  return children
+}
 
 function Layout() {
   const { pathname } = useLocation()
@@ -16,11 +54,21 @@ function Layout() {
     <>
       {showHeader && <Header />}
       <Routes>
-        <Route path="/" element={<AuthPage />} />
-        <Route path="/landing" element={<LandingPage />} />
-        <Route path="/reset-password" element={<ResetPasswordPage />} />
-        <Route path="/championship" element={<ChampionshipPage />} />
-        <Route path="/calendar" element={<CalendarPage />} />
+        <Route path="/" element={<NonAdminRoute><WelcomePage /></NonAdminRoute>} />
+        <Route path="/auth" element={<NonAdminRoute><AuthPage /></NonAdminRoute>} />
+        <Route path="/landing" element={<NonAdminRoute><LandingPage /></NonAdminRoute>} />
+        <Route path="/reset-password" element={<NonAdminRoute><ResetPasswordPage /></NonAdminRoute>} />
+        <Route path="/championship" element={<NonAdminRoute><ChampionshipPage /></NonAdminRoute>} />
+        <Route path="/calendar" element={<NonAdminRoute><CalendarPage /></NonAdminRoute>} />
+        <Route path="/blog" element={<NonAdminRoute><BlogPage /></NonAdminRoute>} />
+        <Route path="/profile" element={<NonAdminRoute><ProfilePage /></NonAdminRoute>} />
+        <Route path="/travel-guide" element={<NonAdminRoute><RaceWeekendLandingPage /></NonAdminRoute>} />
+        <Route path="/travel-guide/:slug" element={<NonAdminRoute><TravelGuidePage /></NonAdminRoute>} />
+        <Route path="/custom-plan" element={<CustomPlanPage />} />
+        <Route path="/admin" element={<AdminRoute><AdminPage /></AdminRoute>} />
+        <Route path="/admin-login" element={<AdminLoginRoute><AdminLoginPage /></AdminLoginRoute>} />
+        <Route path="/blog/my" element={<NonAdminRoute><MyBlogsPage /></NonAdminRoute>} />
+        <Route path="/live-timing" element={<NonAdminRoute><LiveTimingPage /></NonAdminRoute>} />
       </Routes>
     </>
   )
@@ -29,7 +77,9 @@ function Layout() {
 export default function App() {
   return (
     <BrowserRouter>
-      <Layout />
+      <AudioProvider>
+        <Layout />
+      </AudioProvider>
     </BrowserRouter>
   )
 }
