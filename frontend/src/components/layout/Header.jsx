@@ -53,7 +53,7 @@ const NAV_ITEMS = [
   { label: 'Calendar',        to: '/calendar',     icon: <CalendarIcon /> },
   { label: 'Live Timing',     to: '/live-timing',  icon: <TimingIcon />, protected: true },
   { label: 'GP Travel Guide', to: '/travel-guide', icon: <TravelIcon /> },
-  { label: 'Profile',         to: '/profile',      icon: <ProfileIcon /> },
+  { label: 'Profile',         to: '/profile',      icon: <ProfileIcon />, authRequired: true },
 ]
 
 // Uses transform-box: fill-box so each bar rotates around its own center
@@ -302,7 +302,8 @@ export default function Header() {
             transition: 'transform 0.25s ease, opacity 0.2s ease',
           }}
         >
-          {NAV_ITEMS.map(({ label, to, icon, protected: isProtected }) => {
+          {NAV_ITEMS.map(({ label, to, icon, protected: isProtected, authRequired }) => {
+            if (authRequired && !isLoggedIn) return null
             const navStyle = {
               display: 'flex',
               alignItems: 'center',
@@ -350,8 +351,8 @@ export default function Header() {
             )
           })}
 
-          {/* Logout */}
-          <button
+          {/* Logout — authenticated users only */}
+          {isLoggedIn && <button
             onClick={handleLogout}
             style={{
               display: 'flex',
@@ -379,7 +380,7 @@ export default function Header() {
               <line x1="21" y1="12" x2="9" y2="12"/>
             </svg>
             Log Out
-          </button>
+          </button>}
         </nav>}
 
       </div>
