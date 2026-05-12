@@ -691,8 +691,8 @@ export default function ProfilePage() {
                       <>
                         <div style={{ height: 1, background: 'rgba(255,255,255,0.06)' }} />
                         <div className="flex items-center justify-end gap-3">
-                          {/* Change Password */}
-                          <button
+                          {/* Change Password — hidden for SSO users */}
+                          {user.auth_provider === 'password' && <button
                             onClick={() => setShowChangePassword(true)}
                             className="flex items-center gap-2 px-5 py-2 rounded-[50px] text-[10px] font-extrabold uppercase tracking-[2px] transition-all duration-200 cursor-pointer"
                             style={{ background: 'transparent', border: 'none', boxShadow: 'inset 0 0 0 1.5px rgba(90,179,212,0.65)', color: 'rgba(100,168,200,0.85)' }}
@@ -704,7 +704,7 @@ export default function ProfilePage() {
                               <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
                             </svg>
                             Change Password
-                          </button>
+                          </button>}
                           {/* Edit Profile */}
                           <button
                             onClick={() => setEditing(true)}

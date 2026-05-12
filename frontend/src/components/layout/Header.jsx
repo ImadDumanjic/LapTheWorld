@@ -109,6 +109,7 @@ export default function Header() {
   const { pathname }                  = useLocation()
   const isAdmin                       = pathname === '/admin'
   const isTravelGuide                 = /^\/travel-guide\/.+/.test(pathname)
+  const isLoggedIn                    = !!localStorage.getItem('token')
   const { isPlaying, toggle }         = useAudio()
 
   const handleLogout = () => {
@@ -302,7 +303,6 @@ export default function Header() {
           }}
         >
           {NAV_ITEMS.map(({ label, to, icon, protected: isProtected }) => {
-            const isLoggedIn = !!localStorage.getItem('token')
             const navStyle = {
               display: 'flex',
               alignItems: 'center',

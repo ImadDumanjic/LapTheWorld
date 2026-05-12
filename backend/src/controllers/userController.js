@@ -6,7 +6,7 @@ import { validatePassword, validateEmail, validatePhone } from '../utils/validat
 export async function getProfile(req, res) {
   try {
     const user = await User.findByPk(req.user.id, {
-      attributes: ['id', 'username', 'firstName', 'lastName', 'email', 'phone', 'role', 'createdAt', 'passwordChangedAt'],
+      attributes: ['id', 'username', 'firstName', 'lastName', 'email', 'phone', 'role', 'createdAt', 'passwordChangedAt', 'auth_provider'],
     })
     if (!user) return res.status(404).json({ message: 'User not found' })
     res.json(user)
