@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { logout } from '../../services/authService'
 import { useAudio } from '../../context/AudioContext'
+import AuthRequiredModal from '../ui/AuthRequiredModal'
 
 const BlogIcon = () => (
   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -50,7 +51,7 @@ const NAV_ITEMS = [
   { label: 'Blog Section',    to: '/blog',         icon: <BlogIcon /> },
   { label: 'Standings',       to: '/championship', icon: <StandingsIcon /> },
   { label: 'Calendar',        to: '/calendar',     icon: <CalendarIcon /> },
-  { label: 'Live Timing',     to: '/live-timing',  icon: <TimingIcon /> },
+  { label: 'Live Timing',     to: '/live-timing',  icon: <TimingIcon />, protected: true },
   { label: 'GP Travel Guide', to: '/travel-guide', icon: <TravelIcon /> },
   { label: 'Profile',         to: '/profile',      icon: <ProfileIcon /> },
 ]
@@ -102,6 +103,7 @@ export default function Header() {
   const [hoverMenu, setHoverMenu]     = useState(false)
   const [hoverAudio, setHoverAudio]   = useState(false)
   const [visible, setVisible]         = useState(true)
+  const [showAuthModal, setShowAuthModal] = useState(false)
   const lastScrollY                   = useRef(0)
   const navigate                      = useNavigate()
   const { pathname }                  = useLocation()
@@ -139,6 +141,13 @@ export default function Header() {
   }, [])
 
   return (
+    <>
+    {showAuthModal && (
+      <AuthRequiredModal
+        onClose={() => setShowAuthModal(false)}
+        onNavigate={navigate}
+      />
+    )}
     <header
       className="fixed top-0 left-0 right-0 z-50 pointer-events-none"
       style={{
@@ -292,31 +301,54 @@ export default function Header() {
             transition: 'transform 0.25s ease, opacity 0.2s ease',
           }}
         >
-          {NAV_ITEMS.map(({ label, to, icon }) => (
-            <Link
-              key={label}
-              to={to}
-              onClick={() => setOpen(false)}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 8,
-                padding: '12px 20px',
-                fontSize: 11,
-                letterSpacing: '3px',
-                textTransform: 'uppercase',
-                color: 'rgba(255,255,255,0.65)',
-                textDecoration: 'none',
-                borderBottom: '1px solid rgba(255,255,255,0.05)',
-                transition: 'color 0.2s ease, background 0.2s ease',
-              }}
-              onMouseEnter={e => { e.currentTarget.style.color = '#fff'; e.currentTarget.style.background = 'rgba(255,255,255,0.05)' }}
-              onMouseLeave={e => { e.currentTarget.style.color = 'rgba(255,255,255,0.65)'; e.currentTarget.style.background = 'transparent' }}
-            >
-              {icon}
-              {label}
-            </Link>
-          ))}
+          {NAV_ITEMS.map(({ label, to, icon, protected: isProtected }) => {
+            const isLoggedIn = !!localStorage.getItem('token')
+            const navStyle = {
+              display: 'flex',
+              alignItems: 'center',
+              gap: 8,
+              padding: '12px 20px',
+              fontSize: 11,
+              letterSpacing: '3px',
+              textTransform: 'uppercase',
+              color: 'rgba(255,255,255,0.65)',
+              textDecoration: 'none',
+              borderBottom: '1px solid rgba(255,255,255,0.05)',
+              transition: 'color 0.2s ease, background 0.2s ease',
+              cursor: 'pointer',
+            }
+            const hoverIn  = e => { e.currentTarget.style.color = '#fff'; e.currentTarget.style.background = 'rgba(255,255,255,0.05)' }
+            const hoverOut = e => { e.currentTarget.style.color = 'rgba(255,255,255,0.65)'; e.currentTarget.style.background = 'transparent' }
+
+            if (isProtected && !isLoggedIn) {
+              return (
+                <button
+                  key={label}
+                  onClick={() => { setOpen(false); setShowAuthModal(true) }}
+                  style={{ ...navStyle, background: 'transparent', border: 'none', width: '100%', textAlign: 'left', fontFamily: 'inherit' }}
+                  onMouseEnter={hoverIn}
+                  onMouseLeave={hoverOut}
+                >
+                  {icon}
+                  {label}
+                </button>
+              )
+            }
+
+            return (
+              <Link
+                key={label}
+                to={to}
+                onClick={() => setOpen(false)}
+                style={navStyle}
+                onMouseEnter={hoverIn}
+                onMouseLeave={hoverOut}
+              >
+                {icon}
+                {label}
+              </Link>
+            )
+          })}
 
           {/* Logout */}
           <button
@@ -353,5 +385,6 @@ export default function Header() {
       </div>
       </div>
     </header>
+    </>
   )
 }
