@@ -5,6 +5,7 @@ import calendar from '../../assets/Calendar.png'
 import standings from '../../assets/Standings.png'
 import liveTiming from '../../assets/LiveTiming.png'
 import travelGuide from '../../assets/TravelGuideGrandPrix.png'
+import profilePage from '../../assets/ProfilePage.png'
 import AuthRequiredModal from '../ui/AuthRequiredModal'
 
 const CARDS = [
@@ -130,37 +131,16 @@ export default function GallerySection() {
           <ImageCard {...c5} className="w-full h-[200px] sm:h-[128px]" />
 
           {/* Profile card — mobile only, always last */}
-          <Link to="/profile" className="sm:hidden block mt-3">
-            <div
-              className="relative overflow-hidden rounded-xl group cursor-pointer h-[200px]"
-              style={{ background: 'linear-gradient(135deg, #0c1e2b 0%, #0f3347 55%, #071823 100%)' }}
-            >
-              <div style={{
-                position: 'absolute', inset: 0,
-                backgroundImage: [
-                  'linear-gradient(rgba(0,210,255,0.07) 1px, transparent 1px)',
-                  'linear-gradient(90deg, rgba(0,210,255,0.07) 1px, transparent 1px)',
-                ].join(','),
-                backgroundSize: '32px 32px',
-              }} />
-              <div style={{
-                position: 'absolute', inset: 0,
-                background: 'radial-gradient(circle at 50% 50%, rgba(0,210,255,0.1) 0%, transparent 65%)',
-              }} />
-              <div
-                className="absolute inset-0"
-                style={{ background: 'linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.75) 20%, rgba(0,0,0,0.2) 40%, transparent 60%)' }}
-              />
-              <div className="absolute bottom-0 right-0 pr-4 pb-4 text-right z-10">
-                <p className="text-white/45 text-[9px] uppercase tracking-[3px] mb-[3px] font-semibold">
-                  My Profile
-                </p>
-                <h3 className="text-white text-[13px] font-bold leading-snug tracking-wide">
-                  Your Journey. Your Stats.
-                </h3>
-              </div>
-            </div>
-          </Link>
+          <div className="sm:hidden mt-3">
+            <ImageCard
+              image={profilePage}
+              title="Your Journey. Your Stats."
+              subtitle="My Profile"
+              align="right"
+              className="w-full h-[200px]"
+              to="/profile"
+            />
+          </div>
 
         </div>
       </section>
