@@ -12,6 +12,7 @@ export default function LandingPage() {
         <button
           aria-label="Go to profile"
           onClick={() => navigate('/profile')}
+          className="hidden sm:flex"
           style={{
             position: 'fixed',
             top: 20,
@@ -20,7 +21,6 @@ export default function LandingPage() {
             width: 44,
             height: 44,
             borderRadius: '50%',
-            display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             border: '1px solid rgba(90,179,212,0.35)',

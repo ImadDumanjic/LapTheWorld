@@ -102,7 +102,7 @@ export default function GallerySection() {
           onNavigate={navigate}
         />
       )}
-      <section className="py-4 px-6">
+      <section className="pt-16 sm:pt-4 pb-4 px-6">
 
         <div className="max-w-[620px] mx-auto mb-3">
           <p className="text-[#5b8fa8] text-[12px] uppercase tracking-[4px]">Where will you go next?</p>
@@ -114,20 +114,53 @@ export default function GallerySection() {
 
             {/* Left column */}
             <div className="flex flex-col gap-3 flex-1">
-              <ImageCard {...c1} className="h-[215px]" />
-              <ImageCard {...c2} className="h-[390px]" />
+              <ImageCard {...c1} className="h-[200px] sm:h-[215px]" />
+              <ImageCard {...c2} className="h-[200px] sm:h-[390px]" />
             </div>
 
             {/* Right column */}
             <div className="flex flex-col gap-3 flex-1">
-              <ImageCard {...c3} className="h-[390px]" />
-              <ImageCard {...c4} className="h-[215px]" onClick={handleLiveTimingClick} />
+              <ImageCard {...c3} className="h-[200px] sm:h-[390px]" />
+              <ImageCard {...c4} className="h-[200px] sm:h-[215px]" onClick={handleLiveTimingClick} />
             </div>
 
           </div>
 
           {/* Card 5 — full-width horizontal strip, flush with the block above */}
-          <ImageCard {...c5} className="w-full h-[128px]" />
+          <ImageCard {...c5} className="w-full h-[200px] sm:h-[128px]" />
+
+          {/* Profile card — mobile only, always last */}
+          <Link to="/profile" className="sm:hidden block mt-3">
+            <div
+              className="relative overflow-hidden rounded-xl group cursor-pointer h-[200px]"
+              style={{ background: 'linear-gradient(135deg, #0c1e2b 0%, #0f3347 55%, #071823 100%)' }}
+            >
+              <div style={{
+                position: 'absolute', inset: 0,
+                backgroundImage: [
+                  'linear-gradient(rgba(0,210,255,0.07) 1px, transparent 1px)',
+                  'linear-gradient(90deg, rgba(0,210,255,0.07) 1px, transparent 1px)',
+                ].join(','),
+                backgroundSize: '32px 32px',
+              }} />
+              <div style={{
+                position: 'absolute', inset: 0,
+                background: 'radial-gradient(circle at 50% 50%, rgba(0,210,255,0.1) 0%, transparent 65%)',
+              }} />
+              <div
+                className="absolute inset-0"
+                style={{ background: 'linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.75) 20%, rgba(0,0,0,0.2) 40%, transparent 60%)' }}
+              />
+              <div className="absolute bottom-0 right-0 pr-4 pb-4 text-right z-10">
+                <p className="text-white/45 text-[9px] uppercase tracking-[3px] mb-[3px] font-semibold">
+                  My Profile
+                </p>
+                <h3 className="text-white text-[13px] font-bold leading-snug tracking-wide">
+                  Your Journey. Your Stats.
+                </h3>
+              </div>
+            </div>
+          </Link>
 
         </div>
       </section>

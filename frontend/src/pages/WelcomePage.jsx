@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, useAnimation } from 'framer-motion'
 import f1CarImg from '../assets/F1Car.png'
@@ -45,7 +45,7 @@ const STYLES = `
   }
 `
 
-// Orbit ellipse semi-axes (px). Car center orbits the globe center.
+// Orbit ellipse semi-axes (px) at full (desktop) size.
 const OX = 550
 const OY = 212
 
@@ -74,6 +74,20 @@ export default function WelcomePage() {
   const beepDurRef = useRef(0.12)
   const f1DurRef   = useRef(3.2)
   const f1AudioRef = useRef(null)
+
+  // Scale the entire orbit scene so globe + car fit the current viewport.
+  // Globe natural size is 900px; we target 90% of the smaller viewport dimension.
+  const sceneScale = useMemo(() => {
+    const w = window.innerWidth
+    const h = window.innerHeight
+    return Math.min(1, (w * 0.9) / 900, (h * 0.9) / 900)
+  }, [])
+
+  // Orbit points scaled for the current viewport
+  const scaledOrbit = useMemo(
+    () => ORBIT.map(f => ({ ...f, x: f.x * sceneScale, y: f.y * sceneScale })),
+    [sceneScale]
+  )
 
   useEffect(() => {
     // Preload metadata so durations are ready before the user clicks
@@ -149,13 +163,13 @@ export default function WelcomePage() {
     const NAV_DELAY = 0.16
     const orbitDuration = Math.max(1.0, f1DurRef.current - SHOOT_DUR - NAV_DELAY)
 
-    // ── Full elliptical orbit ──────────────────────────────────────────────
+    // ── Full elliptical orbit (using viewport-scaled points) ───────────────
     await carControls.start({
-      x:       ORBIT.map(f => f.x),
-      y:       ORBIT.map(f => f.y),
-      opacity: ORBIT.map(f => f.opacity),
-      scale:   ORBIT.map(f => f.scale),
-      transition: { duration: orbitDuration, ease: 'linear', times: ORBIT.map(f => f.t) },
+      x:       scaledOrbit.map(f => f.x),
+      y:       scaledOrbit.map(f => f.y),
+      opacity: scaledOrbit.map(f => f.opacity),
+      scale:   scaledOrbit.map(f => f.scale),
+      transition: { duration: orbitDuration, ease: 'linear', times: scaledOrbit.map(f => f.t) },
     })
 
     // ── Car shoots off right + wipe ────────────────────────────────────────
@@ -182,12 +196,18 @@ export default function WelcomePage() {
 
   const showScene = phase === 'orbit' || phase === 'go'
 
+  // Scaled dimensions for the orbit scene elements
+  const globeSize = 900 * sceneScale
+  const carW      = 540 * sceneScale
+  const carH      = 173 * sceneScale
+
   return (
     <>
       <style>{STYLES}</style>
 
       <div style={{
-        minHeight: '100svh',
+        minHeight: '100dvh',
+        width: '100%',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -226,15 +246,25 @@ export default function WelcomePage() {
           animate={{ opacity: showScene ? 0 : 1, scale: showScene ? 0.95 : 1 }}
           transition={{ duration: 0.38 }}
           style={{
-            display: 'flex', flexDirection: 'column', alignItems: 'center',
-            gap: '1.2rem', textAlign: 'center', padding: '2.5rem 2rem',
-            zIndex: 10, maxWidth: 780, width: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: 'clamp(0.75rem, 2.5vw, 1.2rem)',
+            textAlign: 'center',
+            paddingTop: 'clamp(1.5rem, 5vw, 2.5rem)',
+            paddingBottom: 'clamp(1.5rem, 5vw, 2.5rem)',
+            paddingLeft: 'clamp(1rem, 5vw, 2rem)',
+            paddingRight: 'clamp(1rem, 5vw, 2rem)',
+            zIndex: 10,
+            maxWidth: 780,
+            width: '100%',
+            boxSizing: 'border-box',
             pointerEvents: showScene ? 'none' : 'auto',
           }}
         >
           {/* Start lights */}
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.85rem', marginBottom: '0.4rem' }}>
-            <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 'clamp(0.5rem, 2vw, 0.85rem)', marginBottom: '0.4rem' }}>
+            <div style={{ display: 'flex', gap: 'clamp(6px, 2vw, 12px)', alignItems: 'center' }}>
               {[1, 2, 3, 4, 5].map(i => {
                 const on = lightsOn >= i
                 return (
@@ -242,7 +272,10 @@ export default function WelcomePage() {
                     key={i}
                     className={on ? 'w-light-on' : ''}
                     style={{
-                      width: 48, height: 48, borderRadius: '50%', flexShrink: 0,
+                      width: 'clamp(28px, 10vw, 48px)',
+                      height: 'clamp(28px, 10vw, 48px)',
+                      borderRadius: '50%',
+                      flexShrink: 0,
                       background: on
                         ? 'radial-gradient(circle at 35% 35%, #ff6040, #FF1A00 60%, #cc1000)'
                         : 'transparent',
@@ -254,23 +287,59 @@ export default function WelcomePage() {
                 )
               })}
             </div>
-            <span style={{ fontSize: '0.65rem', letterSpacing: '0.5em', color: '#00D2FF', textTransform: 'uppercase', fontFamily: '"Michroma", sans-serif' }}>
+            <span style={{
+              fontSize: 'clamp(0.5rem, 1.6vw, 0.65rem)',
+              letterSpacing: 'clamp(0.1em, 1.5vw, 0.5em)',
+              color: '#00D2FF',
+              textTransform: 'uppercase',
+              fontFamily: '"Michroma", sans-serif',
+            }}>
               Lights Out &nbsp;·&nbsp; Season 2026
             </span>
           </div>
 
           {/* Title */}
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0, lineHeight: 1 }}>
-            <h1 style={{ fontSize: 'clamp(1.8rem, 5.5vw, 4rem)', fontWeight: 900, color: '#ffffff', letterSpacing: '0.14em', textTransform: 'uppercase', margin: 0, textShadow: '0 2px 20px rgba(0,0,0,0.4)', fontFamily: '"Orbitron", sans-serif' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0, lineHeight: 1, width: '100%' }}>
+            <h1 style={{
+              fontSize: 'clamp(1.3rem, 5vw, 4rem)',
+              fontWeight: 900,
+              color: '#ffffff',
+              letterSpacing: '0.14em',
+              textTransform: 'uppercase',
+              margin: 0,
+              textShadow: '0 2px 20px rgba(0,0,0,0.4)',
+              fontFamily: '"Orbitron", sans-serif',
+              maxWidth: '100%',
+            }}>
               Welcome To
             </h1>
-            <h1 style={{ fontSize: 'clamp(2.8rem, 9.5vw, 7rem)', fontWeight: 900, color: '#00D2FF', letterSpacing: '0.04em', textTransform: 'uppercase', margin: 0, lineHeight: 0.9, textShadow: '0 0 20px rgba(0,210,255,0.6), 0 0 40px rgba(0,210,255,0.3)', fontFamily: '"Orbitron", sans-serif' }}>
+            <h1 style={{
+              fontSize: 'clamp(1.5rem, 8vw, 7rem)',
+              fontWeight: 900,
+              color: '#00D2FF',
+              letterSpacing: '0.04em',
+              textTransform: 'uppercase',
+              margin: 0,
+              lineHeight: 0.9,
+              textShadow: '0 0 20px rgba(0,210,255,0.6), 0 0 40px rgba(0,210,255,0.3)',
+              fontFamily: '"Orbitron", sans-serif',
+              maxWidth: '100%',
+              overflowWrap: 'break-word',
+            }}>
               LapTheWorld
             </h1>
           </div>
 
           {/* Subtitle */}
-          <p style={{ fontSize: 'clamp(0.95rem, 1.8vw, 1.1rem)', color: 'rgba(200,220,230,0.7)', margin: '0.2rem 0 0', maxWidth: 460, lineHeight: 1.7, letterSpacing: '0.02em', fontFamily: '"Rajdhani", sans-serif' }}>
+          <p style={{
+            fontSize: 'clamp(0.85rem, 1.8vw, 1.1rem)',
+            color: 'rgba(200,220,230,0.7)',
+            margin: '0.2rem 0 0',
+            maxWidth: 460,
+            lineHeight: 1.7,
+            letterSpacing: '0.02em',
+            fontFamily: '"Rajdhani", sans-serif',
+          }}>
             Your ultimate guide to experiencing Formula 1 around the world.
           </p>
 
@@ -280,13 +349,25 @@ export default function WelcomePage() {
             disabled={phase !== 'idle'}
             className="w-btn"
             style={{
-              marginTop: '0.8rem', padding: '1rem 2.8rem',
-              background: '#00D2FF', border: 'none', color: '#ffffff',
-              fontSize: '0.85rem', fontWeight: 700, letterSpacing: '0.25em',
-              cursor: 'pointer', borderRadius: '2px', textTransform: 'uppercase',
+              marginTop: 'clamp(0.4rem, 1.5vw, 0.8rem)',
+              paddingTop: 'clamp(0.65rem, 2vw, 1rem)',
+              paddingBottom: 'clamp(0.65rem, 2vw, 1rem)',
+              paddingLeft: 'clamp(1.4rem, 4vw, 2.8rem)',
+              paddingRight: 'clamp(1.4rem, 4vw, 2.8rem)',
+              background: '#00D2FF',
+              border: 'none',
+              color: '#ffffff',
+              fontSize: 'clamp(0.7rem, 1.8vw, 0.85rem)',
+              fontWeight: 700,
+              letterSpacing: '0.25em',
+              cursor: 'pointer',
+              borderRadius: '2px',
+              textTransform: 'uppercase',
               fontFamily: '"Orbitron", sans-serif',
               boxShadow: '0 0 30px rgba(0,210,255,0.6), 0 0 60px rgba(0,210,255,0.3)',
-              display: 'inline-flex', alignItems: 'center', gap: '0.75rem',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.75rem',
             }}
           >
             Lights Out &nbsp;→
@@ -301,9 +382,12 @@ export default function WelcomePage() {
             transition={{ duration: 0.3 }}
             style={{
               position: 'fixed',
-              left: '50%', top: '50%',
-              width: 900, height: 900,
-              marginLeft: -450, marginTop: -450,
+              left: '50%',
+              top: '50%',
+              width: globeSize,
+              height: globeSize,
+              marginLeft: -(globeSize / 2),
+              marginTop: -(globeSize / 2),
               zIndex: 20,
             }}
           >
@@ -322,7 +406,9 @@ export default function WelcomePage() {
             width={0} height={0}
           >
             <ellipse
-              cx={0} cy={0} rx={OX} ry={OY}
+              cx={0} cy={0}
+              rx={OX * sceneScale}
+              ry={OY * sceneScale}
               fill="none"
               stroke="rgba(0,210,255,0.12)"
               strokeWidth={1.5}
@@ -334,12 +420,15 @@ export default function WelcomePage() {
         {showScene && (
           <motion.div
             animate={carControls}
-            initial={{ x: ORBIT[0].x, y: ORBIT[0].y, opacity: 1, scale: 0.95 }}
+            initial={{ x: scaledOrbit[0].x, y: scaledOrbit[0].y, opacity: 1, scale: 0.95 }}
             style={{
               position: 'fixed',
-              left: '50%', top: '50%',
-              marginLeft: -270, marginTop: -87,
-              width: 540, height: 173,
+              left: '50%',
+              top: '50%',
+              marginLeft: -(carW / 2),
+              marginTop: -(carH / 2),
+              width: carW,
+              height: carH,
               zIndex: 30,
               pointerEvents: 'none',
               filter:
