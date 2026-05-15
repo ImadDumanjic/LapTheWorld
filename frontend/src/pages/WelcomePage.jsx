@@ -76,10 +76,11 @@ export default function WelcomePage() {
   const f1AudioRef = useRef(null)
 
   // Scale the entire orbit scene so globe + car fit the current viewport.
-  // Globe natural size is 900px; we target 90% of the smaller viewport dimension.
+  // Globe natural size is 900px; desktop always uses full size; tablet/mobile scale down.
   const sceneScale = useMemo(() => {
     const w = window.innerWidth
     const h = window.innerHeight
+    if (w >= 1024) return 1
     return Math.min(1, (w * 0.9) / 900, (h * 0.9) / 900)
   }, [])
 
@@ -301,7 +302,7 @@ export default function WelcomePage() {
           {/* Title */}
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0, lineHeight: 1, width: '100%' }}>
             <h1 style={{
-              fontSize: 'clamp(1.3rem, 5vw, 4rem)',
+              fontSize: 'clamp(1rem, 5.5vw, 4rem)',
               fontWeight: 900,
               color: '#ffffff',
               letterSpacing: '0.14em',
@@ -309,12 +310,12 @@ export default function WelcomePage() {
               margin: 0,
               textShadow: '0 2px 20px rgba(0,0,0,0.4)',
               fontFamily: '"Orbitron", sans-serif',
-              maxWidth: '100%',
+              whiteSpace: 'nowrap',
             }}>
               Welcome To
             </h1>
             <h1 style={{
-              fontSize: 'clamp(1.5rem, 8vw, 7rem)',
+              fontSize: 'clamp(1.5rem, 9.5vw, 7rem)',
               fontWeight: 900,
               color: '#00D2FF',
               letterSpacing: '0.04em',
@@ -323,8 +324,7 @@ export default function WelcomePage() {
               lineHeight: 0.9,
               textShadow: '0 0 20px rgba(0,210,255,0.6), 0 0 40px rgba(0,210,255,0.3)',
               fontFamily: '"Orbitron", sans-serif',
-              maxWidth: '100%',
-              overflowWrap: 'break-word',
+              whiteSpace: 'nowrap',
             }}>
               LapTheWorld
             </h1>
@@ -386,7 +386,7 @@ export default function WelcomePage() {
               top: '50%',
               width: globeSize,
               height: globeSize,
-              marginLeft: -(globeSize / 2),
+              marginLeft: -(globeSize / 2) - 15,
               marginTop: -(globeSize / 2),
               zIndex: 20,
             }}
