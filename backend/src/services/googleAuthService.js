@@ -16,7 +16,7 @@ async function verifyGoogleIdToken(idToken) {
   }
 
   const { sub, email, name, email_verified, aud, azp, exp } = data
-  console.log('[Google Auth] tokeninfo ok — aud:', aud, 'azp:', azp, 'email:', email)
+  console.log('[Google Auth] tokeninfo ok — aud:', aud, 'azp:', azp)
 
   if (!sub || !email) {
     const err = new Error('Invalid Google token')

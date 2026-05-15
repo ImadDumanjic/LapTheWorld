@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import toast, { Toaster } from 'react-hot-toast'
-import { fetchProfile, updateProfile, deleteAccount, getTokenUserId, verifyCurrentPassword, changePassword as changePasswordService } from '../services/userService'
+import { fetchProfile, updateProfile, deleteAccount, getTokenUserId, verifyCurrentPassword, changePassword as changePasswordService, exportUserData } from '../services/userService'
 import { logout } from '../services/authService'
 
 // ─── Password strength helpers ────────────────────────────────────────────────
@@ -421,7 +421,7 @@ export default function ProfilePage() {
 
   // Auth guard
   useEffect(() => {
-    if (!localStorage.getItem('token')) {
+    if (!localStorage.getItem('userId')) {
       navigate('/auth')
     }
   }, [navigate])
@@ -531,7 +531,7 @@ export default function ProfilePage() {
 
       {/* Page background */}
       <div
-        className="min-h-svh px-6 sm:px-12 pb-10 flex flex-col items-center"
+        className="min-h-svh px-4 sm:px-12 pb-10 flex flex-col items-center overflow-x-hidden"
         style={{
           paddingTop: 135,
           background: 'linear-gradient(160deg, #0F2027 0%, #203A43 50%, #2C5364 100%)'
@@ -635,7 +635,7 @@ export default function ProfilePage() {
                   <div className="flex-1 p-8 sm:p-10 flex flex-col gap-6">
 
                     {/* Header row */}
-                    <div className="flex items-start justify-between gap-4">
+                    <div className="flex items-start justify-between gap-4 flex-wrap">
                       <div>
                         <h2 className="text-white font-extrabold text-xl uppercase tracking-[1px] leading-tight">
                           {[user.firstName, user.lastName].filter(Boolean).join(' ') || user.username}
@@ -690,11 +690,11 @@ export default function ProfilePage() {
                     {!editing && (
                       <>
                         <div style={{ height: 1, background: 'rgba(255,255,255,0.06)' }} />
-                        <div className="flex items-center justify-end gap-3">
-                          {/* Change Password */}
-                          <button
+                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-end gap-3">
+                          {/* Change Password — hidden for SSO users */}
+                          {user.auth_provider === 'password' && <button
                             onClick={() => setShowChangePassword(true)}
-                            className="flex items-center gap-2 px-5 py-2 rounded-[50px] text-[10px] font-extrabold uppercase tracking-[2px] transition-all duration-200 cursor-pointer"
+                            className="flex items-center justify-center gap-2 w-full sm:w-auto px-5 py-2.5 sm:py-2 rounded-[50px] text-[10px] font-extrabold uppercase tracking-[2px] transition-all duration-200 cursor-pointer"
                             style={{ background: 'transparent', border: 'none', boxShadow: 'inset 0 0 0 1.5px rgba(90,179,212,0.65)', color: 'rgba(100,168,200,0.85)' }}
                             onMouseEnter={e => { e.currentTarget.style.background = 'rgba(44,83,100,0.2)'; e.currentTarget.style.boxShadow = 'inset 0 0 0 1.5px rgba(90,179,212,1)'; e.currentTarget.style.color = '#fff' }}
                             onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.boxShadow = 'inset 0 0 0 1.5px rgba(90,179,212,0.65)'; e.currentTarget.style.color = 'rgba(100,168,200,0.85)' }}
@@ -704,11 +704,11 @@ export default function ProfilePage() {
                               <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
                             </svg>
                             Change Password
-                          </button>
+                          </button>}
                           {/* Edit Profile */}
                           <button
                             onClick={() => setEditing(true)}
-                            className="flex items-center gap-2 px-5 py-2 rounded-[50px] text-[10px] font-extrabold uppercase tracking-[2px] text-white transition-all duration-200 cursor-pointer"
+                            className="flex items-center justify-center gap-2 w-full sm:w-auto px-5 py-2.5 sm:py-2 rounded-[50px] text-[10px] font-extrabold uppercase tracking-[2px] text-white transition-all duration-200 cursor-pointer"
                             style={{ background: 'linear-gradient(135deg, #3d7a96, #2C5364, #1a3340)' }}
                             onMouseEnter={e => { e.currentTarget.style.boxShadow = '0 0 22px rgba(44,83,100,0.55)'; e.currentTarget.style.transform = 'translateY(-1px)' }}
                             onMouseLeave={e => { e.currentTarget.style.boxShadow = ''; e.currentTarget.style.transform = '' }}
@@ -724,6 +724,44 @@ export default function ProfilePage() {
                     )}
 
                   </div>
+                </div>
+              </div>
+
+              {/* ── Data Export card ── */}
+              <div
+                className="w-full rounded-2xl overflow-hidden mt-6"
+                style={{
+                  background: 'rgba(255,255,255,0.03)',
+                  border: '1px solid rgba(44,83,100,0.3)',
+                  boxShadow: '0 0 0 1px rgba(44,83,100,0.08), 0 16px 40px rgba(0,0,0,0.25)',
+                }}
+              >
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-6 p-5 sm:p-7">
+                  <div className="flex flex-col gap-2 min-w-0">
+                    <p className="text-[9px] font-extrabold tracking-[3.5px] uppercase" style={{ color: 'rgba(100,168,200,0.6)' }}>
+                      GDPR &nbsp;·&nbsp; Your Data
+                    </p>
+                    <h3 className="font-extrabold uppercase leading-tight" style={{ fontSize: 'clamp(14px,2vw,18px)', color: '#fff', letterSpacing: '0.5px' }}>
+                      Download My Data
+                    </h3>
+                    <p className="text-[12px] leading-relaxed" style={{ color: 'rgba(255,255,255,0.35)', maxWidth: 480 }}>
+                      Export a copy of all personal data we hold about you — your profile and blog posts — as a JSON file.
+                    </p>
+                  </div>
+                  <button
+                    onClick={async () => { try { await exportUserData() } catch { toast.error('Export failed. Please try again.') } }}
+                    className="w-full sm:w-auto flex-shrink-0 flex items-center justify-center gap-2 px-5 py-2.5 rounded-[50px] text-[10px] font-extrabold uppercase tracking-[2px] transition-all duration-200 cursor-pointer"
+                    style={{ background: 'transparent', border: '1px solid rgba(44,83,100,0.45)', color: 'rgba(100,168,200,0.8)' }}
+                    onMouseEnter={e => { e.currentTarget.style.background = 'rgba(44,83,100,0.15)'; e.currentTarget.style.borderColor = 'rgba(44,83,100,0.7)'; e.currentTarget.style.color = 'rgba(100,168,200,1)' }}
+                    onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.borderColor = 'rgba(44,83,100,0.45)'; e.currentTarget.style.color = 'rgba(100,168,200,0.8)' }}
+                  >
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                      <polyline points="7 10 12 15 17 10"/>
+                      <line x1="12" y1="15" x2="12" y2="3"/>
+                    </svg>
+                    Export Data
+                  </button>
                 </div>
               </div>
 
@@ -747,11 +785,14 @@ export default function ProfilePage() {
                   }}
                 />
 
-                <div className="flex items-center justify-between gap-6 px-10 py-7" style={{ paddingLeft: 'calc(7px + 2.5rem)' }}>
+                <div
+                  className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-6 py-5 sm:py-7 pr-5 sm:pr-10"
+                  style={{ paddingLeft: 'calc(7px + 1.25rem)' }}
+                >
                   {/* Left: labels + description */}
-                  <div className="flex flex-col gap-2">
-                    <p className="text-[9px] font-extrabold tracking-[3.5px] uppercase flex items-center gap-1.5" style={{ color: 'rgba(220,80,80,0.75)' }}>
-                      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <div className="flex flex-col gap-2 min-w-0">
+                    <p className="text-[9px] font-extrabold tracking-[3.5px] uppercase flex items-center gap-1.5 flex-wrap" style={{ color: 'rgba(220,80,80,0.75)' }}>
+                      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
                         <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
                         <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
                       </svg>
@@ -771,7 +812,7 @@ export default function ProfilePage() {
                   {/* Right: button */}
                   <button
                     onClick={() => setShowDelete(true)}
-                    className="flex-shrink-0 flex items-center gap-2 px-5 py-2.5 rounded-[50px] text-[10px] font-extrabold uppercase tracking-[2px] transition-all duration-200 cursor-pointer"
+                    className="w-full sm:w-auto flex-shrink-0 flex items-center justify-center gap-2 px-5 py-2.5 rounded-[50px] text-[10px] font-extrabold uppercase tracking-[2px] transition-all duration-200 cursor-pointer"
                     style={{ background: 'transparent', border: '1px solid rgba(200,50,50,0.45)', color: 'rgba(220,80,80,0.8)' }}
                     onMouseEnter={e => { e.currentTarget.style.background = 'rgba(192,57,43,0.18)'; e.currentTarget.style.borderColor = 'rgba(220,80,80,0.65)'; e.currentTarget.style.color = 'rgba(255,120,120,0.95)' }}
                     onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.borderColor = 'rgba(200,50,50,0.45)'; e.currentTarget.style.color = 'rgba(220,80,80,0.8)' }}

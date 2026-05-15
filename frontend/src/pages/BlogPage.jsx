@@ -105,7 +105,7 @@ export default function BlogPage() {
   const [previewBlog,     setPreviewBlog]     = useState(null)
   const blogSectionRef = useRef(null)
 
-  const isLoggedIn = !!localStorage.getItem('token')
+  const isLoggedIn = !!localStorage.getItem('userId')
   const { data, loading, error, page, setPage, refresh } = useBlogs(1)
 
   const handleStartWriting = () => {

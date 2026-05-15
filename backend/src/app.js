@@ -2,6 +2,7 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 import express from 'express'
 import cors from 'cors'
+import cookieParser from 'cookie-parser'
 import authRoutes from './routes/authRoutes.js'
 import blogRoutes from './routes/blogRoutes.js'
 import userRoutes from './routes/userRoutes.js'
@@ -21,6 +22,7 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true
 }))
+app.use(cookieParser())
 app.use(express.json())
 
 // Serve uploaded images
