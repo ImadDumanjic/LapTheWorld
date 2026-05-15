@@ -3,18 +3,18 @@ import { useState } from 'react'
 // ── Icons ─────────────────────────────────────────────────────────────────────
 function CalendarIcon() {
   return (
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
       <line x1="16" y1="2" x2="16" y2="6" />
-      <line x1="8" y1="2" x2="8" y2="6" />
-      <line x1="3" y1="10" x2="21" y2="10" />
+      <line x1="8"  y1="2" x2="8"  y2="6" />
+      <line x1="3"  y1="10" x2="21" y2="10" />
     </svg>
   )
 }
 
 function FlagIcon() {
   return (
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z" />
       <line x1="4" y1="22" x2="4" y2="15" />
     </svg>
@@ -23,7 +23,7 @@ function FlagIcon() {
 
 function CompassIcon() {
   return (
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <circle cx="12" cy="12" r="10" />
       <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" />
     </svg>
@@ -32,62 +32,137 @@ function CompassIcon() {
 
 function ChevronDownIcon() {
   return (
-    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
       <polyline points="6 9 12 15 18 9" />
     </svg>
   )
 }
 
-// ── CardShell — shared visual foundation for all guide cards ──────────────────
-function CardShell({ children, className = '', style = {}, onClick }) {
+function ArrowUpRightIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <line x1="7" y1="17" x2="17" y2="7" />
+      <polyline points="7 7 17 7 17 17" />
+    </svg>
+  )
+}
+
+// ── CardShell ─────────────────────────────────────────────────────────────────
+function CardShell({ children, onClick }) {
   return (
     <div
       onClick={onClick}
-      className={`group relative rounded-2xl overflow-hidden cursor-pointer ${className}`}
+      className="group relative rounded-3xl overflow-hidden cursor-pointer"
       style={{
         background: 'linear-gradient(145deg, rgba(10,26,38,0.98) 0%, rgba(5,14,22,0.99) 100%)',
         border: '1px solid rgba(255,255,255,0.07)',
         borderLeft: '2px solid rgba(44,83,100,0.42)',
         boxShadow: 'inset 0 1px 0 rgba(100,168,200,0.09)',
-        ...style,
       }}
     >
-      {/* Blurred orb — top-right corner */}
+      {/* Top-right orb glow */}
       <div
         className="absolute pointer-events-none"
         style={{
-          top: -50,
-          right: -50,
-          width: 240,
-          height: 240,
+          top: -40, right: -40,
+          width: 220, height: 220,
           borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(44,83,100,0.52) 0%, transparent 70%)',
-          filter: 'blur(52px)',
+          background: 'radial-gradient(circle, rgba(44,83,100,0.35) 0%, transparent 70%)',
+          filter: 'blur(56px)',
         }}
       />
-
-      {/* Dot grid texture */}
+      {/* Dot grid */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.028) 1px, transparent 1px)',
-          backgroundSize: '22px 22px',
+          backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.022) 1px, transparent 1px)',
+          backgroundSize: '20px 20px',
         }}
       />
-
-      {/* Hover inner border glow */}
+      {/* Full-bleed circuit lines */}
+      <svg
+        aria-hidden="true"
+        className="absolute inset-0 w-full h-full pointer-events-none"
+        viewBox="0 0 1200 800"
+        fill="none"
+        preserveAspectRatio="xMidYMid slice"
+        style={{ opacity: 0.14 }}
+      >
+        <path
+          d="M 60 720 C 200 720 240 600 360 580 C 480 560 520 460 620 420 C 700 388 740 320 700 240 C 670 180 740 130 840 150 C 940 170 1020 110 1100 60"
+          stroke="rgba(100,168,200,1)"
+          strokeWidth="1.5"
+          strokeDasharray="2 7"
+          strokeLinecap="round"
+        />
+        <path
+          d="M 0 500 C 160 500 220 380 380 360 C 540 340 600 240 760 240 C 880 240 980 180 1200 200"
+          stroke="rgba(100,168,200,1)"
+          strokeWidth="0.75"
+        />
+        <path
+          d="M 0 680 C 100 670 200 620 340 580 C 500 535 580 480 720 460 C 860 440 980 400 1200 380"
+          stroke="rgba(44,83,100,1)"
+          strokeWidth="1"
+          strokeDasharray="4 10"
+          strokeLinecap="round"
+        />
+      </svg>
+      {/* Hover glow ring */}
       <div
-        className="absolute inset-0 rounded-2xl pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-        style={{ boxShadow: 'inset 0 0 0 1px rgba(44,83,100,0.3)' }}
+        className="absolute inset-0 rounded-3xl pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+        style={{ boxShadow: 'inset 0 0 0 1px rgba(44,83,100,0.28)' }}
       />
-
       {children}
     </div>
   )
 }
 
-// ── Expandable tips list ───────────────────────────────────────────────────────
-function TipsList({ tips, isOpen }) {
+// ── Single tip row ─────────────────────────────────────────────────────────────
+function TipRow({ number, text }) {
+  return (
+    <li
+      className="group/tip relative flex gap-5 rounded-2xl p-5"
+      style={{
+        border: '1px solid rgba(255,255,255,0.07)',
+        background: 'rgba(255,255,255,0.02)',
+        transition: 'border-color 150ms ease, background 150ms ease',
+        cursor: 'default',
+      }}
+      onMouseEnter={e => {
+        e.currentTarget.style.borderColor = 'rgba(44,83,100,0.5)'
+        e.currentTarget.style.background  = 'rgba(44,83,100,0.08)'
+      }}
+      onMouseLeave={e => {
+        e.currentTarget.style.borderColor = 'rgba(255,255,255,0.07)'
+        e.currentTarget.style.background  = 'rgba(255,255,255,0.02)'
+      }}
+    >
+      <span
+        className="text-[11px] font-mono tabular-nums flex-shrink-0 pt-0.5"
+        style={{ color: 'rgba(100,168,200,0.75)' }}
+      >
+        {String(number).padStart(2, '0')}
+      </span>
+      <p
+        className="text-[14px] leading-relaxed flex-1"
+        style={{ color: 'rgba(255,255,255,0.65)' }}
+      >
+        {text}
+      </p>
+      <span
+        className="flex-shrink-0 mt-0.5 opacity-0 transition-opacity duration-200 group-hover/tip:opacity-100"
+        style={{ color: 'rgba(100,168,200,0.55)' }}
+        aria-hidden
+      >
+        <ArrowUpRightIcon />
+      </span>
+    </li>
+  )
+}
+
+// ── Animated extra tips ───────────────────────────────────────────────────────
+function ExtraTips({ tips, isOpen, startIndex }) {
   return (
     <div
       style={{
@@ -99,153 +174,157 @@ function TipsList({ tips, isOpen }) {
       <div style={{ overflow: 'hidden' }}>
         <div
           style={{
-            paddingTop: 20,
             opacity: isOpen ? 1 : 0,
-            transition: `opacity ${isOpen ? '260ms' : '120ms'} ease`,
+            transition: `opacity ${isOpen ? '260ms' : '80ms'} ease`,
             transitionDelay: isOpen ? '140ms' : '0ms',
           }}
         >
-          <div style={{ borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: 16 }}>
-            <ol className="flex flex-col gap-3">
-              {tips.map((tip, i) => (
-                <li key={i} className="flex gap-3 items-start">
-                  <span
-                    className="text-[10px] font-extrabold tabular-nums flex-shrink-0"
-                    style={{ color: 'rgba(44,83,100,0.85)', lineHeight: '1.6', minWidth: 20 }}
-                  >
-                    {String(i + 1).padStart(2, '0')}
-                  </span>
-                  <span
-                    className="text-[12px] leading-relaxed"
-                    style={{ color: 'rgba(255,255,255,0.52)' }}
-                  >
-                    {tip}
-                  </span>
-                </li>
-              ))}
-            </ol>
-          </div>
+          <ul className="flex flex-col gap-3 pt-3">
+            {tips.map((tip, i) => (
+              <TipRow key={i} number={startIndex + i} text={tip} />
+            ))}
+          </ul>
         </div>
       </div>
     </div>
   )
 }
 
-// ── Featured card — Before the Race ──────────────────────────────────────────
-function FeaturedCard({ section, isOpen, onToggle }) {
+// ── Reusable guide card ───────────────────────────────────────────────────────
+function GuideCard({ section, chapterLabel, icon, isOpen, onToggle }) {
   if (!section) return null
 
-  const tips    = section.tips ?? []
+  const tips        = section.tips ?? []
+  const initialTips = tips.slice(0, 3)
+  const extraTips   = tips.slice(3)
+  const hasExtra    = extraTips.length > 0
+
   const words   = (section.title ?? '').split(' ')
   const lineOne = words[0] ?? ''
   const lineTwo = words.slice(1).join(' ')
 
   return (
-    <CardShell
-      onClick={onToggle}
-      className="flex flex-col justify-between h-full"
-      style={{ minHeight: 300, padding: '32px 36px' }}
-    >
-      <div className="relative z-10 flex flex-col gap-6 flex-1">
-        {/* Small icon */}
-        <div
-          className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
-          style={{ background: 'rgba(44,83,100,0.2)', border: '1px solid rgba(44,83,100,0.35)', color: 'rgba(100,168,200,0.75)' }}
-        >
-          <CalendarIcon />
-        </div>
+    <CardShell onClick={hasExtra ? onToggle : undefined}>
 
-        {/* Title — two bold lines */}
-        <h3
-          className="font-extrabold uppercase text-white leading-none"
-          style={{ fontSize: 'clamp(38px, 4.5vw, 54px)', letterSpacing: '-0.5px', lineHeight: 0.88 }}
-        >
-          <span className="block">{lineOne.toUpperCase()}</span>
-          {lineTwo && <span className="block">{lineTwo.toUpperCase()}</span>}
-        </h3>
+      {/* Decorative circuit trace — bottom-right */}
+      <svg
+        aria-hidden="true"
+        viewBox="0 0 220 200"
+        fill="none"
+        style={{
+          position: 'absolute', bottom: 0, right: 0,
+          width: '32%', height: '32%',
+          opacity: 0.05, pointerEvents: 'none',
+        }}
+      >
+        <path
+          d="M210,185 L165,185 Q150,185 150,170 L150,105 Q150,90 135,90 L65,90 Q50,90 50,75 L50,30 Q50,15 35,15 L10,15"
+          stroke="rgba(100,168,200,1)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+        />
+        <path
+          d="M130,185 L95,185 Q80,185 80,170 L80,130 Q80,115 95,115 L145,115"
+          stroke="rgba(100,168,200,1)" strokeWidth="1.5" strokeLinecap="round"
+        />
+        <circle cx="10"  cy="15"  r="4"   fill="rgba(100,168,200,1)" />
+        <circle cx="210" cy="185" r="3.5" fill="rgba(100,168,200,0.9)" />
+        <circle cx="145" cy="115" r="2.5" fill="rgba(100,168,200,0.6)" />
+      </svg>
 
-        {/* Description */}
-        {section.description && (
-          <p className="text-[13px] leading-relaxed max-w-[340px]" style={{ color: 'rgba(255,255,255,0.36)' }}>
-            {section.description}
-          </p>
-        )}
+      {/* ── 12-col grid body ── */}
+      <div className="relative z-10 grid gap-8 p-8 lg:p-12 lg:grid-cols-12">
 
-        {/* Expandable tips */}
-        {tips.length > 0 && <TipsList tips={tips} isOpen={isOpen} />}
-      </div>
+        {/* Left — col-span-5: badge + title + description */}
+        <div className="lg:col-span-5">
 
-      {/* Toggle row */}
-      <div className="relative z-10 mt-6">
-        <button
-          onClick={e => { e.stopPropagation(); onToggle() }}
-          className="flex items-center gap-1.5 text-[10px] font-extrabold uppercase tracking-[2px] focus:outline-none focus:ring-0"
-          style={{ color: 'rgba(100,168,200,0.7)' }}
-        >
-          {tips.length} tips inside
-          <span
-            className="inline-flex transition-transform duration-300 ease-in-out"
-            style={{ transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}
-          >
-            <ChevronDownIcon />
-          </span>
-        </button>
-      </div>
-    </CardShell>
-  )
-}
-
-// ── Smaller card — During Race / Travel Advice ────────────────────────────────
-function GuideCard({ section, icon, isOpen, onToggle }) {
-  if (!section) return null
-
-  const tips = section.tips ?? []
-
-  return (
-    <CardShell
-      onClick={onToggle}
-      className="flex flex-col justify-between flex-1"
-      style={{ padding: '22px 24px', minHeight: 148 }}
-    >
-      <div className="relative z-10 flex flex-col gap-3">
-        {/* Icon + title on same row */}
-        <div className="flex items-center gap-3">
-          <div
-            className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0"
-            style={{ background: 'rgba(44,83,100,0.2)', border: '1px solid rgba(44,83,100,0.35)', color: 'rgba(100,168,200,0.75)' }}
-          >
-            {icon}
+          {/* Chapter badge */}
+          <div className="flex items-center gap-3 mb-8">
+            <div
+              className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0"
+              style={{ background: 'rgba(44,83,100,0.2)', border: '1px solid rgba(44,83,100,0.35)', color: 'rgba(100,168,200,0.75)' }}
+            >
+              {icon}
+            </div>
+            <span
+              className="text-[10px] font-extrabold uppercase tracking-[0.22em]"
+              style={{ color: 'rgba(100,168,200,0.45)' }}
+            >
+              {chapterLabel}
+            </span>
           </div>
-          <h3 className="text-[12px] font-extrabold uppercase tracking-[1.5px] text-white leading-tight">
-            {section.title}
+
+          {/* Title */}
+          <h3
+            className="font-extrabold uppercase text-white"
+            style={{ fontSize: 'clamp(36px, 4vw, 56px)', letterSpacing: '-0.5px', lineHeight: 0.9 }}
+          >
+            <span className="block">{lineOne.toUpperCase()}</span>
+            {lineTwo && <span className="block">{lineTwo.toUpperCase()}</span>}
           </h3>
+
+          {/* Description */}
+          {section.description && (
+            <p
+              className="mt-6 text-[14px] leading-relaxed max-w-md"
+              style={{ color: 'rgba(255,255,255,0.38)' }}
+            >
+              {section.description}
+            </p>
+          )}
         </div>
 
-        {section.description && (
-          <p className="text-[12px] leading-relaxed" style={{ color: 'rgba(255,255,255,0.33)' }}>
-            {section.description}
-          </p>
-        )}
-
-        {/* Expandable tips */}
-        {tips.length > 0 && <TipsList tips={tips} isOpen={isOpen} />}
-      </div>
-
-      {/* Toggle row */}
-      <div className="relative z-10 mt-4">
-        <button
-          onClick={e => { e.stopPropagation(); onToggle() }}
-          className="flex items-center gap-1.5 text-[10px] font-extrabold uppercase tracking-[2px] focus:outline-none focus:ring-0"
-          style={{ color: 'rgba(100,168,200,0.62)' }}
+        {/* Right — col-span-7: tips + footer */}
+        <div
+          className="lg:col-span-7 lg:pl-10 lg:border-l flex flex-col"
+          style={{ borderColor: 'rgba(255,255,255,0.06)' }}
         >
-          {tips.length} tips inside
-          <span
-            className="inline-flex transition-transform duration-300 ease-in-out"
-            style={{ transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}
-          >
-            <ChevronDownIcon />
-          </span>
-        </button>
+          {/* Initial tips */}
+          <ul className="flex flex-col gap-3">
+            {initialTips.map((tip, i) => (
+              <TipRow key={i} number={i + 1} text={tip} />
+            ))}
+          </ul>
+
+          {/* Extra tips — animate in */}
+          {hasExtra && (
+            <ExtraTips tips={extraTips} isOpen={isOpen} startIndex={initialTips.length + 1} />
+          )}
+
+          {/* Footer */}
+          {hasExtra && (
+            <div
+              className="mt-6 flex items-center justify-between pt-5"
+              style={{ borderTop: '1px solid rgba(255,255,255,0.055)' }}
+            >
+              <span
+                className="text-[10px] font-extrabold uppercase tracking-[0.22em] transition-opacity duration-200"
+                style={{ color: 'rgba(44,83,100,0.7)', opacity: isOpen ? 0 : 1 }}
+              >
+                + {extraTips.length} more tip{extraTips.length !== 1 ? 's' : ''} inside
+              </span>
+              <button
+                onClick={e => { e.stopPropagation(); onToggle() }}
+                className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-[11px] font-extrabold uppercase tracking-[0.22em] focus:outline-none flex-shrink-0"
+                style={{
+                  color: 'rgba(100,168,200,0.8)',
+                  border: '1px solid rgba(44,83,100,0.4)',
+                  background: 'rgba(44,83,100,0.08)',
+                  transition: 'background 150ms ease, border-color 150ms ease',
+                }}
+                onMouseEnter={e => { e.currentTarget.style.background = 'rgba(44,83,100,0.2)'; e.currentTarget.style.borderColor = 'rgba(44,83,100,0.65)' }}
+                onMouseLeave={e => { e.currentTarget.style.background = 'rgba(44,83,100,0.08)'; e.currentTarget.style.borderColor = 'rgba(44,83,100,0.4)' }}
+              >
+                {tips.length} Tips
+                <span
+                  className="inline-flex transition-transform duration-300 ease-in-out"
+                  style={{ transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}
+                >
+                  <ChevronDownIcon />
+                </span>
+              </button>
+            </div>
+          )}
+        </div>
+
       </div>
     </CardShell>
   )
@@ -255,16 +334,12 @@ function GuideCard({ section, icon, isOpen, onToggle }) {
 function SectionTitle({ title }) {
   return (
     <div className="mb-8">
-      <h2
+<h2
         className="text-[28px] sm:text-[32px] font-extrabold uppercase text-white tracking-[2px]"
         style={{ lineHeight: 1 }}
       >
         {title}
       </h2>
-      <div
-        className="mt-3"
-        style={{ width: 52, height: 2, borderRadius: 2, background: 'linear-gradient(to right, rgba(44,83,100,0.9), rgba(44,83,100,0.1))' }}
-      />
     </div>
   )
 }
@@ -274,49 +349,34 @@ export default function RaceWeekendGuideSection({ guide }) {
   const { beforeRace, duringRace, travelAdvice } = guide.guideSections ?? {}
 
   const [openCards, setOpenCards] = useState({ before: false, during: false, travel: false })
-  const anyOpen = openCards.before || openCards.during || openCards.travel
-
   const toggle = key => setOpenCards(prev => ({ ...prev, [key]: !prev[key] }))
 
   return (
     <section>
       <SectionTitle title="Your Race Weekend Guide" />
 
-      {/*
-        When all cards are collapsed: default align-items:stretch makes both grid cells
-        equal height — h-full on FeaturedCard and flex-1 on GuideCards then fill that height
-        so all bottom edges align.
-
-        When any card is open: lg:items-start lets each cell size to its own content,
-        so the expanded card grows freely without pulling the other column with it.
-      */}
-      <div className={`grid grid-cols-1 lg:grid-cols-3 gap-6${anyOpen ? ' lg:items-start' : ''}`}>
-
-        {/* Featured — Before the Race */}
-        <div className="lg:col-span-2">
-          <FeaturedCard
-            section={beforeRace}
-            isOpen={openCards.before}
-            onToggle={() => toggle('before')}
-          />
-        </div>
-
-        {/* Stacked — During Race + Travel Advice */}
-        <div className="lg:col-span-1 flex flex-col gap-6">
-          <GuideCard
-            section={duringRace}
-            icon={<FlagIcon />}
-            isOpen={openCards.during}
-            onToggle={() => toggle('during')}
-          />
-          <GuideCard
-            section={travelAdvice}
-            icon={<CompassIcon />}
-            isOpen={openCards.travel}
-            onToggle={() => toggle('travel')}
-          />
-        </div>
-
+      <div className="flex flex-col gap-4">
+        <GuideCard
+          section={beforeRace}
+          chapterLabel="Chapter 01"
+          icon={<CalendarIcon />}
+          isOpen={openCards.before}
+          onToggle={() => toggle('before')}
+        />
+        <GuideCard
+          section={duringRace}
+          chapterLabel="Chapter 02"
+          icon={<FlagIcon />}
+          isOpen={openCards.during}
+          onToggle={() => toggle('during')}
+        />
+        <GuideCard
+          section={travelAdvice}
+          chapterLabel="Chapter 03"
+          icon={<CompassIcon />}
+          isOpen={openCards.travel}
+          onToggle={() => toggle('travel')}
+        />
       </div>
     </section>
   )
