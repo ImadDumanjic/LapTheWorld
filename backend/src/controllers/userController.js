@@ -1,7 +1,11 @@
 import { Op } from 'sequelize'
 import User from '../../models/User.js'
+import Blog from '../../models/Blog.js'
 import { comparePassword, hashPassword } from '../utils/passwordHelper.js'
 import { validatePassword, validateEmail, validatePhone } from '../utils/validators.js'
+
+const safeMessage = (err) =>
+  err.status ? err.message : 'Something went wrong. Please try again.'
 
 export async function getProfile(req, res) {
   try {
@@ -12,7 +16,7 @@ export async function getProfile(req, res) {
     res.json(user)
   } catch (err) {
     console.error('getProfile error:', err)
-    res.status(500).json({ message: err.message })
+    res.status(500).json({ message: safeMessage(err) })
   }
 }
 
@@ -54,7 +58,7 @@ export async function updateProfile(req, res) {
     })
   } catch (err) {
     console.error('updateProfile error:', err)
-    res.status(err.status || 500).json({ message: err.message })
+    res.status(err.status || 500).json({ message: safeMessage(err) })
   }
 }
 
@@ -75,7 +79,7 @@ export async function verifyPassword(req, res) {
     res.json({ valid: true })
   } catch (err) {
     console.error('verifyPassword error:', err)
-    res.status(500).json({ message: err.message })
+    res.status(500).json({ message: safeMessage(err) })
   }
 }
 
@@ -113,7 +117,34 @@ export async function changePassword(req, res) {
     res.json({ message: 'Password updated successfully' })
   } catch (err) {
     console.error('changePassword error:', err)
-    res.status(500).json({ message: err.message })
+    res.status(500).json({ message: safeMessage(err) })
+  }
+}
+
+export async function exportUserData(req, res) {
+  try {
+    const user = await User.findByPk(req.user.id, {
+      attributes: ['id', 'username', 'firstName', 'lastName', 'email', 'phone', 'role', 'createdAt', 'auth_provider'],
+    })
+    if (!user) return res.status(404).json({ message: 'User not found' })
+
+    const blogs = await Blog.findAll({
+      where: { author_id: req.user.id },
+      attributes: ['id', 'title', 'content', 'status', 'created_at'],
+    })
+
+    const exportData = {
+      exportedAt: new Date().toISOString(),
+      profile: user.toJSON(),
+      blogs: blogs.map(b => b.toJSON()),
+    }
+
+    res.setHeader('Content-Type', 'application/json')
+    res.setHeader('Content-Disposition', `attachment; filename="laptheworld-data-${req.user.id}.json"`)
+    res.json(exportData)
+  } catch (err) {
+    console.error('exportUserData error:', err)
+    res.status(500).json({ message: safeMessage(err) })
   }
 }
 
@@ -130,6 +161,6 @@ export async function deleteAccount(req, res) {
     res.status(204).end()
   } catch (err) {
     console.error('deleteAccount error:', err)
-    res.status(500).json({ message: err.message })
+    res.status(500).json({ message: safeMessage(err) })
   }
 }

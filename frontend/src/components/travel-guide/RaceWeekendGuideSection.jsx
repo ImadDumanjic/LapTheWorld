@@ -38,15 +38,6 @@ function ChevronDownIcon() {
   )
 }
 
-function ArrowUpRightIcon() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <line x1="7" y1="17" x2="17" y2="7" />
-      <polyline points="7 7 17 7 17 17" />
-    </svg>
-  )
-}
-
 // ── CardShell ─────────────────────────────────────────────────────────────────
 function CardShell({ children, onClick }) {
   return (
@@ -122,20 +113,10 @@ function CardShell({ children, onClick }) {
 function TipRow({ number, text }) {
   return (
     <li
-      className="group/tip relative flex gap-5 rounded-2xl p-5"
+      className="flex gap-4 rounded-2xl p-4 sm:p-5"
       style={{
         border: '1px solid rgba(255,255,255,0.07)',
         background: 'rgba(255,255,255,0.02)',
-        transition: 'border-color 150ms ease, background 150ms ease',
-        cursor: 'default',
-      }}
-      onMouseEnter={e => {
-        e.currentTarget.style.borderColor = 'rgba(44,83,100,0.5)'
-        e.currentTarget.style.background  = 'rgba(44,83,100,0.08)'
-      }}
-      onMouseLeave={e => {
-        e.currentTarget.style.borderColor = 'rgba(255,255,255,0.07)'
-        e.currentTarget.style.background  = 'rgba(255,255,255,0.02)'
       }}
     >
       <span
@@ -145,43 +126,36 @@ function TipRow({ number, text }) {
         {String(number).padStart(2, '0')}
       </span>
       <p
-        className="text-[14px] leading-relaxed flex-1"
-        style={{ color: 'rgba(255,255,255,0.65)' }}
+        className="text-[13px] sm:text-[14px] flex-1"
+        style={{ color: 'rgba(255,255,255,0.65)', lineHeight: 1.65 }}
       >
         {text}
       </p>
-      <span
-        className="flex-shrink-0 mt-0.5 opacity-0 transition-opacity duration-200 group-hover/tip:opacity-100"
-        style={{ color: 'rgba(100,168,200,0.55)' }}
-        aria-hidden
-      >
-        <ArrowUpRightIcon />
-      </span>
     </li>
   )
 }
 
-// ── Animated extra tips ───────────────────────────────────────────────────────
-function ExtraTips({ tips, isOpen, startIndex }) {
+// ── Animated tips panel ───────────────────────────────────────────────────────
+function TipsPanel({ tips, isOpen }) {
   return (
     <div
       style={{
         display: 'grid',
         gridTemplateRows: isOpen ? '1fr' : '0fr',
-        transition: 'grid-template-rows 360ms cubic-bezier(0.4, 0, 0.2, 1)',
+        transition: 'grid-template-rows 380ms cubic-bezier(0.4, 0, 0.2, 1)',
       }}
     >
       <div style={{ overflow: 'hidden' }}>
         <div
           style={{
             opacity: isOpen ? 1 : 0,
-            transition: `opacity ${isOpen ? '260ms' : '80ms'} ease`,
-            transitionDelay: isOpen ? '140ms' : '0ms',
+            transition: `opacity ${isOpen ? '280ms' : '80ms'} ease`,
+            transitionDelay: isOpen ? '160ms' : '0ms',
           }}
         >
-          <ul className="flex flex-col gap-3 pt-3">
+          <ul className="flex flex-col gap-3 pt-6">
             {tips.map((tip, i) => (
-              <TipRow key={i} number={startIndex + i} text={tip} />
+              <TipRow key={i} number={i + 1} text={tip} />
             ))}
           </ul>
         </div>
@@ -194,17 +168,13 @@ function ExtraTips({ tips, isOpen, startIndex }) {
 function GuideCard({ section, chapterLabel, icon, isOpen, onToggle }) {
   if (!section) return null
 
-  const tips        = section.tips ?? []
-  const initialTips = tips.slice(0, 3)
-  const extraTips   = tips.slice(3)
-  const hasExtra    = extraTips.length > 0
-
+  const tips    = section.tips ?? []
   const words   = (section.title ?? '').split(' ')
   const lineOne = words[0] ?? ''
   const lineTwo = words.slice(1).join(' ')
 
   return (
-    <CardShell onClick={hasExtra ? onToggle : undefined}>
+    <CardShell onClick={onToggle}>
 
       {/* Decorative circuit trace — bottom-right */}
       <svg
@@ -230,100 +200,82 @@ function GuideCard({ section, chapterLabel, icon, isOpen, onToggle }) {
         <circle cx="145" cy="115" r="2.5" fill="rgba(100,168,200,0.6)" />
       </svg>
 
-      {/* ── 12-col grid body ── */}
-      <div className="relative z-10 grid gap-8 p-8 lg:p-12 lg:grid-cols-12">
+      {/* ── Card body ── */}
+      <div className="relative z-10 p-5 sm:p-8 lg:p-12">
 
-        {/* Left — col-span-5: badge + title + description */}
-        <div className="lg:col-span-5">
+        {/* Header: stacked on mobile, side-by-side on sm+ */}
+        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between sm:gap-6">
 
-          {/* Chapter badge */}
-          <div className="flex items-center gap-3 mb-8">
-            <div
-              className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0"
-              style={{ background: 'rgba(44,83,100,0.2)', border: '1px solid rgba(44,83,100,0.35)', color: 'rgba(100,168,200,0.75)' }}
-            >
-              {icon}
+          {/* Text: badge + title + description — full width on mobile */}
+          <div className="flex-1 min-w-0">
+
+            {/* Chapter badge */}
+            <div className="flex items-center gap-3 mb-4 sm:mb-6">
+              <div
+                className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl flex items-center justify-center flex-shrink-0"
+                style={{ background: 'rgba(44,83,100,0.2)', border: '1px solid rgba(44,83,100,0.35)', color: 'rgba(100,168,200,0.75)' }}
+              >
+                {icon}
+              </div>
+              <span
+                className="text-[10px] font-extrabold uppercase tracking-[0.18em] sm:tracking-[0.22em]"
+                style={{ color: 'rgba(100,168,200,0.45)' }}
+              >
+                {chapterLabel}
+              </span>
             </div>
-            <span
-              className="text-[10px] font-extrabold uppercase tracking-[0.22em]"
-              style={{ color: 'rgba(100,168,200,0.45)' }}
+
+            {/* Title */}
+            <h3
+              className="font-extrabold uppercase text-white"
+              style={{ fontSize: 'clamp(24px, 6vw, 52px)', letterSpacing: '-0.5px', lineHeight: 0.92 }}
             >
-              {chapterLabel}
-            </span>
+              <span className="block">{lineOne.toUpperCase()}</span>
+              {lineTwo && <span className="block mt-[6px]">{lineTwo.toUpperCase()}</span>}
+            </h3>
+
+            {/* Description */}
+            {section.description && (
+              <p
+                className="mt-3 sm:mt-5 text-[13px] sm:text-[14px] sm:max-w-2xl"
+                style={{ color: 'rgba(255,255,255,0.38)', lineHeight: 1.7 }}
+              >
+                {section.description}
+              </p>
+            )}
           </div>
 
-          {/* Title */}
-          <h3
-            className="font-extrabold uppercase text-white"
-            style={{ fontSize: 'clamp(36px, 4vw, 56px)', letterSpacing: '-0.5px', lineHeight: 0.9 }}
-          >
-            <span className="block">{lineOne.toUpperCase()}</span>
-            {lineTwo && <span className="block">{lineTwo.toUpperCase()}</span>}
-          </h3>
-
-          {/* Description */}
-          {section.description && (
-            <p
-              className="mt-6 text-[14px] leading-relaxed max-w-md"
-              style={{ color: 'rgba(255,255,255,0.38)' }}
+          {/* Pill button — below text on mobile, top-right on sm+ */}
+          {tips.length > 0 && (
+            <button
+              onClick={e => { e.stopPropagation(); onToggle() }}
+              className="inline-flex self-start items-center gap-2 rounded-full px-4 py-2 text-[11px] font-extrabold uppercase tracking-[0.22em] focus:outline-none flex-shrink-0 mt-4 sm:mt-1"
+              style={{
+                color: 'rgba(100,168,200,0.8)',
+                border: '1px solid rgba(44,83,100,0.4)',
+                background: 'rgba(44,83,100,0.08)',
+                transition: 'background 150ms ease, border-color 150ms ease',
+              }}
+              onMouseEnter={e => { e.currentTarget.style.background = 'rgba(44,83,100,0.2)'; e.currentTarget.style.borderColor = 'rgba(44,83,100,0.65)' }}
+              onMouseLeave={e => { e.currentTarget.style.background = 'rgba(44,83,100,0.08)'; e.currentTarget.style.borderColor = 'rgba(44,83,100,0.4)' }}
             >
-              {section.description}
-            </p>
-          )}
-        </div>
-
-        {/* Right — col-span-7: tips + footer */}
-        <div
-          className="lg:col-span-7 lg:pl-10 lg:border-l flex flex-col"
-          style={{ borderColor: 'rgba(255,255,255,0.06)' }}
-        >
-          {/* Initial tips */}
-          <ul className="flex flex-col gap-3">
-            {initialTips.map((tip, i) => (
-              <TipRow key={i} number={i + 1} text={tip} />
-            ))}
-          </ul>
-
-          {/* Extra tips — animate in */}
-          {hasExtra && (
-            <ExtraTips tips={extraTips} isOpen={isOpen} startIndex={initialTips.length + 1} />
-          )}
-
-          {/* Footer */}
-          {hasExtra && (
-            <div
-              className="mt-6 flex items-center justify-between pt-5"
-              style={{ borderTop: '1px solid rgba(255,255,255,0.055)' }}
-            >
+              {isOpen ? 'Hide' : `${tips.length} Tips`}
               <span
-                className="text-[10px] font-extrabold uppercase tracking-[0.22em] transition-opacity duration-200"
-                style={{ color: 'rgba(44,83,100,0.7)', opacity: isOpen ? 0 : 1 }}
+                className="inline-flex transition-transform duration-300 ease-in-out"
+                style={{ transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}
               >
-                + {extraTips.length} more tip{extraTips.length !== 1 ? 's' : ''} inside
+                <ChevronDownIcon />
               </span>
-              <button
-                onClick={e => { e.stopPropagation(); onToggle() }}
-                className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-[11px] font-extrabold uppercase tracking-[0.22em] focus:outline-none flex-shrink-0"
-                style={{
-                  color: 'rgba(100,168,200,0.8)',
-                  border: '1px solid rgba(44,83,100,0.4)',
-                  background: 'rgba(44,83,100,0.08)',
-                  transition: 'background 150ms ease, border-color 150ms ease',
-                }}
-                onMouseEnter={e => { e.currentTarget.style.background = 'rgba(44,83,100,0.2)'; e.currentTarget.style.borderColor = 'rgba(44,83,100,0.65)' }}
-                onMouseLeave={e => { e.currentTarget.style.background = 'rgba(44,83,100,0.08)'; e.currentTarget.style.borderColor = 'rgba(44,83,100,0.4)' }}
-              >
-                {tips.length} Tips
-                <span
-                  className="inline-flex transition-transform duration-300 ease-in-out"
-                  style={{ transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}
-                >
-                  <ChevronDownIcon />
-                </span>
-              </button>
-            </div>
+            </button>
           )}
         </div>
+
+        {/* Collapsible tips */}
+        {tips.length > 0 && (
+          <div style={{ borderTop: isOpen ? '1px solid rgba(255,255,255,0.055)' : 'none' }}>
+            <TipsPanel tips={tips} isOpen={isOpen} />
+          </div>
+        )}
 
       </div>
     </CardShell>

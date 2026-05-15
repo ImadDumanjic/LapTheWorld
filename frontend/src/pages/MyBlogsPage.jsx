@@ -101,8 +101,7 @@ export default function MyBlogsPage() {
   }, [navigate])
 
   useEffect(() => {
-    const token = localStorage.getItem('token')
-    if (!token) { navigate('/auth'); return }
+    if (!localStorage.getItem('userId')) { navigate('/auth'); return }
     load(page)
   }, [page, load, navigate])
 

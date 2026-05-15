@@ -109,7 +109,7 @@ export default function Header() {
   const { pathname }                  = useLocation()
   const isAdmin                       = pathname === '/admin'
   const isTravelGuide                 = /^\/travel-guide\/.+/.test(pathname)
-  const isLoggedIn                    = !!localStorage.getItem('token')
+  const isLoggedIn                    = !!localStorage.getItem('userId')
   const { isPlaying, toggle }         = useAudio()
 
   const handleLogout = () => {

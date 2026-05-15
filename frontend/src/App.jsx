@@ -15,33 +15,38 @@ import AdminPage from './pages/AdminPage'
 import AdminLoginPage from './pages/AdminLoginPage'
 import MyBlogsPage from './pages/MyBlogsPage'
 import LiveTimingPage from './pages/LiveTimingPage'
+import PrivacyPolicyPage from './pages/PrivacyPolicyPage'
+import TermsPage from './pages/TermsPage'
 import Header from './components/layout/Header'
+import CookieConsentBanner from './components/ui/CookieConsentBanner'
 
 const HIDE_HEADER_ON = ['/', '/auth', '/landing', '/reset-password', '/admin-login', '/admin', '/custom-plan']
 
 function authState() {
   return {
-    token: localStorage.getItem('token'),
+    userId: localStorage.getItem('userId'),
     role: localStorage.getItem('role'),
+    // Admin keeps its own token in localStorage for its Bearer-header auth flow
+    adminToken: localStorage.getItem('token'),
   }
 }
 
 function NonAdminRoute({ children }) {
-  const { token, role } = authState()
-  if (token && role === 'Admin') return <Navigate to="/admin" replace />
+  const { userId, role } = authState()
+  if (userId && role === 'Admin') return <Navigate to="/admin" replace />
   return children
 }
 
 function AdminLoginRoute({ children }) {
-  const { token, role } = authState()
-  if (token && role === 'Admin') return <Navigate to="/admin" replace />
-  if (token && role === 'User') return <Navigate to="/landing" replace />
+  const { adminToken, role } = authState()
+  if (adminToken && role === 'Admin') return <Navigate to="/admin" replace />
+  if (adminToken && role === 'User') return <Navigate to="/landing" replace />
   return children
 }
 
 function AdminRoute({ children }) {
-  const { token, role } = authState()
-  if (!token) return <Navigate to="/admin-login" replace />
+  const { adminToken, role } = authState()
+  if (!adminToken) return <Navigate to="/admin-login" replace />
   if (role !== 'Admin') return <Navigate to="/landing" replace />
   return children
 }
@@ -69,7 +74,10 @@ function Layout() {
         <Route path="/admin-login" element={<AdminLoginRoute><AdminLoginPage /></AdminLoginRoute>} />
         <Route path="/blog/my" element={<NonAdminRoute><MyBlogsPage /></NonAdminRoute>} />
         <Route path="/live-timing" element={<NonAdminRoute><LiveTimingPage /></NonAdminRoute>} />
+        <Route path="/privacy" element={<PrivacyPolicyPage />} />
+        <Route path="/terms" element={<TermsPage />} />
       </Routes>
+      <CookieConsentBanner />
     </>
   )
 }

@@ -4,7 +4,7 @@ import VerticalTitle from '../components/landing/VerticalTitle'
 
 export default function LandingPage() {
   const navigate   = useNavigate()
-  const isLoggedIn = !!localStorage.getItem('token')
+  const isLoggedIn = !!localStorage.getItem('userId')
 
   return (
     <div className="bg-page-gradient h-svh overflow-y-auto flex flex-col justify-start sm:justify-center">

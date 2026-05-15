@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { toast } from 'react-hot-toast'
 import InputField from '../ui/InputField'
 import PhoneInputField from '../ui/PhoneInputField'
@@ -104,6 +104,16 @@ export default function RegisterForm({ onSwitch, isRegister }) {
       <Button type="submit" disabled={loading}>
         {loading ? 'Creating account…' : 'Register'}
       </Button>
+
+      <p className="text-[11px] text-white/25 text-center leading-relaxed mt-1 px-1">
+        By creating an account you agree to our{' '}
+        <Link to="/privacy" className="text-[#5b8fa8] hover:text-[#7ab3c8] transition-colors duration-200 underline underline-offset-2">
+          Privacy Policy
+        </Link>{' '}and{' '}
+        <Link to="/terms" className="text-[#5b8fa8] hover:text-[#7ab3c8] transition-colors duration-200 underline underline-offset-2">
+          Terms of Service
+        </Link>.
+      </p>
 
       <div className="w-full mt-[22px]">
         <GoogleSignIn

@@ -126,7 +126,7 @@ export default function WelcomePage() {
 
   const handleStart = async () => {
     if (phase !== 'idle') return
-    const dest = localStorage.getItem('token') ? '/landing' : '/auth'
+    const dest = localStorage.getItem('userId') ? '/landing' : '/auth'
 
     setPhase('lighting')
 

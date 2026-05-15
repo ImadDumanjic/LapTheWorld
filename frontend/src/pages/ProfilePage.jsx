@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import toast, { Toaster } from 'react-hot-toast'
-import { fetchProfile, updateProfile, deleteAccount, getTokenUserId, verifyCurrentPassword, changePassword as changePasswordService } from '../services/userService'
+import { fetchProfile, updateProfile, deleteAccount, getTokenUserId, verifyCurrentPassword, changePassword as changePasswordService, exportUserData } from '../services/userService'
 import { logout } from '../services/authService'
 
 // ─── Password strength helpers ────────────────────────────────────────────────
@@ -421,7 +421,7 @@ export default function ProfilePage() {
 
   // Auth guard
   useEffect(() => {
-    if (!localStorage.getItem('token')) {
+    if (!localStorage.getItem('userId')) {
       navigate('/auth')
     }
   }, [navigate])
@@ -724,6 +724,44 @@ export default function ProfilePage() {
                     )}
 
                   </div>
+                </div>
+              </div>
+
+              {/* ── Data Export card ── */}
+              <div
+                className="w-full rounded-2xl overflow-hidden mt-6"
+                style={{
+                  background: 'rgba(255,255,255,0.03)',
+                  border: '1px solid rgba(44,83,100,0.3)',
+                  boxShadow: '0 0 0 1px rgba(44,83,100,0.08), 0 16px 40px rgba(0,0,0,0.25)',
+                }}
+              >
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-6 p-5 sm:p-7">
+                  <div className="flex flex-col gap-2 min-w-0">
+                    <p className="text-[9px] font-extrabold tracking-[3.5px] uppercase" style={{ color: 'rgba(100,168,200,0.6)' }}>
+                      GDPR &nbsp;·&nbsp; Your Data
+                    </p>
+                    <h3 className="font-extrabold uppercase leading-tight" style={{ fontSize: 'clamp(14px,2vw,18px)', color: '#fff', letterSpacing: '0.5px' }}>
+                      Download My Data
+                    </h3>
+                    <p className="text-[12px] leading-relaxed" style={{ color: 'rgba(255,255,255,0.35)', maxWidth: 480 }}>
+                      Export a copy of all personal data we hold about you — your profile and blog posts — as a JSON file.
+                    </p>
+                  </div>
+                  <button
+                    onClick={async () => { try { await exportUserData() } catch { toast.error('Export failed. Please try again.') } }}
+                    className="w-full sm:w-auto flex-shrink-0 flex items-center justify-center gap-2 px-5 py-2.5 rounded-[50px] text-[10px] font-extrabold uppercase tracking-[2px] transition-all duration-200 cursor-pointer"
+                    style={{ background: 'transparent', border: '1px solid rgba(44,83,100,0.45)', color: 'rgba(100,168,200,0.8)' }}
+                    onMouseEnter={e => { e.currentTarget.style.background = 'rgba(44,83,100,0.15)'; e.currentTarget.style.borderColor = 'rgba(44,83,100,0.7)'; e.currentTarget.style.color = 'rgba(100,168,200,1)' }}
+                    onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.borderColor = 'rgba(44,83,100,0.45)'; e.currentTarget.style.color = 'rgba(100,168,200,0.8)' }}
+                  >
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                      <polyline points="7 10 12 15 17 10"/>
+                      <line x1="12" y1="15" x2="12" y2="3"/>
+                    </svg>
+                    Export Data
+                  </button>
                 </div>
               </div>
 

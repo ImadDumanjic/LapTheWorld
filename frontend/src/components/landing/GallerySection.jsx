@@ -88,7 +88,7 @@ export default function GallerySection() {
   const navigate = useNavigate()
 
   const handleLiveTimingClick = () => {
-    if (localStorage.getItem('token')) {
+    if (localStorage.getItem('userId')) {
       navigate('/live-timing')
     } else {
       setShowAuthModal(true)
