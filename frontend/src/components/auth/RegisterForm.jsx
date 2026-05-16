@@ -63,13 +63,13 @@ export default function RegisterForm({ onSwitch, isRegister }) {
   return (
     <form
       onSubmit={handleSubmit}
-      className={`absolute top-0 right-0 w-1/2 h-full flex flex-col items-center justify-center z-[5] pl-[72px] pr-9 max-sm:relative max-sm:w-full max-sm:h-auto max-sm:top-auto max-sm:right-auto max-sm:px-7 max-sm:py-[52px] ${
+      className={`absolute top-0 right-0 w-1/2 h-full flex flex-col items-center justify-center z-[5] pl-[72px] pr-9 -translate-y-[4px] max-sm:relative max-sm:w-full max-sm:h-auto max-sm:top-auto max-sm:right-auto max-sm:px-7 max-sm:py-[52px] max-sm:translate-y-0 ${
         isRegister
           ? 'opacity-100 pointer-events-auto [transition:opacity_0.25s_ease-in-out_0.3s]'
           : 'opacity-0 pointer-events-none [transition:opacity_0.25s_ease-in-out] max-sm:hidden'
       }`}
     >
-      <h2 className="text-white text-2xl font-bold tracking-[3px] uppercase mb-[30px]">Register</h2>
+      <h2 className="text-white text-2xl font-bold tracking-[3px] uppercase mb-[30px] mt-6">Register</h2>
 
       <InputField type="email"    placeholder="Email"    autoComplete="email"        icon={<MailIcon />} value={form.email}    onChange={set('email')} />
       <InputField
@@ -105,8 +105,16 @@ export default function RegisterForm({ onSwitch, isRegister }) {
         {loading ? 'Creating account…' : 'Register'}
       </Button>
 
-      <p className="text-[11px] text-white/25 text-center leading-relaxed mt-1 px-1">
-        By creating an account you agree to our{' '}
+      <div className="w-full mt-[18px]">
+        <GoogleSignIn
+          googleLogin={googleLogin}
+          onSuccess={() => { toast.success('Account created! Welcome aboard.'); navigate('/landing') }}
+          onError={(msg) => toast.error(msg || 'Google sign-in failed')}
+        />
+      </div>
+
+      <p className="text-[11px] text-white/25 text-center leading-relaxed mt-4 px-1">
+        By creating a profile you agree to our{' '}
         <Link to="/privacy" className="text-[#5b8fa8] hover:text-[#7ab3c8] transition-colors duration-200 underline underline-offset-2">
           Privacy Policy
         </Link>{' '}and{' '}
@@ -115,32 +123,6 @@ export default function RegisterForm({ onSwitch, isRegister }) {
         </Link>.
       </p>
 
-      <div className="w-full mt-[22px]">
-        <GoogleSignIn
-          googleLogin={googleLogin}
-          onSuccess={() => { toast.success('Account created! Welcome aboard.'); navigate('/landing') }}
-          onError={(msg) => toast.error(msg || 'Google sign-in failed')}
-        />
-      </div>
-
-      <p className="text-white/40 text-[13px] mt-4 text-center">
-        Already have an account?{' '}
-        <button
-          type="button"
-          className="bg-transparent border-0 text-[#5b8fa8] cursor-pointer text-[13px] font-[inherit] p-0 transition-colors duration-200 hover:text-[#7ab3c8] hover:underline"
-          onClick={onSwitch}
-        >
-          Sign In
-        </button>
-      </p>
-      <div className="text-[12px] text-white/25 mt-[10px] tracking-wider">── or ──</div>
-      <button
-        type="button"
-        className="bg-transparent border-0 text-[#5b8fa8] opacity-70 text-[13px] font-[inherit] cursor-pointer p-0 mt-[10px] ml-[7px] transition-opacity duration-200 hover:opacity-100"
-        onClick={() => navigate('/landing')}
-      >
-        Continue as Guest →
-      </button>
     </form>
   )
 }
