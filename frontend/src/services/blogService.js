@@ -1,4 +1,24 @@
 const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000'
+const BLOG_REQUEST_TIMEOUT_MS = 45_000
+
+async function fetchWithTimeout(url, options = {}, timeoutMs = BLOG_REQUEST_TIMEOUT_MS) {
+  const controller = new AbortController()
+  const timeoutId = setTimeout(() => controller.abort(), timeoutMs)
+
+  try {
+    return await fetch(url, {
+      ...options,
+      signal: controller.signal,
+    })
+  } catch (err) {
+    if (err.name === 'AbortError') {
+      throw new Error('Request timed out. Please try again with a smaller image.')
+    }
+    throw err
+  } finally {
+    clearTimeout(timeoutId)
+  }
+}
 
 export function getBlogImageUrl(image_url) {
   if (!image_url) return null
@@ -13,7 +33,7 @@ export async function fetchBlogs(page = 1) {
 }
 
 export async function createBlog(formData) {
-  const res = await fetch(`${BASE_URL}/api/blogs`, {
+  const res = await fetchWithTimeout(`${BASE_URL}/api/blogs`, {
     method: 'POST',
     credentials: 'include',
     body: formData,
@@ -39,7 +59,7 @@ export async function fetchMyBlogs(page = 1) {
 }
 
 export async function updateBlog(id, formData) {
-  const res = await fetch(`${BASE_URL}/api/blogs/${id}`, {
+  const res = await fetchWithTimeout(`${BASE_URL}/api/blogs/${id}`, {
     method: 'PUT',
     credentials: 'include',
     body: formData,

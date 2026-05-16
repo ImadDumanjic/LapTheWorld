@@ -90,7 +90,7 @@ export default function FloatingButtonGroup({ guide }) {
         <CustomPlanButton guide={guide} />
 
         <ConversationProvider agentId={VOICE_AGENT_ID} connectionType="webrtc">
-          <VoiceAssistantInner circuitName={guide.circuit} />
+          <VoiceAssistantInner circuitName={guide.circuit} autoStart />
         </ConversationProvider>
       </div>
     </>

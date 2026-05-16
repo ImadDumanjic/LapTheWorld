@@ -22,7 +22,7 @@ import LegalFooter from './components/ui/LegalFooter'
 import CookieConsentBanner from './components/ui/CookieConsentBanner'
 
 const HIDE_HEADER_ON = ['/', '/auth', '/landing', '/reset-password', '/admin-login', '/admin', '/custom-plan']
-const HIDE_FOOTER_ON = ['/auth', '/landing', '/admin', '/admin-login']
+const HIDE_FOOTER_ON = ['/', '/auth', '/landing', '/admin', '/admin-login']
 
 function authState() {
   return {

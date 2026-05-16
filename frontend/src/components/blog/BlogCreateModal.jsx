@@ -1,6 +1,19 @@
 import { useState, useRef } from 'react'
 import { createBlog } from '../../services/blogService'
 
+const MAX_IMAGE_SIZE = 8 * 1024 * 1024
+const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif']
+
+function validateImageFile(file) {
+  if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
+    return 'Only JPEG, PNG, WEBP, or GIF images are allowed'
+  }
+  if (file.size > MAX_IMAGE_SIZE) {
+    return 'Image must be 8 MB or smaller'
+  }
+  return null
+}
+
 const XIcon = () => (
   <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
     <line x1="1" y1="1" x2="11" y2="11" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
@@ -29,6 +42,13 @@ export default function BlogCreateModal({ onClose, onSuccess }) {
   const handleImageChange = (e) => {
     const file = e.target.files?.[0]
     if (!file) return
+    const imageError = validateImageFile(file)
+    if (imageError) {
+      setError(imageError)
+      if (fileInputRef.current) fileInputRef.current.value = ''
+      return
+    }
+    setError(null)
     setImageFile(file)
     setImagePreview(URL.createObjectURL(file))
   }
@@ -37,6 +57,12 @@ export default function BlogCreateModal({ onClose, onSuccess }) {
     e.preventDefault()
     const file = e.dataTransfer.files?.[0]
     if (!file || !file.type.startsWith('image/')) return
+    const imageError = validateImageFile(file)
+    if (imageError) {
+      setError(imageError)
+      return
+    }
+    setError(null)
     setImageFile(file)
     setImagePreview(URL.createObjectURL(file))
   }

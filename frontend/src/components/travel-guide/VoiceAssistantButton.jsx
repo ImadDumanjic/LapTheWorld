@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import {
   ConversationProvider,
   useConversationControls,
@@ -12,40 +12,77 @@ export const VOICE_AGENT_ID = 'agent_0001kqad7r09f7j8yx9vw9b67k4t'
 
 // Renders just the status indicator + mic button, no fixed positioning.
 // Must be rendered inside a ConversationProvider.
-export function VoiceAssistantInner({ circuitName }) {
+export function VoiceAssistantInner({ circuitName, autoStart = false }) {
   const { startSession, endSession, sendContextualUpdate } = useConversationControls()
   const { status } = useConversationStatus()
   const { mode } = useConversationMode()
 
   const [hovered, setHovered] = useState(false)
+  const [isStarting, setIsStarting] = useState(false)
+  const autoStartAttempted = useRef(false)
 
   const isActive = status === 'connected' || status === 'connecting'
-  const isConnecting = status === 'connecting'
+  const isConnecting = status === 'connecting' || isStarting
 
-  const handleClick = useCallback(async () => {
+  const requestMicrophone = useCallback(async ({ showError = true } = {}) => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+      stream.getTracks().forEach(track => track.stop())
+      return true
+    } catch {
+      if (showError) toast.error('Microphone access is required to use the voice assistant')
+      return false
+    }
+  }, [])
+
+  const startAssistant = useCallback(async ({ showMicError = true } = {}) => {
+    if (isActive || isStarting) return
+    if (!navigator.mediaDevices?.getUserMedia) {
+      toast.error('Voice assistant is not supported in this browser')
+      return
+    }
+
+    const micAllowed = await requestMicrophone({ showError: showMicError })
+    if (!micAllowed) return
+
+    setIsStarting(true)
+    startSession({
+      onConnect: () => {
+        setIsStarting(false)
+        sendContextualUpdate(
+          `The user is currently viewing the ${circuitName} Grand Prix travel guide page.`
+        )
+      },
+      onError: message => {
+        setIsStarting(false)
+        toast.error(message || 'Connection failed. Please try again.')
+      },
+    })
+  }, [isActive, isStarting, requestMicrophone, startSession, sendContextualUpdate, circuitName])
+
+  const handleClick = useCallback(() => {
     if (isActive) {
       endSession()
       return
     }
 
-    try {
-      await navigator.mediaDevices.getUserMedia({ audio: true })
-    } catch {
-      toast.error('Microphone access is required to use the voice assistant')
-      return
-    }
+    startAssistant()
+  }, [isActive, endSession, startAssistant])
 
-    startSession({
-      onConnect: () => {
-        sendContextualUpdate(
-          `The user is currently viewing the ${circuitName} Grand Prix travel guide page.`
-        )
-      },
-      onError: () => {
-        toast.error('Connection failed. Please try again.')
-      },
-    })
-  }, [isActive, endSession, startSession, sendContextualUpdate, circuitName])
+  useEffect(() => {
+    if (!autoStart || autoStartAttempted.current || isActive) return
+    autoStartAttempted.current = true
+
+    const timer = setTimeout(() => {
+      startAssistant({ showMicError: false })
+    }, 650)
+
+    return () => clearTimeout(timer)
+  }, [autoStart, isActive, startAssistant])
+
+  useEffect(() => {
+    if (status !== 'connecting') setIsStarting(false)
+  }, [status])
 
   return (
     <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}>
@@ -132,7 +169,7 @@ export default function VoiceAssistantButton({ circuitName }) {
   return (
     <div className="fixed bottom-6 right-6 z-[9999]">
       <ConversationProvider agentId={VOICE_AGENT_ID} connectionType="webrtc">
-        <VoiceAssistantInner circuitName={circuitName} />
+        <VoiceAssistantInner circuitName={circuitName} autoStart />
       </ConversationProvider>
     </div>
   )
