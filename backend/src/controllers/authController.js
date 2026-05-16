@@ -4,11 +4,20 @@ import { requestPasswordReset, resetPassword } from '../services/passwordResetSe
 const safeMessage = (err) =>
   err.status ? err.message : 'Something went wrong. Please try again.'
 
+const isProduction = process.env.NODE_ENV === 'production'
+
 const COOKIE_OPTIONS = {
   httpOnly: true,
-  secure: process.env.NODE_ENV === 'production',
-  sameSite: 'Lax',
+  secure: isProduction,
+  sameSite: isProduction ? 'None' : 'Lax',
   maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days (matches JWT_EXPIRES_IN)
+  path: '/',
+}
+
+const CLEAR_COOKIE_OPTIONS = {
+  httpOnly: true,
+  secure: isProduction,
+  sameSite: isProduction ? 'None' : 'Lax',
   path: '/',
 }
 
@@ -39,7 +48,7 @@ export async function loginUser(req, res) {
 }
 
 export async function logoutUser(req, res) {
-  res.clearCookie('token', { path: '/' })
+  res.clearCookie('token', CLEAR_COOKIE_OPTIONS)
   res.json({ message: 'Logged out' })
 }
 

@@ -74,6 +74,7 @@ export default function WelcomePage() {
   const beepDurRef = useRef(0.12)
   const f1DurRef   = useRef(3.2)
   const f1AudioRef = useRef(null)
+  const beepAudioPoolRef = useRef([])
 
   // Scale the entire orbit scene so globe + car fit the current viewport.
   // Globe natural size is 900px; desktop always uses full size; tablet/mobile scale down.
@@ -97,13 +98,22 @@ export default function WelcomePage() {
     const carPreload = new Image()
     carPreload.src = f1CarImg
 
-    // Preload metadata so durations are ready before the user clicks
+    // Preload the short start-light sound up front. Reusing decoded audio avoids
+    // a late first beep on slower browsers/devices.
     const beepMeta = new Audio(redLightUrl)
-    beepMeta.preload = 'metadata'
+    beepMeta.preload = 'auto'
     beepMeta.addEventListener('loadedmetadata', () => {
       if (isFinite(beepMeta.duration) && beepMeta.duration > 0)
         beepDurRef.current = beepMeta.duration
     }, { once: true })
+    beepMeta.load()
+
+    beepAudioPoolRef.current = Array.from({ length: 5 }, () => {
+      const audio = new Audio(redLightUrl)
+      audio.preload = 'auto'
+      audio.load()
+      return audio
+    })
 
     const f1Audio = new Audio(f1CarUrl)
     f1Audio.preload = 'auto'
@@ -119,13 +129,22 @@ export default function WelcomePage() {
           f1AudioRef.current.pause()
           f1AudioRef.current.src = ''
         }
+        beepAudioPoolRef.current.forEach(audio => {
+          audio.pause()
+          audio.src = ''
+        })
+        beepAudioPoolRef.current = []
+        timerRefs.current.forEach(clearTimeout)
+        timerRefs.current = []
       } catch (_) {}
     }
   }, [])
 
-  const playBeep = () => {
+  const playBeep = index => {
     try {
-      const sound = new Audio(redLightUrl)
+      const sound = beepAudioPoolRef.current[index % beepAudioPoolRef.current.length] || new Audio(redLightUrl)
+      sound.pause()
+      sound.currentTime = 0
       sound.play().catch(() => {})
     } catch (_) {}
   }
@@ -143,7 +162,7 @@ export default function WelcomePage() {
       timerRefs.current.push(
         setTimeout(() => {
           setLightsOn(i)
-          playBeep()
+          playBeep(i - 1)
         }, (i - 1) * beepMs)
       )
     }
@@ -405,23 +424,6 @@ export default function WelcomePage() {
               style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }}
             />
           </motion.div>
-        )}
-
-        {/* ── Orbit guide ring (very subtle) ───────────────────────────────── */}
-        {showScene && (
-          <svg
-            style={{ position: 'fixed', left: '50%', top: '50%', overflow: 'visible', pointerEvents: 'none', zIndex: 19 }}
-            width={0} height={0}
-          >
-            <ellipse
-              cx={0} cy={0}
-              rx={OX * sceneScale}
-              ry={OY * sceneScale}
-              fill="none"
-              stroke="rgba(0,210,255,0.12)"
-              strokeWidth={1.5}
-            />
-          </svg>
         )}
 
         {/* ── F1 Car ───────────────────────────────────────────────────────── */}

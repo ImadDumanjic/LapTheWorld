@@ -1,9 +1,11 @@
 import { googleLoginService } from '../services/googleAuthService.js'
 
+const isProduction = process.env.NODE_ENV === 'production'
+
 const COOKIE_OPTIONS = {
   httpOnly: true,
-  secure: process.env.NODE_ENV === 'production',
-  sameSite: 'Lax',
+  secure: isProduction,
+  sameSite: isProduction ? 'None' : 'Lax',
   maxAge: 7 * 24 * 60 * 60 * 1000,
   path: '/',
 }

@@ -10,6 +10,16 @@ if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY || !SUPABASE_BUCKET) {
 }
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY)
+const UPLOAD_TIMEOUT_MS = 30_000
+
+function withTimeout(promise, ms, message) {
+  let timeoutId
+  const timeout = new Promise((_, reject) => {
+    timeoutId = setTimeout(() => reject(new Error(message)), ms)
+  })
+
+  return Promise.race([promise, timeout]).finally(() => clearTimeout(timeoutId))
+}
 
 function sanitizeName(name) {
   return name
@@ -23,9 +33,13 @@ export async function uploadToSupabase({ buffer, mimetype, originalName, folder 
   const sanitized = sanitizeName(originalName)
   const storagePath = `${folder}/${Date.now()}-${crypto.randomUUID()}-${sanitized}`
 
-  const { error } = await supabase.storage
-    .from(SUPABASE_BUCKET)
-    .upload(storagePath, buffer, { contentType: mimetype, upsert: false })
+  const { error } = await withTimeout(
+    supabase.storage
+      .from(SUPABASE_BUCKET)
+      .upload(storagePath, buffer, { contentType: mimetype, upsert: false }),
+    UPLOAD_TIMEOUT_MS,
+    'Supabase upload timed out. Please try again with a smaller image.'
+  )
 
   if (error) throw new Error(`Supabase upload failed: ${error.message}`)
 
