@@ -8,7 +8,6 @@ import WeatherSection from '../components/travel-guide/WeatherSection'
 import WhereToStaySection from '../components/travel-guide/WhereToStaySection'
 import RaceWeekendGuideSection from '../components/travel-guide/RaceWeekendGuideSection'
 import FloatingButtonGroup from '../components/travel-guide/FloatingButtonGroup'
-import LegalFooter from '../components/ui/LegalFooter'
 
 function NotFound({ slug }) {
   return (
@@ -116,7 +115,6 @@ export default function TravelGuidePage() {
             <RaceWeekendGuideSection guide={guide} />
           </div>
         </div>
-        <LegalFooter />
       </div>
     </>
   )

@@ -109,6 +109,7 @@ export default function Header() {
   const { pathname }                  = useLocation()
   const isAdmin                       = pathname === '/admin'
   const isTravelGuide                 = /^\/travel-guide\/.+/.test(pathname)
+  const isLegal                       = pathname === '/privacy' || pathname === '/terms'
   const isLoggedIn                    = !!localStorage.getItem('userId')
   const { isPlaying, toggle }         = useAudio()
 
@@ -184,6 +185,29 @@ export default function Header() {
 
           {/* Right side: optional audio button + hamburger / admin logout */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+
+            {/* Back link — visible only on legal pages */}
+            {isLegal && (
+              <Link
+                to="/landing"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 5,
+                  fontSize: 11,
+                  color: 'rgba(100,168,200,0.55)',
+                  textDecoration: 'none',
+                  letterSpacing: '0.14em',
+                  textTransform: 'uppercase',
+                  padding: '6px 10px',
+                  transition: 'color 0.2s ease',
+                }}
+                onMouseEnter={e => { e.currentTarget.style.color = 'rgba(100,168,200,0.9)' }}
+                onMouseLeave={e => { e.currentTarget.style.color = 'rgba(100,168,200,0.55)' }}
+              >
+                ← Back
+              </Link>
+            )}
 
             {/* Play/pause — visible only on individual travel guide pages */}
             {isTravelGuide && !isAdmin && (

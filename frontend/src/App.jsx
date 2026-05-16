@@ -18,9 +18,11 @@ import LiveTimingPage from './pages/LiveTimingPage'
 import PrivacyPolicyPage from './pages/PrivacyPolicyPage'
 import TermsPage from './pages/TermsPage'
 import Header from './components/layout/Header'
+import LegalFooter from './components/ui/LegalFooter'
 import CookieConsentBanner from './components/ui/CookieConsentBanner'
 
 const HIDE_HEADER_ON = ['/', '/auth', '/landing', '/reset-password', '/admin-login', '/admin', '/custom-plan']
+const HIDE_FOOTER_ON = ['/landing', '/admin', '/admin-login']
 
 function authState() {
   return {
@@ -54,9 +56,10 @@ function AdminRoute({ children }) {
 function Layout() {
   const { pathname } = useLocation()
   const showHeader = !HIDE_HEADER_ON.includes(pathname)
+  const showFooter = !HIDE_FOOTER_ON.includes(pathname)
 
   return (
-    <>
+    <div className="bg-page-gradient">
       {showHeader && <Header />}
       <Routes>
         <Route path="/" element={<NonAdminRoute><WelcomePage /></NonAdminRoute>} />
@@ -77,8 +80,9 @@ function Layout() {
         <Route path="/privacy" element={<PrivacyPolicyPage />} />
         <Route path="/terms" element={<TermsPage />} />
       </Routes>
+      {showFooter && <LegalFooter />}
       <CookieConsentBanner />
-    </>
+    </div>
   )
 }
 
