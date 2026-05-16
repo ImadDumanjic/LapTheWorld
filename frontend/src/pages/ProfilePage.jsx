@@ -751,7 +751,7 @@ export default function ProfilePage() {
                   </div>
                   <button
                     onClick={async () => { try { await exportUserData() } catch { toast.error('Export failed. Please try again.') } }}
-                    className="w-full sm:w-auto flex-shrink-0 flex items-center justify-center gap-2 px-5 py-2.5 rounded-[50px] text-[10px] font-extrabold uppercase tracking-[2px] text-white transition-all duration-200 cursor-pointer"
+                    className="w-full sm:w-auto flex-shrink-0 flex items-center justify-center gap-2 px-5 py-2.5 rounded-[50px] text-[10px] font-extrabold uppercase tracking-[2px] text-white transition-all duration-200 cursor-pointer sm:mr-[11px]"
                     style={{ background: 'linear-gradient(135deg, #3d7a96, #2C5364, #1a3340)' }}
                     onMouseEnter={e => { e.currentTarget.style.boxShadow = '0 0 22px rgba(44,83,100,0.55)'; e.currentTarget.style.transform = 'translateY(-1px)' }}
                     onMouseLeave={e => { e.currentTarget.style.boxShadow = ''; e.currentTarget.style.transform = '' }}
