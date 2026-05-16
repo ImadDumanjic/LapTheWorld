@@ -751,10 +751,10 @@ export default function ProfilePage() {
                   </div>
                   <button
                     onClick={async () => { try { await exportUserData() } catch { toast.error('Export failed. Please try again.') } }}
-                    className="w-full sm:w-auto flex-shrink-0 flex items-center justify-center gap-2 px-5 py-2.5 rounded-[50px] text-[10px] font-extrabold uppercase tracking-[2px] transition-all duration-200 cursor-pointer"
-                    style={{ background: 'transparent', border: '1px solid rgba(44,83,100,0.45)', color: 'rgba(100,168,200,0.8)' }}
-                    onMouseEnter={e => { e.currentTarget.style.background = 'rgba(44,83,100,0.15)'; e.currentTarget.style.borderColor = 'rgba(44,83,100,0.7)'; e.currentTarget.style.color = 'rgba(100,168,200,1)' }}
-                    onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.borderColor = 'rgba(44,83,100,0.45)'; e.currentTarget.style.color = 'rgba(100,168,200,0.8)' }}
+                    className="w-full sm:w-auto flex-shrink-0 flex items-center justify-center gap-2 px-5 py-2.5 rounded-[50px] text-[10px] font-extrabold uppercase tracking-[2px] text-white transition-all duration-200 cursor-pointer"
+                    style={{ background: 'linear-gradient(135deg, #3d7a96, #2C5364, #1a3340)' }}
+                    onMouseEnter={e => { e.currentTarget.style.boxShadow = '0 0 22px rgba(44,83,100,0.55)'; e.currentTarget.style.transform = 'translateY(-1px)' }}
+                    onMouseLeave={e => { e.currentTarget.style.boxShadow = ''; e.currentTarget.style.transform = '' }}
                   >
                     <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>

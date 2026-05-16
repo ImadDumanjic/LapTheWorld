@@ -31,7 +31,7 @@ export default function GoogleSignIn({ onSuccess, onError, googleLogin }) {
         window.google.accounts.id.renderButton(buttonDiv.current, {
           theme: 'outline',
           size: 'large',
-          width: '100%',
+          width: buttonDiv.current.offsetWidth,
           shape: 'pill',
         })
       }
