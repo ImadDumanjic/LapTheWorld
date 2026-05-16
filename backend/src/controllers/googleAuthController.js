@@ -24,7 +24,7 @@ export async function googleLoginController(req, res) {
 
     const result = await googleLoginService(idToken)
     res.cookie('token', result.token, COOKIE_OPTIONS)
-    res.json({ user: result.user })
+    res.json({ user: result.user, token: result.token })
   } catch (err) {
     console.error('googleLogin error:', err)
     res.status(err.status || 500).json({ message: err.status ? err.message : 'Something went wrong. Please try again.' })

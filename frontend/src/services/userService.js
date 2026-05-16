@@ -1,7 +1,9 @@
+import { getUserAuthHeaders } from './sessionAuth'
+
 const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000'
 
 function jsonHeaders() {
-  return { 'Content-Type': 'application/json' }
+  return getUserAuthHeaders({ 'Content-Type': 'application/json' })
 }
 
 // Returns the stored user ID without decoding the JWT (which is now httpOnly)
@@ -11,6 +13,7 @@ export function getTokenUserId() {
 
 export async function fetchProfile() {
   const res = await fetch(`${BASE_URL}/api/users/me`, {
+    headers: getUserAuthHeaders(),
     credentials: 'include',
   })
   if (!res.ok) throw new Error((await res.json()).message || 'Failed to load profile')
@@ -31,6 +34,7 @@ export async function updateProfile(id, data) {
 export async function deleteAccount(id) {
   const res = await fetch(`${BASE_URL}/api/users/${id}`, {
     method: 'DELETE',
+    headers: getUserAuthHeaders(),
     credentials: 'include',
   })
   if (!res.ok) throw new Error((await res.json()).message || 'Failed to delete account')
@@ -60,6 +64,7 @@ export async function changePassword(id, currentPassword, newPassword) {
 
 export async function exportUserData() {
   const res = await fetch(`${BASE_URL}/api/users/me/export`, {
+    headers: getUserAuthHeaders(),
     credentials: 'include',
   })
   if (!res.ok) throw new Error((await res.json()).message || 'Failed to export data')

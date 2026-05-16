@@ -1,3 +1,5 @@
+import { getUserAuthHeaders } from './sessionAuth'
+
 const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000'
 const BLOG_REQUEST_TIMEOUT_MS = 45_000
 
@@ -35,6 +37,7 @@ export async function fetchBlogs(page = 1) {
 export async function createBlog(formData) {
   const res = await fetchWithTimeout(`${BASE_URL}/api/blogs`, {
     method: 'POST',
+    headers: getUserAuthHeaders(),
     credentials: 'include',
     body: formData,
   })
@@ -47,6 +50,7 @@ export async function createBlog(formData) {
 
 export async function fetchMyBlogs(page = 1) {
   const res = await fetch(`${BASE_URL}/api/blogs/my?page=${page}`, {
+    headers: getUserAuthHeaders(),
     credentials: 'include',
   })
   if (!res.ok) {
@@ -61,6 +65,7 @@ export async function fetchMyBlogs(page = 1) {
 export async function updateBlog(id, formData) {
   const res = await fetchWithTimeout(`${BASE_URL}/api/blogs/${id}`, {
     method: 'PUT',
+    headers: getUserAuthHeaders(),
     credentials: 'include',
     body: formData,
   })
@@ -74,6 +79,7 @@ export async function updateBlog(id, formData) {
 export async function deleteBlog(id) {
   const res = await fetch(`${BASE_URL}/api/blogs/${id}`, {
     method: 'DELETE',
+    headers: getUserAuthHeaders(),
     credentials: 'include',
   })
   if (!res.ok) {

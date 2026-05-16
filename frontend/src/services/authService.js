@@ -1,20 +1,12 @@
+import { clearUserSession, storeUserSession } from './sessionAuth'
+
 const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000'
 
-// All user requests include credentials so the httpOnly cookie is sent automatically.
-// The token is never read from or written to localStorage.
+// User auth primarily uses the httpOnly cookie. The stored bearer token is a
+// fallback for production browsers that block cross-site cookies.
 
 function jsonHeaders() {
   return { 'Content-Type': 'application/json' }
-}
-
-function storeSession(user) {
-  if (user?.role) localStorage.setItem('role', user.role)
-  if (user?.id)   localStorage.setItem('userId', String(user.id))
-}
-
-function clearSession() {
-  localStorage.removeItem('role')
-  localStorage.removeItem('userId')
 }
 
 export async function login(data) {
@@ -26,7 +18,7 @@ export async function login(data) {
   })
   if (!res.ok) throw new Error((await res.json()).message || 'Login failed')
   const result = await res.json()
-  storeSession(result.user)
+  storeUserSession(result)
   return result
 }
 
@@ -39,7 +31,7 @@ export async function register(data) {
   })
   if (!res.ok) throw new Error((await res.json()).message || 'Registration failed')
   const result = await res.json()
-  storeSession(result.user)
+  storeUserSession(result)
   return result
 }
 
@@ -52,7 +44,7 @@ export async function googleLogin(data) {
   })
   if (!res.ok) throw new Error((await res.json()).message || 'Google sign-in failed')
   const result = await res.json()
-  storeSession(result.user)
+  storeUserSession(result)
   return result
 }
 
@@ -65,7 +57,7 @@ export async function logout() {
   } catch {
     // Continue even if network fails — clear local state regardless
   }
-  clearSession()
+  clearUserSession()
 }
 
 export async function requestPasswordReset(email) {

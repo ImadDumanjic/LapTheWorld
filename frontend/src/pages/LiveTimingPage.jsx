@@ -1,12 +1,16 @@
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { getUserAuthHeaders } from '../services/sessionAuth'
 
 const API = `${import.meta.env.VITE_API_URL || 'http://localhost:3000'}/api/live`
 
 const POLL_ACTIVE   = 5_000        // 5 s when a session is live
 const POLL_INACTIVE = 5 * 60_000  // 5 min when no session is running
 
-const FETCH_OPTS = { credentials: 'include' }
+const getFetchOpts = () => ({
+  credentials: 'include',
+  headers: getUserAuthHeaders(),
+})
 
 function toTitleCase(str) {
   if (!str) return str
@@ -200,7 +204,7 @@ export default function LiveTimingPage() {
 
     async function doFetch() {
       try {
-        const res = await fetch(`${API}/all`, FETCH_OPTS)
+        const res = await fetch(`${API}/all`, getFetchOpts())
         if (res.status === 401) {
           if (!cancelled) navigate('/auth', { replace: true })
           return

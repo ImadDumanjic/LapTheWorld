@@ -29,7 +29,7 @@ export async function registerUser(req, res) {
   try {
     const result = await register(req.body)
     setAuthCookie(res, result.token)
-    res.status(201).json({ user: result.user })
+    res.status(201).json({ user: result.user, token: result.token })
   } catch (err) {
     console.error('registerUser error:', err)
     res.status(err.status || 500).json({ message: safeMessage(err) })
@@ -40,7 +40,7 @@ export async function loginUser(req, res) {
   try {
     const result = await login(req.body)
     setAuthCookie(res, result.token)
-    res.json({ user: result.user })
+    res.json({ user: result.user, token: result.token })
   } catch (err) {
     console.error('loginUser error:', err)
     res.status(err.status || 500).json({ message: safeMessage(err) })
