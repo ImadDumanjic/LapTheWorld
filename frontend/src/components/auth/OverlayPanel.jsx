@@ -5,9 +5,24 @@ export default function OverlayPanel({ isRegister }) {
 
   return (
     <div
-      className="absolute top-0 left-0 w-full h-full z-20 flex items-center justify-center bg-[linear-gradient(155deg,#3d7a96_0%,#2C5364_40%,#1a3340_70%,#0F2027_100%)] transition-[clip-path] duration-[600ms] ease-in-out max-sm:hidden"
+      className="absolute top-0 left-0 w-full h-full z-20 flex items-center justify-center bg-[linear-gradient(155deg,#3d7a96_0%,#2C5364_40%,#1a3340_70%,#0F2027_100%)] transition-[clip-path] duration-[600ms] ease-in-out max-sm:hidden overflow-hidden"
       style={{ clipPath }}
     >
+      <div
+        className="absolute bottom-0 left-0 w-full h-[30%] pointer-events-none"
+        style={{
+          backgroundImage: `
+            linear-gradient(45deg, rgba(255,255,255,0.09) 25%, transparent 25%),
+            linear-gradient(-45deg, rgba(255,255,255,0.09) 25%, transparent 25%),
+            linear-gradient(45deg, transparent 75%, rgba(255,255,255,0.09) 75%),
+            linear-gradient(-45deg, transparent 75%, rgba(255,255,255,0.09) 75%)
+          `,
+          backgroundSize: '64px 64px',
+          backgroundPosition: '0 0, 0 32px, 32px -32px, -32px 0px',
+          WebkitMaskImage: 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 100%)',
+          maskImage: 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 100%)',
+        }}
+      />
       <div
         className={`absolute inset-0 flex flex-col items-center justify-center text-center text-white pointer-events-none pl-[calc(55%+165px)] pr-[60px] transition-opacity duration-200 ${
           isRegister ? 'opacity-0' : 'opacity-100'
