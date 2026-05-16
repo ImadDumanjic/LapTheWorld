@@ -438,10 +438,11 @@ export default function ProfilePage() {
           phone:     data.phone     ?? '',
         })
       })
-      .catch(() => {
-        // Token invalid / expired — force logout
-        logout()
-        navigate('/auth')
+      .catch((err) => {
+        if (err.status === 401 || err.status === 403) {
+          logout()
+          navigate('/auth')
+        }
       })
       .finally(() => setLoading(false))
   }, [navigate])

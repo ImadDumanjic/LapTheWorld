@@ -16,7 +16,12 @@ export async function fetchProfile() {
     headers: getUserAuthHeaders(),
     credentials: 'include',
   })
-  if (!res.ok) throw new Error((await res.json()).message || 'Failed to load profile')
+  if (!res.ok) {
+    const data = await res.json().catch(() => ({}))
+    const err = new Error(data.message || 'Failed to load profile')
+    err.status = res.status
+    throw err
+  }
   return res.json()
 }
 
