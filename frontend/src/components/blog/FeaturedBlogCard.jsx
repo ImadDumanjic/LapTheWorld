@@ -30,6 +30,9 @@ export default function FeaturedBlogCard({ blog, onClick }) {
         <img
           src={imageUrl}
           alt={blog.title}
+          loading="eager"
+          decoding="async"
+          fetchPriority="high"
           className="absolute inset-0 w-full h-full object-cover"
           style={{ filter: 'brightness(0.55)' }}
         />

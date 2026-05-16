@@ -137,7 +137,13 @@ function BlogDetailModal({ blog, onClose, onStatusChange }) {
         {/* Cover image */}
         {imageUrl ? (
           <div className="flex-shrink-0 overflow-hidden" style={{ height: 240 }}>
-            <img src={imageUrl} alt={blog.title} className="w-full h-full object-cover" />
+            <img
+              src={imageUrl}
+              alt={blog.title}
+              loading="lazy"
+              decoding="async"
+              className="w-full h-full object-cover"
+            />
           </div>
         ) : (
           <div className="flex-shrink-0 h-2 bg-gradient-to-r from-blue-200 via-sky-300 to-blue-200" />

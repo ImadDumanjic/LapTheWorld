@@ -214,6 +214,8 @@ export default function MyBlogsPage() {
                         <img
                           src={imageUrl}
                           alt={blog.title}
+                          loading="lazy"
+                          decoding="async"
                           className="w-full h-full object-cover"
                           style={{ minHeight: 140, maxHeight: 200 }}
                         />

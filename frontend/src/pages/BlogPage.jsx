@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
-import blogHeroBanner from '../assets/BlogHeroBanner.png'
+import blogHeroBanner from '../assets/BlogHeroBanner.webp'
 import BlogCreateModal from '../components/blog/BlogCreateModal'
 import BlogPreviewModal from '../components/blog/BlogPreviewModal'
 import BlogList from '../components/blog/BlogList'
@@ -137,6 +137,9 @@ export default function BlogPage() {
           src={blogHeroBanner}
           alt=""
           aria-hidden="true"
+          loading="eager"
+          decoding="async"
+          fetchPriority="high"
           className="absolute inset-0 w-full h-full object-cover object-center select-none pointer-events-none"
           style={{ filter: 'brightness(0.62)' }}
         />

@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, useAnimation } from 'framer-motion'
-import f1CarImg from '../assets/F1Car.png'
-import globeImg from '../assets/Globe.png'
+import f1CarImg from '../assets/F1Car.webp'
+import globeImg from '../assets/Globe.webp'
 import redLightUrl from '../assets/sounds/RedLight.mp3'
 import f1CarUrl from '../assets/sounds/F1Car.mp3'
 
@@ -91,6 +91,12 @@ export default function WelcomePage() {
   )
 
   useEffect(() => {
+    const globePreload = new Image()
+    globePreload.src = globeImg
+
+    const carPreload = new Image()
+    carPreload.src = f1CarImg
+
     // Preload metadata so durations are ready before the user clicks
     const beepMeta = new Audio(redLightUrl)
     beepMeta.preload = 'metadata'
@@ -394,6 +400,8 @@ export default function WelcomePage() {
             <img
               src={globeImg}
               alt=""
+              loading="eager"
+              decoding="async"
               style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }}
             />
           </motion.div>
@@ -439,7 +447,13 @@ export default function WelcomePage() {
               willChange: 'transform',
             }}
           >
-            <img src={f1CarImg} alt="" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+            <img
+              src={f1CarImg}
+              alt=""
+              loading="eager"
+              decoding="async"
+              style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+            />
           </motion.div>
         )}
 
