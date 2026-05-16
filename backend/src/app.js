@@ -1,5 +1,3 @@
-import path from 'path'
-import { fileURLToPath } from 'url'
 import express from 'express'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
@@ -12,12 +10,20 @@ import groqRoutes from './routes/groqRoutes.js'
 import liveTimingRoutes from './routes/liveTimingRoutes.js'
 import guideRoutes from './routes/guideRoutes.js'
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url))
-
 const app = express()
 
+app.set('trust proxy', 1)
+
+const allowedOrigins = (process.env.CORS_ORIGINS || 'http://localhost:5173')
+  .split(',')
+  .map(s => s.trim())
+  .filter(Boolean)
+
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) return callback(null, true)
+    callback(new Error(`CORS policy: origin ${origin} not allowed`))
+  },
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true
@@ -25,8 +31,10 @@ app.use(cors({
 app.use(cookieParser())
 app.use(express.json())
 
-// Serve uploaded images
-app.use('/uploads', express.static(path.join(__dirname, '../uploads')))
+
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok' })
+})
 
 app.get('/', (req, res) => {
   res.send('Welcome to the LapTheWorld API!')

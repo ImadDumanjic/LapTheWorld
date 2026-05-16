@@ -24,3 +24,9 @@ async function initializeDatabase() {
 }
 
 initializeDatabase();
+
+process.on('SIGTERM', async () => {
+  console.log('SIGTERM received, shutting down gracefully');
+  await sequelize.close();
+  process.exit(0);
+});

@@ -199,8 +199,11 @@ export async function sendBlogSubmissionAdminEmail({ blog, author, isEdit = fals
   const authorName  = escapeHtml([author.firstName, author.lastName].filter(Boolean).join(' ') || author.username)
   const rawPreview = blog.content.length > 500 ? blog.content.slice(0, 500) + '…' : blog.content
   const contentPreview = escapeHtml(rawPreview)
+  const imageSrc = blog.image_url?.startsWith('http')
+    ? blog.image_url
+    : `${backendUrl}${blog.image_url || ''}`
   const imageSection = blog.image_url
-    ? `<tr><td style="padding:0 0 24px;"><img src="${backendUrl}${blog.image_url}" alt="Cover" style="width:100%;max-height:280px;object-fit:cover;border-radius:8px;display:block;" /></td></tr>`
+    ? `<tr><td style="padding:0 0 24px;"><img src="${imageSrc}" alt="Cover" style="width:100%;max-height:280px;object-fit:cover;border-radius:8px;display:block;" /></td></tr>`
     : ''
 
   const eyebrow = isEdit ? 'Updated Post — Re-review Required' : 'Admin Review Required'
