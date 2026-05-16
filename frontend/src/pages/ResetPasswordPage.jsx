@@ -80,8 +80,10 @@ export default function ResetPasswordPage() {
         {/* ── Logo / brand ── */}
         <div className="text-center mb-8">
           <img
-            src="/LapTheWorld.svg"
+            src="/LapTheWorld.webp"
             alt="LapTheWorld"
+            loading="eager"
+            decoding="async"
             className="inline-block h-16 w-auto"
           />
         </div>

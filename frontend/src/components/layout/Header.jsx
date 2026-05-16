@@ -180,7 +180,7 @@ export default function Header() {
         >
           {/* Logo */}
           <Link to="/landing" className="select-none flex-shrink-0">
-            <img src="/LapTheWorld.svg" alt="Lap The World" style={{ height: 55, width: 'auto' }} />
+            <img src="/LapTheWorld.webp" alt="Lap The World" loading="eager" decoding="async" style={{ height: 55, width: 'auto' }} />
           </Link>
 
           {/* Right side: optional audio button + hamburger / admin logout */}

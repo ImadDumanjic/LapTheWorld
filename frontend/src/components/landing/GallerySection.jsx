@@ -1,11 +1,11 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import blog from '../../assets/Blog.png'
-import calendar from '../../assets/Calendar.png'
-import standings from '../../assets/Standings.png'
-import liveTiming from '../../assets/LiveTiming.png'
-import travelGuide from '../../assets/TravelGuideGrandPrix.png'
-import profilePage from '../../assets/ProfilePage.png'
+import blog from '../../assets/Blog.webp'
+import calendar from '../../assets/Calendar.webp'
+import standings from '../../assets/Standings.webp'
+import liveTiming from '../../assets/LiveTiming.webp'
+import travelGuide from '../../assets/TravelGuideGrandPrix.webp'
+import profilePage from '../../assets/ProfilePage.webp'
 import AuthRequiredModal from '../ui/AuthRequiredModal'
 
 const CARDS = [
@@ -57,6 +57,8 @@ function ImageCard({ image, title, subtitle, align = 'left', className = '', to,
       <img
         src={image}
         alt={title}
+        loading="lazy"
+        decoding="async"
         className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
       />
       <div

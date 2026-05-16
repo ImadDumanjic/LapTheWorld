@@ -155,7 +155,7 @@ export default function AdminLoginPage() {
       >
         {/* Branding */}
         <div className="mb-8 flex flex-col items-center gap-2">
-          <img src="/LapTheWorld.svg" alt="LapTheWorld" style={{ height: 44 }} />
+          <img src="/LapTheWorld.webp" alt="LapTheWorld" loading="eager" decoding="async" style={{ height: 44 }} />
           <span className="text-[10px] font-bold tracking-[4px] uppercase" style={{ color: '#2C5364' }}>
             Admin Portal
           </span>

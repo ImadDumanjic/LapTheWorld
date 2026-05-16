@@ -1,25 +1,25 @@
-import travelGuideImage   from '../../assets/TravelGuideGrandPrix.png'
-import monacoHero         from '../../assets/MonacoHero.png'
-import canadaHero         from '../../assets/CanadaHero.png'
-import belgiumHero        from '../../assets/BelgiumHero.png'
-import azerbaijanHero     from '../../assets/AzerbaijanHero.png'
-import singaporeHero      from '../../assets/SingaporeHero.png'
-import italyHero          from '../../assets/ItalyHero.png'
-import lasVegasHero       from '../../assets/LasVegasHero.png'
-import austinHero         from '../../assets/AustinHero.png'
-import brazilHero         from '../../assets/BrazilHero.png'
-import abuDhabiHero       from '../../assets/AbuDhabiHero.png'
-import australiaHero      from '../../assets/Australia.png'
-import austriaHero        from '../../assets/Austria.png'
-import barcelonaHero      from '../../assets/Barcelona.png'
-import chinaHero          from '../../assets/China.png'
-import hungaryHero        from '../../assets/Hungary.png'
-import japanHero          from '../../assets/Japan.png'
-import madridHero         from '../../assets/Madrid.png'
-import mexicoHero         from '../../assets/Mexico.png'
-import miamiHero          from '../../assets/Miami.png'
-import netherlandsHero    from '../../assets/Netherlands.png'
-import qatarHero          from '../../assets/Qatar.png'
+import travelGuideImage   from '../../assets/TravelGuideGrandPrix.webp'
+import monacoHero         from '../../assets/MonacoHero.webp'
+import canadaHero         from '../../assets/CanadaHero.webp'
+import belgiumHero        from '../../assets/BelgiumHero.webp'
+import azerbaijanHero     from '../../assets/AzerbaijanHero.webp'
+import singaporeHero      from '../../assets/SingaporeHero.webp'
+import italyHero          from '../../assets/ItalyHero.webp'
+import lasVegasHero       from '../../assets/LasVegasHero.webp'
+import austinHero         from '../../assets/AustinHero.webp'
+import brazilHero         from '../../assets/BrazilHero.webp'
+import abuDhabiHero       from '../../assets/AbuDhabiHero.webp'
+import australiaHero      from '../../assets/Australia.webp'
+import austriaHero        from '../../assets/Austria.webp'
+import barcelonaHero      from '../../assets/Barcelona.webp'
+import chinaHero          from '../../assets/China.webp'
+import hungaryHero        from '../../assets/Hungary.webp'
+import japanHero          from '../../assets/Japan.webp'
+import madridHero         from '../../assets/Madrid.webp'
+import mexicoHero         from '../../assets/Mexico.webp'
+import miamiHero          from '../../assets/Miami.webp'
+import netherlandsHero    from '../../assets/Netherlands.webp'
+import qatarHero          from '../../assets/Qatar.webp'
 import { getFlagUrl } from '../calendar/countryFlags'
 
 const HERO_IMAGES = {
@@ -165,6 +165,9 @@ export default function TravelGuideHero({ guide }) {
         src={heroImage}
         alt=""
         aria-hidden="true"
+        loading="eager"
+        decoding="async"
+        fetchPriority="high"
         className="absolute inset-0 w-full h-full object-cover object-center select-none pointer-events-none"
         style={{ filter: 'brightness(0.5)' }}
       />
@@ -219,6 +222,8 @@ export default function TravelGuideHero({ guide }) {
                 <img
                   src={flagUrl}
                   alt={country}
+                  loading="eager"
+                  decoding="async"
                   className="rounded-sm object-cover flex-shrink-0"
                   style={{ height: 16, width: 26, objectPosition: 'center' }}
                 />
